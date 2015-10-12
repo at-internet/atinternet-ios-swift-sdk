@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>campaignLifetime</key>
+	<string>30</string>
+	<key>campaignLastPersistence</key>
+	<string>true</string>
+	<key>tvtURL</key>
+	<string></string>
+	<key>tvtVisitDuration</key>
+	<string>10</string>
+	<key>persistIdentifiedVisitor</key>
+	<string>true</string>
+	<key>hashUserId</key>
+	<string>false</string>
+	<key>enableBackgroundTask</key>
+	<string>false</string>
+	<key>storage</key>
+	<string>never</string>
+	<key>plugins</key>
+	<string></string>
+	<key>log</key>
+	<string>logp</string>
+	<key>logSSL</key>
+	<string>logs</string>
+	<key>domain</key>
+	<string>xiti.com</string>
+	<key>pixelPath</key>
+	<string>/hit.xiti</string>
+	<key>site</key>
+	<string>549808</string>
+	<key>secure</key>
+	<string>false</string>
+	<key>identifier</key>
+	<string>uuid</string>
+	<key>downloadSource</key>
+	<string>ext</string>
+</dict>
+</plist>
