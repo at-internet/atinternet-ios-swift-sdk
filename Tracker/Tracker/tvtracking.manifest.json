@@ -18,6 +18,14 @@
         "type": "int",
         "public": true,
         "global": true
-      }
+      },
+        "tvtSpotValidityTime": {
+            "title": "Geode_Tag_SDK_Plg_TVT_tvtSpotValidityTime_Title",
+            "description": "Geode_Tag_SDK_Plg_TVT_tvtSpotValidityTime_Description",
+            "defaultValue": "5",
+            "type": "int",
+            "public": true,
+            "global": true
+        }
     }
 }

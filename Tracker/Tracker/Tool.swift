@@ -139,6 +139,26 @@ class Tool {
     }
     
     /**
+    Gets the number of minutes between two dates
+    
+    - parameter fromDate:
+    - parameter toDate:
+    
+    - returns: the number of minutes between fromDate and toDate
+    */
+    class func minutesBetweenDates(fromDate: NSDate, toDate: NSDate) -> Int {
+        let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+        let unitFlags = NSCalendarUnit.Minute
+        let dateComponents = calendar?.components(unitFlags, fromDate: fromDate, toDate: toDate, options: NSCalendarOptions(rawValue: 0))
+        
+        if let optDate = dateComponents {
+            return optDate.minute
+        }
+        
+        return 0
+    }
+    
+    /**
     Append parameter values from buffer
     
     - parameter parameter: key

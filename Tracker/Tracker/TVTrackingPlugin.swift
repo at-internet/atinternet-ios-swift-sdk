@@ -39,17 +39,19 @@ class TVTrackingPlugin: Plugin {
         case tvtParam = "ATTVTParam"
         case lastSessionStart = "ATTVTLastSessionStart"
         case remanentSpot = "ATTVTRemanentSpot"
-        case version = "1.2.1m"
+        case version = "1.2.2m"
     }
     
     enum TVTrackingStatusCase {
         case channelUndefined
         case channelError
         case noData
+        case timeError
         case ok
     }
     
     private var statusCase = TVTrackingStatusCase.ok
+    private var timeData = ""
     
     /// User Defaults
     let userDefaults = NSUserDefaults.standardUserDefaults()
@@ -81,7 +83,30 @@ class TVTrackingPlugin: Plugin {
         get {
             if let value = spot["channel"] as? String {
                 if (value != "undefined") {
-                    return true
+                    if let optPartnerTime = spot["time"] as? String{
+                        timeData = optPartnerTime;
+                        let dateFormatter = NSDateFormatter()
+                        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+                        dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+                        
+                        if let optDate = dateFormatter.dateFromString(optPartnerTime){
+                            let tvtSpotValidityTime = Int(tracker.configuration.parameters["tvtSpotValidityTime"]!)
+                            
+                            if(Tool.minutesBetweenDates(optDate, toDate: NSDate()) > tvtSpotValidityTime){
+                                statusCase = TVTrackingStatusCase.timeError
+                                return false
+                            } else {
+                                return true
+                            }
+                        } else {
+                            statusCase = TVTrackingStatusCase.timeError
+                            return false
+                        }
+                        
+                    } else {
+                        statusCase = TVTrackingStatusCase.timeError
+                        return false
+                    }
                 } else {
                     statusCase = TVTrackingStatusCase.channelUndefined
                     return false
@@ -230,6 +255,10 @@ class TVTrackingPlugin: Plugin {
             
         }
         
+        if tvtParam["tvtracking"] == nil {
+            tvtParam["tvtracking"] = [String: String]();
+        }
+        
         tvtParam["tvtracking"]!["info"] = buildTVTInfo(urlResponse)
         
         if (spotSet
@@ -272,6 +301,9 @@ class TVTrackingPlugin: Plugin {
         case .noData:
             dic["info"]!["message"] = code
             dic["info"]!["errors"] = "noData"
+        case .timeError:
+            dic["info"]!["message"] = code + "-" + timeData
+            dic["info"]!["errors"] = "timeError"
         default:
             dic["info"]!["message"] = code
         }

@@ -98,6 +98,9 @@
 		4FE5DD151BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; settings = {ASSET_TAGS = (); }; };
 		4FE5DD161BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; settings = {ASSET_TAGS = (); }; };
 		4FE5DD171BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; settings = {ASSET_TAGS = (); }; };
+		4FE5DD151BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; };
+		4FE5DD161BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; };
+		4FE5DD171BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; };
 		4FE904921A56E51F003409B8 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
 		4FE904931A56E51F003409B8 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
 		4FEB53801A37671A00925CEC /* BuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEB537F1A37671A00925CEC /* BuilderTests.swift */; };
@@ -136,6 +139,8 @@
 		AE14AA781B272ECC00770630 /* tvtracking.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F90C7951B0E33650038A57C /* tvtracking.manifest.json */; };
 		AE14AA791B272ECE00770630 /* nuggad.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F90C7931B0E33550038A57C /* nuggad.manifest.json */; };
 		AE14AA7A1B272ED000770630 /* core.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = AE8C081F1AA705F8006067FB /* core.manifest.json */; };
+		AE14AA761B272EC000770630 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E4F971A4434A400947800 /* Reachability.swift */; };
+		AE14AA771B272EC400770630 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
 		AE14AA7B1B272ED900770630 /* Debugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CE1B51AAEE675008EEE4F /* Debugger.swift */; };
 		AE14AA7C1B272EDC00770630 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC768E31AA846960057FE9D /* Images.xcassets */; };
 		AE14AA7D1B272EE100770630 /* Aisle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9BEB311B022308003BFD41 /* Aisle.swift */; };
@@ -194,6 +199,9 @@
 		AE887E4E1A2F13D4005682DA /* Tracker.h in Headers */ = {isa = PBXBuildFile; fileRef = AE887E4D1A2F13D4005682DA /* Tracker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AE8C08201AA705F8006067FB /* core.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = AE8C081F1AA705F8006067FB /* core.manifest.json */; };
 		AE8C08221AA70646006067FB /* core.manifest.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = AE8C081F1AA705F8006067FB /* core.manifest.json */; };
+		AE7A7C871A39FF3400CC72B0 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7A7C861A39FF3400CC72B0 /* TrackerTests.swift */; };
+		AE842E8C1A7F7AAE00151E3C /* TechnicalContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2147071A43422400E9AA30 /* TechnicalContext.swift */; };
+		AE887E4E1A2F13D4005682DA /* Tracker.h in Headers */ = {isa = PBXBuildFile; fileRef = AE887E4D1A2F13D4005682DA /* Tracker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AE9F5F451AC2C74F002F7B33 /* IdentifiedVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE533D171AC2BA78005DDD3F /* IdentifiedVisitor.swift */; };
 		AE9F5F761AC315F6002F7B33 /* IdentifiedVisitorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9F5F751AC315F6002F7B33 /* IdentifiedVisitorTests.swift */; };
 		AE9F5F781AC31F81002F7B33 /* ScreenTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE9F5F771AC31F81002F7B33 /* ScreenTests.swift */; };
@@ -586,6 +594,7 @@
 				4FE5DD141BA31DDE009F9A50 /* Crash.h in Headers */,
 				AE14AA9B1B272FAA00770630 /* DefaultConfiguration~iphone.plist in Headers */,
 				AE14AA9C1B272FAA00770630 /* DefaultConfiguration~ipod.plist in Headers */,
+				4FE5DD141BA31DDE009F9A50 /* Crash.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -599,6 +608,7 @@
 				AE47AC3D1A38A6F600AE967F /* DefaultConfiguration~iphone.plist in Headers */,
 				4FE5DD131BA31DDE009F9A50 /* Crash.h in Headers */,
 				AE47AC3E1A38A6F600AE967F /* DefaultConfiguration~ipod.plist in Headers */,
+				4FE5DD131BA31DDE009F9A50 /* Crash.h in Headers */,
 				4F3016151A9F0FD0002BCC2C /* Hash.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -633,6 +643,8 @@
 				AE14AA3F1B272C5200770630 /* Headers */,
 				AE14AA401B272C5200770630 /* Resources */,
 				AE14AA9D1B272FFF00770630 /* ShellScript */,
+				AE14AA3F1B272C5200770630 /* Headers */,
+				AE14AA401B272C5200770630 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -654,6 +666,8 @@
 				AE8C081C1AA61E57006067FB /* ShellScript */,
 				AE8C081E1AA6F82A006067FB /* ShellScript */,
 				AE8C08211AA70626006067FB /* CopyFiles */,
+				AE887E451A2F13D3005682DA /* Headers */,
+				AE887E461A2F13D3005682DA /* Resources */,
 			);
 			buildRules = (
 			);
@@ -673,6 +687,7 @@
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "AT Internet";
 				TargetAttributes = {
 					4F3CE1EC1A31F5CF00AF9C8B = {
@@ -730,6 +745,7 @@
 				AE14AA781B272ECC00770630 /* tvtracking.manifest.json in Resources */,
 				AE14AA791B272ECE00770630 /* nuggad.manifest.json in Resources */,
 				AE14AA731B272EB800770630 /* DefaultConfiguration~ipad.plist in Resources */,
+				AE14AA7C1B272EDC00770630 /* Images.xcassets in Resources */,
 				AE14AA721B272EB500770630 /* DefaultConfiguration.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -746,6 +762,7 @@
 				AE5C6C5F1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist in Resources */,
 				AE5C6C611A36E968007BF6B7 /* DefaultConfiguration~ipod.plist in Resources */,
 				AE8C08201AA705F8006067FB /* core.manifest.json in Resources */,
+				4FC768E41AA846960057FE9D /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1023,6 +1040,7 @@
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tracker/TrackerTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -1039,6 +1057,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Tracker/TrackerTests-Bridging-Header.h";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -1059,6 +1078,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-fembed-bitcode",
 					"-Qunused-arguments",
@@ -1069,6 +1089,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -1079,6 +1100,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1099,6 +1121,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -1143,10 +1166,15 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = (
+					"-Qunused-arguments",
+					"-fembed-bitcode",
+				);
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1185,10 +1213,15 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_CFLAGS = "";
+				OTHER_CFLAGS = (
+					"-Qunused-arguments",
+					"-fembed-bitcode",
+				);
 				PROVISIONING_PROFILE = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -1214,6 +1247,10 @@
 				OTHER_CFLAGS = (
 					"-fembed-bitcode",
 					"-Qunused-arguments",
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_CFLAGS = (
+					"-Qunused-arguments",
+					"-fembed-bitcode",
 				);
 				PLIST_FILE_OUTPUT_FORMAT = XML;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.atinternet.$(PRODUCT_NAME:rfc1034identifier)";
@@ -1221,6 +1258,7 @@
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -1231,6 +1269,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -1244,12 +1283,15 @@
 				OTHER_CFLAGS = (
 					"-fembed-bitcode",
 					"-Qunused-arguments",
+					"-Qunused-arguments",
+					"-fembed-bitcode",
 				);
 				PLIST_FILE_OUTPUT_FORMAT = XML;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.atinternet.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};
