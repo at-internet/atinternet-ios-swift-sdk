@@ -60,10 +60,6 @@
 		4F8E4F991A4434A400947800 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E4F971A4434A400947800 /* Reachability.swift */; };
 		4F906D551A372F5E00F6C2EA /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F906D541A372F5E00F6C2EA /* Builder.swift */; };
 		4F906D561A372F5E00F6C2EA /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F906D541A372F5E00F6C2EA /* Builder.swift */; };
-		4F90C7941B0E33550038A57C /* nuggad.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F90C7931B0E33550038A57C /* nuggad.manifest.json */; };
-		4F90C7961B0E33650038A57C /* tvtracking.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F90C7951B0E33650038A57C /* tvtracking.manifest.json */; };
-		4F90C7971B0E338B0038A57C /* nuggad.manifest.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4F90C7931B0E33550038A57C /* nuggad.manifest.json */; };
-		4F90C7981B0E338B0038A57C /* tvtracking.manifest.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = 4F90C7951B0E33650038A57C /* tvtracking.manifest.json */; };
 		4F94C3211AFA54DF00FB1B9B /* OnAppAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F94C3201AFA54DF00FB1B9B /* OnAppAd.swift */; };
 		4F94C3221AFA54DF00FB1B9B /* OnAppAd.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F94C3201AFA54DF00FB1B9B /* OnAppAd.swift */; };
 		4F94C33C1AFBB82E00FB1B9B /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F94C33B1AFBB82E00FB1B9B /* Order.swift */; };
@@ -95,9 +91,6 @@
 		4FC768E41AA846960057FE9D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC768E31AA846960057FE9D /* Images.xcassets */; };
 		4FE5DD131BA31DDE009F9A50 /* Crash.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE5DD111BA31DDE009F9A50 /* Crash.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE5DD141BA31DDE009F9A50 /* Crash.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE5DD111BA31DDE009F9A50 /* Crash.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4FE5DD151BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; settings = {ASSET_TAGS = (); }; };
-		4FE5DD161BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; settings = {ASSET_TAGS = (); }; };
-		4FE5DD171BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; settings = {ASSET_TAGS = (); }; };
 		4FE5DD151BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; };
 		4FE5DD161BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; };
 		4FE5DD171BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; };
@@ -131,14 +124,6 @@
 		AE14AA701B272EAC00770630 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F44052F1A402C99000014BD /* StringExtension.swift */; };
 		AE14AA711B272EAE00770630 /* NSNumberExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4405311A403A7B000014BD /* NSNumberExtension.swift */; };
 		AE14AA721B272EB500770630 /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE7B60921A2F1C3D00CA12EB /* DefaultConfiguration.plist */; };
-		AE14AA731B272EB800770630 /* DefaultConfiguration~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5A1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist */; };
-		AE14AA741B272EBA00770630 /* DefaultConfiguration~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5B1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist */; };
-		AE14AA751B272EBC00770630 /* DefaultConfiguration~ipod.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5C1A36E968007BF6B7 /* DefaultConfiguration~ipod.plist */; };
-		AE14AA761B272EC000770630 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E4F971A4434A400947800 /* Reachability.swift */; };
-		AE14AA771B272EC400770630 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
-		AE14AA781B272ECC00770630 /* tvtracking.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F90C7951B0E33650038A57C /* tvtracking.manifest.json */; };
-		AE14AA791B272ECE00770630 /* nuggad.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F90C7931B0E33550038A57C /* nuggad.manifest.json */; };
-		AE14AA7A1B272ED000770630 /* core.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = AE8C081F1AA705F8006067FB /* core.manifest.json */; };
 		AE14AA761B272EC000770630 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E4F971A4434A400947800 /* Reachability.swift */; };
 		AE14AA771B272EC400770630 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
 		AE14AA7B1B272ED900770630 /* Debugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CE1B51AAEE675008EEE4F /* Debugger.swift */; };
@@ -165,17 +150,11 @@
 		AE14AA911B272EED00770630 /* TVTracking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FABEAD21AD56ADF00BCE85C /* TVTracking.swift */; };
 		AE14AA971B272F7B00770630 /* Hash.h in Headers */ = {isa = PBXBuildFile; fileRef = 4F3016131A9F0FD0002BCC2C /* Hash.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		AE14AA991B272FAA00770630 /* DefaultConfiguration.plist in Headers */ = {isa = PBXBuildFile; fileRef = AE7B60921A2F1C3D00CA12EB /* DefaultConfiguration.plist */; };
-		AE14AA9A1B272FAA00770630 /* DefaultConfiguration~ipad.plist in Headers */ = {isa = PBXBuildFile; fileRef = AE5C6C5A1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist */; };
-		AE14AA9B1B272FAA00770630 /* DefaultConfiguration~iphone.plist in Headers */ = {isa = PBXBuildFile; fileRef = AE5C6C5B1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist */; };
-		AE14AA9C1B272FAA00770630 /* DefaultConfiguration~ipod.plist in Headers */ = {isa = PBXBuildFile; fileRef = AE5C6C5C1A36E968007BF6B7 /* DefaultConfiguration~ipod.plist */; };
 		AE14AA9E1B2733C700770630 /* BackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC05E031A6E96750077E294 /* BackgroundTask.swift */; };
 		AE212E151AEA9B9500A2F87F /* TVTrackingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE212E141AEA9B9500A2F87F /* TVTrackingTests.swift */; };
 		AE47AC391A3890A800AE967F /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE47AC381A3890A800AE967F /* Tracker.swift */; };
 		AE47AC3A1A3890A800AE967F /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE47AC381A3890A800AE967F /* Tracker.swift */; };
 		AE47AC3B1A38A6E900AE967F /* DefaultConfiguration.plist in Headers */ = {isa = PBXBuildFile; fileRef = AE7B60921A2F1C3D00CA12EB /* DefaultConfiguration.plist */; };
-		AE47AC3C1A38A6F600AE967F /* DefaultConfiguration~ipad.plist in Headers */ = {isa = PBXBuildFile; fileRef = AE5C6C5A1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist */; };
-		AE47AC3D1A38A6F600AE967F /* DefaultConfiguration~iphone.plist in Headers */ = {isa = PBXBuildFile; fileRef = AE5C6C5B1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist */; };
-		AE47AC3E1A38A6F600AE967F /* DefaultConfiguration~ipod.plist in Headers */ = {isa = PBXBuildFile; fileRef = AE5C6C5C1A36E968007BF6B7 /* DefaultConfiguration~ipod.plist */; };
 		AE47FD601B0B2346002E526B /* CustomVarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE47FD5F1B0B2346002E526B /* CustomVarTests.swift */; };
 		AE51E9E71A56AFF1007A51B1 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE51E9E61A56AFF1007A51B1 /* Plugin.swift */; };
 		AE51E9E81A56AFF1007A51B1 /* Plugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE51E9E61A56AFF1007A51B1 /* Plugin.swift */; };
@@ -188,17 +167,6 @@
 		AE5C6C571A35DF64007BF6B7 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7B60941A2F1E2600CA12EB /* Configuration.swift */; };
 		AE5C6C581A35DF67007BF6B7 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECB52E61A35DC7200C32C85 /* Buffer.swift */; };
 		AE5C6C591A35DF69007BF6B7 /* Param.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDFC03E1A30ABF50071FECB /* Param.swift */; };
-		AE5C6C5D1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5A1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist */; };
-		AE5C6C5E1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5A1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist */; };
-		AE5C6C5F1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5B1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist */; };
-		AE5C6C601A36E968007BF6B7 /* DefaultConfiguration~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5B1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist */; };
-		AE5C6C611A36E968007BF6B7 /* DefaultConfiguration~ipod.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5C1A36E968007BF6B7 /* DefaultConfiguration~ipod.plist */; };
-		AE5C6C621A36E968007BF6B7 /* DefaultConfiguration~ipod.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5C1A36E968007BF6B7 /* DefaultConfiguration~ipod.plist */; };
-		AE7A7C871A39FF3400CC72B0 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7A7C861A39FF3400CC72B0 /* TrackerTests.swift */; };
-		AE842E8C1A7F7AAE00151E3C /* TechnicalContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2147071A43422400E9AA30 /* TechnicalContext.swift */; };
-		AE887E4E1A2F13D4005682DA /* Tracker.h in Headers */ = {isa = PBXBuildFile; fileRef = AE887E4D1A2F13D4005682DA /* Tracker.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		AE8C08201AA705F8006067FB /* core.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = AE8C081F1AA705F8006067FB /* core.manifest.json */; };
-		AE8C08221AA70646006067FB /* core.manifest.json in CopyFiles */ = {isa = PBXBuildFile; fileRef = AE8C081F1AA705F8006067FB /* core.manifest.json */; };
 		AE7A7C871A39FF3400CC72B0 /* TrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7A7C861A39FF3400CC72B0 /* TrackerTests.swift */; };
 		AE842E8C1A7F7AAE00151E3C /* TechnicalContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F2147071A43422400E9AA30 /* TechnicalContext.swift */; };
 		AE887E4E1A2F13D4005682DA /* Tracker.h in Headers */ = {isa = PBXBuildFile; fileRef = AE887E4D1A2F13D4005682DA /* Tracker.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -243,21 +211,6 @@
 			remoteInfo = Tracker;
 		};
 /* End PBXContainerItemProxy section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		AE8C08211AA70626006067FB /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "../../../../DerivedData/Build/Products/Debug-universal";
-			dstSubfolderSpec = 16;
-			files = (
-				4F90C7971B0E338B0038A57C /* nuggad.manifest.json in CopyFiles */,
-				4F90C7981B0E338B0038A57C /* tvtracking.manifest.json in CopyFiles */,
-				AE8C08221AA70646006067FB /* core.manifest.json in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		4F001A0C1A5D324D00871D66 /* Sender.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Sender.swift; sourceTree = "<group>"; };
@@ -367,20 +320,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F3CE1F31A31F5CF00AF9C8B /* Tracker.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AE14AA3E1B272C5200770630 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		AE887E441A2F13D3005682DA /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -590,10 +529,6 @@
 				AE14AA971B272F7B00770630 /* Hash.h in Headers */,
 				AE14AA471B272C5200770630 /* TrackerExtension.h in Headers */,
 				AE14AA991B272FAA00770630 /* DefaultConfiguration.plist in Headers */,
-				AE14AA9A1B272FAA00770630 /* DefaultConfiguration~ipad.plist in Headers */,
-				4FE5DD141BA31DDE009F9A50 /* Crash.h in Headers */,
-				AE14AA9B1B272FAA00770630 /* DefaultConfiguration~iphone.plist in Headers */,
-				AE14AA9C1B272FAA00770630 /* DefaultConfiguration~ipod.plist in Headers */,
 				4FE5DD141BA31DDE009F9A50 /* Crash.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -604,10 +539,6 @@
 			files = (
 				AE887E4E1A2F13D4005682DA /* Tracker.h in Headers */,
 				AE47AC3B1A38A6E900AE967F /* DefaultConfiguration.plist in Headers */,
-				AE47AC3C1A38A6F600AE967F /* DefaultConfiguration~ipad.plist in Headers */,
-				AE47AC3D1A38A6F600AE967F /* DefaultConfiguration~iphone.plist in Headers */,
-				4FE5DD131BA31DDE009F9A50 /* Crash.h in Headers */,
-				AE47AC3E1A38A6F600AE967F /* DefaultConfiguration~ipod.plist in Headers */,
 				4FE5DD131BA31DDE009F9A50 /* Crash.h in Headers */,
 				4F3016151A9F0FD0002BCC2C /* Hash.h in Headers */,
 			);
@@ -639,10 +570,6 @@
 			buildConfigurationList = AE14AA551B272C5200770630 /* Build configuration list for PBXNativeTarget "TrackerExtension" */;
 			buildPhases = (
 				AE14AA3D1B272C5200770630 /* Sources */,
-				AE14AA3E1B272C5200770630 /* Frameworks */,
-				AE14AA3F1B272C5200770630 /* Headers */,
-				AE14AA401B272C5200770630 /* Resources */,
-				AE14AA9D1B272FFF00770630 /* ShellScript */,
 				AE14AA3F1B272C5200770630 /* Headers */,
 				AE14AA401B272C5200770630 /* Resources */,
 			);
@@ -660,12 +587,6 @@
 			buildConfigurationList = AE887E5E1A2F13D4005682DA /* Build configuration list for PBXNativeTarget "Tracker" */;
 			buildPhases = (
 				AE887E431A2F13D3005682DA /* Sources */,
-				AE887E441A2F13D3005682DA /* Frameworks */,
-				AE887E451A2F13D3005682DA /* Headers */,
-				AE887E461A2F13D3005682DA /* Resources */,
-				AE8C081C1AA61E57006067FB /* ShellScript */,
-				AE8C081E1AA6F82A006067FB /* ShellScript */,
-				AE8C08211AA70626006067FB /* CopyFiles */,
 				AE887E451A2F13D3005682DA /* Headers */,
 				AE887E461A2F13D3005682DA /* Resources */,
 			);
@@ -686,7 +607,6 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0700;
 				LastUpgradeCheck = 0710;
 				ORGANIZATIONNAME = "AT Internet";
 				TargetAttributes = {
@@ -728,9 +648,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F3CE1F91A31F5E100AF9C8B /* DefaultConfiguration.plist in Resources */,
-				AE5C6C5E1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist in Resources */,
-				AE5C6C601A36E968007BF6B7 /* DefaultConfiguration~iphone.plist in Resources */,
-				AE5C6C621A36E968007BF6B7 /* DefaultConfiguration~ipod.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -738,13 +655,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AE14AA751B272EBC00770630 /* DefaultConfiguration~ipod.plist in Resources */,
-				AE14AA7C1B272EDC00770630 /* Images.xcassets in Resources */,
-				AE14AA7A1B272ED000770630 /* core.manifest.json in Resources */,
-				AE14AA741B272EBA00770630 /* DefaultConfiguration~iphone.plist in Resources */,
-				AE14AA781B272ECC00770630 /* tvtracking.manifest.json in Resources */,
-				AE14AA791B272ECE00770630 /* nuggad.manifest.json in Resources */,
-				AE14AA731B272EB800770630 /* DefaultConfiguration~ipad.plist in Resources */,
 				AE14AA7C1B272EDC00770630 /* Images.xcassets in Resources */,
 				AE14AA721B272EB500770630 /* DefaultConfiguration.plist in Resources */,
 			);
@@ -755,60 +665,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE5C6C561A35DF59007BF6B7 /* DefaultConfiguration.plist in Resources */,
-				4F90C7941B0E33550038A57C /* nuggad.manifest.json in Resources */,
-				4F90C7961B0E33650038A57C /* tvtracking.manifest.json in Resources */,
-				AE5C6C5D1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist in Resources */,
-				4FC768E41AA846960057FE9D /* Images.xcassets in Resources */,
-				AE5C6C5F1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist in Resources */,
-				AE5C6C611A36E968007BF6B7 /* DefaultConfiguration~ipod.plist in Resources */,
-				AE8C08201AA705F8006067FB /* core.manifest.json in Resources */,
 				4FC768E41AA846960057FE9D /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		AE14AA9D1B272FFF00770630 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "##########################################\n#\n# c.f. http://stackoverflow.com/questions/3520977/build-fat-static-library-device-simulator-using-xcode-and-sdk-4\n#\n# Version 2.7\n#\n# Latest Change:\n# - Supports iPhone 5 / iPod Touch 5 (uses Apple's workaround to lipo bug)\n#\n# Purpose:\n#   Automatically create a Universal static library for iPhone + iPad + iPhone Simulator from within XCode\n#\n# Author: Adam Martin - http://twitter.com/redglassesapps\n# Based on: original script from Eonil (main changes: Eonil's script WILL NOT WORK in Xcode GUI - it WILL CRASH YOUR COMPUTER)\n#\n\nset -e\nset -o pipefail\n\n#################[ Tests: helps workaround any future bugs in Xcode ]########\n#\nDEBUG_THIS_SCRIPT=\"false\"\n\nif [ $DEBUG_THIS_SCRIPT = \"true\" ]\nthen\necho \"########### TESTS #############\"\necho \"Use the following variables when debugging this script; note that they may change on recursions\"\necho \"BUILD_DIR = $BUILD_DIR\"\necho \"BUILD_ROOT = $BUILD_ROOT\"\necho \"CONFIGURATION_BUILD_DIR = $CONFIGURATION_BUILD_DIR\"\necho \"BUILT_PRODUCTS_DIR = $BUILT_PRODUCTS_DIR\"\necho \"CONFIGURATION_TEMP_DIR = $CONFIGURATION_TEMP_DIR\"\necho \"TARGET_BUILD_DIR = $TARGET_BUILD_DIR\"\nfi\n\n#####################[ part 1 ]##################\n# First, work out the BASESDK version number (NB: Apple ought to report this, but they hide it)\n#    (incidental: searching for substrings in sh is a nightmare! Sob)\n\nSDK_VERSION=$(echo ${SDK_NAME} | grep -o '.\\{3\\}$')\n\n# Next, work out if we're in SIM or DEVICE\n\nif [ ${PLATFORM_NAME} = \"iphonesimulator\" ]\nthen\nOTHER_SDK_TO_BUILD=iphoneos${SDK_VERSION}\nelse\nOTHER_SDK_TO_BUILD=iphonesimulator${SDK_VERSION}\nfi\n\necho \"XCode has selected SDK: ${PLATFORM_NAME} with version: ${SDK_VERSION} (although back-targetting: ${IPHONEOS_DEPLOYMENT_TARGET})\"\necho \"...therefore, OTHER_SDK_TO_BUILD = ${OTHER_SDK_TO_BUILD}\"\n#\n#####################[ end of part 1 ]##################\n\n#####################[ part 2 ]##################\n#\n# IF this is the original invocation, invoke WHATEVER other builds are required\n#\n# Xcode is already building ONE target...\n#\n# ...but this is a LIBRARY, so Apple is wrong to set it to build just one.\n# ...we need to build ALL targets\n# ...we MUST NOT re-build the target that is ALREADY being built: Xcode WILL CRASH YOUR COMPUTER if you try this (infinite recursion!)\n#\n#\n# So: build ONLY the missing platforms/configurations.\n\nif [ \"true\" == ${ALREADYINVOKED:-false} ]\nthen\necho \"RECURSION: I am NOT the root invocation, so I'm NOT going to recurse\"\nelse\n# CRITICAL:\n# Prevent infinite recursion (Xcode sucks)\nexport ALREADYINVOKED=\"true\"\n\necho \"RECURSION: I am the root ... recursing all missing build targets NOW...\"\necho \"RECURSION: ...about to invoke: xcodebuild -configuration \\\"${CONFIGURATION}\\\" -project \\\"${PROJECT_NAME}.xcodeproj\\\" -target \\\"${TARGET_NAME}\\\" -sdk \\\"${OTHER_SDK_TO_BUILD}\\\" ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO\" BUILD_DIR=\\\"${BUILD_DIR}\\\" BUILD_ROOT=\\\"${BUILD_ROOT}\\\" SYMROOT=\\\"${SYMROOT}\\\"\n\nxcodebuild -configuration \"${CONFIGURATION}\" -project \"${PROJECT_NAME}.xcodeproj\" -target \"${TARGET_NAME}\" -sdk \"${OTHER_SDK_TO_BUILD}\" ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" SYMROOT=\"${SYMROOT}\"\n\nACTION=\"build\"\n\n#Merge all platform binaries as a fat binary for each configurations.\n\n# Calculate where the (multiple) built files are coming from:\nCURRENTCONFIG_DEVICE_DIR=${SYMROOT}/${CONFIGURATION}-iphoneos\nCURRENTCONFIG_SIMULATOR_DIR=${SYMROOT}/${CONFIGURATION}-iphonesimulator\n\necho \"Taking device build from: ${CURRENTCONFIG_DEVICE_DIR}\"\necho \"Taking simulator build from: ${CURRENTCONFIG_SIMULATOR_DIR}\"\n\nCREATING_UNIVERSAL_DIR=${SYMROOT}/${CONFIGURATION}-universal\necho \"...I will output a universal build to: ${CREATING_UNIVERSAL_DIR}\"\n\n# ... remove the products of previous runs of this script\n#      NB: this directory is ONLY created by this script - it should be safe to delete!\n\n#rm -rf \"${CREATING_UNIVERSAL_DIR}\"\nmkdir -p \"${CREATING_UNIVERSAL_DIR}\"\n\n#\necho \"lipo: for current configuration (${CONFIGURATION}) creating output file: ${CREATING_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\"\n#xcrun -sdk iphoneos lipo -create -output \"${CREATING_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_DEVICE_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_SIMULATOR_DIR}/${EXECUTABLE_NAME}\"\n\ncd \"${CREATING_UNIVERSAL_DIR}\"\ncp -r ${SYMROOT}/Debug-iphoneos/TrackerExtension.framework .\ncp ${SYMROOT}/Debug-iphonesimulator/TrackerExtension.framework/Modules/TrackerExtension.swiftmodule/* ./TrackerExtension.framework/Modules/TrackerExtension.swiftmodule\n                                                                                                    cp ${SYMROOT}/Debug-iphonesimulator/TrackerExtension.framework/TrackerExtension ./TrackerExtension.framework/TrackerExtensionOtherArch\n                                                                                                    cd TrackerExtension.framework\n                                                                                                    xcrun -sdk iphoneos lipo -create -output TrackerExtension TrackerExtension TrackerExtensionOtherArch\n                                                                                                    rm TrackerExtensionOtherArch\n\n                                                                                  \n                                                                                  #########\n                                                                                  #\n                                                                                  # Added: StackOverflow suggestion to also copy \"include\" files\n                                                                                  #    (untested, but should work OK)\n                                                                                  #\n                                                                                  echo \"Fetching headers from ${PUBLIC_HEADERS_FOLDER_PATH}\"\n                                                                                  echo \"  (if you embed your library project in another project, you will need to add\"\n                                                                                  echo \"   a \"User Search Headers\" build setting of: (NB INCLUDE THE DOUBLE QUOTES BELOW!)\"\n                                                                                  echo '        \"$(TARGET_BUILD_DIR)/usr/local/include/\"'\n                                                                                  if [ -d \"${CURRENTCONFIG_DEVICE_DIR}${PUBLIC_HEADERS_FOLDER_PATH}\" ]\n                                                                                  then\n                                                                                  mkdir -p \"${CREATING_UNIVERSAL_DIR}${PUBLIC_HEADERS_FOLDER_PATH}\"\n                                                                                  # * needs to be outside the double quotes?\n                                                                                  cp -r \"${CURRENTCONFIG_DEVICE_DIR}${PUBLIC_HEADERS_FOLDER_PATH}\"* \"${CREATING_UNIVERSAL_DIR}${PUBLIC_HEADERS_FOLDER_PATH}\"\n                                                                                  fi\n                                                                                  fi";
-		};
-		AE8C081C1AA61E57006067FB /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "##########################################\n#\n# c.f. http://stackoverflow.com/questions/3520977/build-fat-static-library-device-simulator-using-xcode-and-sdk-4\n#\n# Version 2.7\n#\n# Latest Change:\n# - Supports iPhone 5 / iPod Touch 5 (uses Apple's workaround to lipo bug)\n#\n# Purpose:\n#   Automatically create a Universal static library for iPhone + iPad + iPhone Simulator from within XCode\n#\n# Author: Adam Martin - http://twitter.com/redglassesapps\n# Based on: original script from Eonil (main changes: Eonil's script WILL NOT WORK in Xcode GUI - it WILL CRASH YOUR COMPUTER)\n#\n\nset -e\nset -o pipefail\n\n#################[ Tests: helps workaround any future bugs in Xcode ]########\n#\nDEBUG_THIS_SCRIPT=\"false\"\n\nif [ $DEBUG_THIS_SCRIPT = \"true\" ]\nthen\necho \"########### TESTS #############\"\necho \"Use the following variables when debugging this script; note that they may change on recursions\"\necho \"BUILD_DIR = $BUILD_DIR\"\necho \"BUILD_ROOT = $BUILD_ROOT\"\necho \"CONFIGURATION_BUILD_DIR = $CONFIGURATION_BUILD_DIR\"\necho \"BUILT_PRODUCTS_DIR = $BUILT_PRODUCTS_DIR\"\necho \"CONFIGURATION_TEMP_DIR = $CONFIGURATION_TEMP_DIR\"\necho \"TARGET_BUILD_DIR = $TARGET_BUILD_DIR\"\nfi\n\n#####################[ part 1 ]##################\n# First, work out the BASESDK version number (NB: Apple ought to report this, but they hide it)\n#    (incidental: searching for substrings in sh is a nightmare! Sob)\n\nSDK_VERSION=$(echo ${SDK_NAME} | grep -o '.\\{3\\}$')\n\n# Next, work out if we're in SIM or DEVICE\n\nif [ ${PLATFORM_NAME} = \"iphonesimulator\" ]\nthen\nOTHER_SDK_TO_BUILD=iphoneos${SDK_VERSION}\nelse\nOTHER_SDK_TO_BUILD=iphonesimulator${SDK_VERSION}\nfi\n\necho \"XCode has selected SDK: ${PLATFORM_NAME} with version: ${SDK_VERSION} (although back-targetting: ${IPHONEOS_DEPLOYMENT_TARGET})\"\necho \"...therefore, OTHER_SDK_TO_BUILD = ${OTHER_SDK_TO_BUILD}\"\n#\n#####################[ end of part 1 ]##################\n\n#####################[ part 2 ]##################\n#\n# IF this is the original invocation, invoke WHATEVER other builds are required\n#\n# Xcode is already building ONE target...\n#\n# ...but this is a LIBRARY, so Apple is wrong to set it to build just one.\n# ...we need to build ALL targets\n# ...we MUST NOT re-build the target that is ALREADY being built: Xcode WILL CRASH YOUR COMPUTER if you try this (infinite recursion!)\n#\n#\n# So: build ONLY the missing platforms/configurations.\n\nif [ \"true\" == ${ALREADYINVOKED:-false} ]\nthen\necho \"RECURSION: I am NOT the root invocation, so I'm NOT going to recurse\"\nelse\n# CRITICAL:\n# Prevent infinite recursion (Xcode sucks)\nexport ALREADYINVOKED=\"true\"\n\necho \"RECURSION: I am the root ... recursing all missing build targets NOW...\"\necho \"RECURSION: ...about to invoke: xcodebuild -configuration \\\"${CONFIGURATION}\\\" -project \\\"${PROJECT_NAME}.xcodeproj\\\" -target \\\"${TARGET_NAME}\\\" -sdk \\\"${OTHER_SDK_TO_BUILD}\\\" ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO\" BUILD_DIR=\\\"${BUILD_DIR}\\\" BUILD_ROOT=\\\"${BUILD_ROOT}\\\" SYMROOT=\\\"${SYMROOT}\\\"\n\nxcodebuild -configuration \"${CONFIGURATION}\" -project \"${PROJECT_NAME}.xcodeproj\" -target \"${TARGET_NAME}\" -sdk \"${OTHER_SDK_TO_BUILD}\" ${ACTION} RUN_CLANG_STATIC_ANALYZER=NO BUILD_DIR=\"${BUILD_DIR}\" BUILD_ROOT=\"${BUILD_ROOT}\" SYMROOT=\"${SYMROOT}\"\n\nACTION=\"build\"\n\n#Merge all platform binaries as a fat binary for each configurations.\n\n# Calculate where the (multiple) built files are coming from:\nCURRENTCONFIG_DEVICE_DIR=${SYMROOT}/${CONFIGURATION}-iphoneos\nCURRENTCONFIG_SIMULATOR_DIR=${SYMROOT}/${CONFIGURATION}-iphonesimulator\n\necho \"Taking device build from: ${CURRENTCONFIG_DEVICE_DIR}\"\necho \"Taking simulator build from: ${CURRENTCONFIG_SIMULATOR_DIR}\"\n\nCREATING_UNIVERSAL_DIR=${SYMROOT}/${CONFIGURATION}-universal\necho \"...I will output a universal build to: ${CREATING_UNIVERSAL_DIR}\"\n\n# ... remove the products of previous runs of this script\n#      NB: this directory is ONLY created by this script - it should be safe to delete!\n\n#rm -rf \"${CREATING_UNIVERSAL_DIR}\"\nmkdir -p \"${CREATING_UNIVERSAL_DIR}\"\n\n#\necho \"lipo: for current configuration (${CONFIGURATION}) creating output file: ${CREATING_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\"\n#xcrun -sdk iphoneos lipo -create -output \"${CREATING_UNIVERSAL_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_DEVICE_DIR}/${EXECUTABLE_NAME}\" \"${CURRENTCONFIG_SIMULATOR_DIR}/${EXECUTABLE_NAME}\"\n\ncd \"${CREATING_UNIVERSAL_DIR}\"\ncp -r ${SYMROOT}/Debug-iphoneos/Tracker.framework .\ncp ${SYMROOT}/Debug-iphonesimulator/Tracker.framework/Modules/Tracker.swiftmodule/* ./Tracker.framework/Modules/Tracker.swiftmodule\ncp ${SYMROOT}/Debug-iphonesimulator/Tracker.framework/Tracker ./Tracker.framework/TrackerOtherArch\ncd Tracker.framework\nxcrun -sdk iphoneos lipo -create -output Tracker Tracker TrackerOtherArch\nrm TrackerOtherArch\n\n#########\n#\n# Added: StackOverflow suggestion to also copy \"include\" files\n#    (untested, but should work OK)\n#\necho \"Fetching headers from ${PUBLIC_HEADERS_FOLDER_PATH}\"\necho \"  (if you embed your library project in another project, you will need to add\"\necho \"   a \"User Search Headers\" build setting of: (NB INCLUDE THE DOUBLE QUOTES BELOW!)\"\necho '        \"$(TARGET_BUILD_DIR)/usr/local/include/\"'\nif [ -d \"${CURRENTCONFIG_DEVICE_DIR}${PUBLIC_HEADERS_FOLDER_PATH}\" ]\nthen\nmkdir -p \"${CREATING_UNIVERSAL_DIR}${PUBLIC_HEADERS_FOLDER_PATH}\"\n# * needs to be outside the double quotes?\ncp -r \"${CURRENTCONFIG_DEVICE_DIR}${PUBLIC_HEADERS_FOLDER_PATH}\"* \"${CREATING_UNIVERSAL_DIR}${PUBLIC_HEADERS_FOLDER_PATH}\"\nfi\nfi";
-		};
-		AE8C081E1AA6F82A006067FB /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ -d \"/Users/Shared/XcodeBot/\" ]\nthen\n\n    plist=${INFOPLIST_FILE}\n    version=`/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$plist\"`\n    branch=$(git rev-parse --abbrev-ref HEAD)\n\n    cd /Users/Shared/XcodeBot/\n\n    if [ \"$branch\" == \"develop\" ]\n    then\n        echo $version > version_v2_swift_alpha\n    elif [ \"$branch\" == \"release\" ]\n    then\n        echo $version > version_v2_swift_beta\n    elif [ \"$branch\" == \"master\" ]\n    then\n        echo $version > version_v2_swift_production\n    fi\n\nfi";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4F3CE1E91A31F5CF00AF9C8B /* Sources */ = {
@@ -1077,7 +938,6 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-fembed-bitcode",
@@ -1099,7 +959,6 @@
 				APPLICATION_EXTENSION_API_ONLY = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1165,7 +1024,6 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_CFLAGS = "";
 				OTHER_CFLAGS = (
 					"-Qunused-arguments",
 					"-fembed-bitcode",
@@ -1212,7 +1070,6 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_CFLAGS = "";
 				OTHER_CFLAGS = (
 					"-Qunused-arguments",
 					"-fembed-bitcode",
@@ -1243,10 +1100,6 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
-				ONLY_ACTIVE_ARCH = NO;
-				OTHER_CFLAGS = (
-					"-fembed-bitcode",
-					"-Qunused-arguments",
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-Qunused-arguments",
@@ -1268,7 +1121,6 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -1281,8 +1133,6 @@
 				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_CFLAGS = (
-					"-fembed-bitcode",
-					"-Qunused-arguments",
 					"-Qunused-arguments",
 					"-fembed-bitcode",
 				);

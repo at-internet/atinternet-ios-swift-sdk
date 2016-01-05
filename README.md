@@ -4,7 +4,7 @@ To help you, the tag makes available classes (helpers) enabling the quick implem
 
 ### Content
 * Tag iPhone / iPad
-* App Extension supported
+* Watch Extension supported
 
 ### How to get started
   - Install our library on your project (see below)
@@ -28,10 +28,10 @@ use_frameworks!
 end
 ```
 
-  - iOS application with App Extension : 
+  - iOS application with iOS Watch Extension : 
 
 ```ruby
-# required when building for App Extension
+# required when building for WatchExtension
 pod "ATInternet-iOS-Swift-SDK",">=2.0"
 use_frameworks!
 
@@ -42,10 +42,14 @@ use_frameworks!
 
 end
 
-target 'MyProject App Extension' do
+target 'MyProject WatchKit 1 Extension' do
 
-pod "ATInternet-iOS-Swift-SDK/AppExtension",">=2.0"
+pod "ATInternet-iOS-Swift-SDK/WatchExtension",">=2.0"
 use_frameworks!
+
+end
+
+target 'MyProject WatchKit 1 App' do
 
 end
 ```
