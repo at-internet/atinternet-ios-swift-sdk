@@ -4,7 +4,7 @@ To help you, the tag makes available classes (helpers) enabling the quick implem
 
 ### Content
 * Tag iPhone / iPad
-* Watch Extension supported
+* App Extension supported
 
 ### How to get started
   - Install our library on your project (see below)
@@ -28,10 +28,10 @@ use_frameworks!
 end
 ```
 
-  - iOS application with iOS Watch Extension : 
+  - iOS application with App Extension : 
 
 ```ruby
-# required when building for WatchExtension
+# required when building for App Extension
 pod "ATInternet-iOS-Swift-SDK",">=2.0"
 use_frameworks!
 
@@ -42,17 +42,27 @@ use_frameworks!
 
 end
 
-target 'MyProject WatchKit 1 Extension' do
+target 'MyProject App Extension' do
 
-pod "ATInternet-iOS-Swift-SDK/WatchExtension",">=2.0"
+pod "ATInternet-iOS-Swift-SDK/AppExtension",">=2.0"
 use_frameworks!
 
 end
-
-target 'MyProject WatchKit 1 App' do
-
-end
 ```
+
+###Installation with Carthage
+
+Carthage is an alternative to **Cocoapods**. It’s a simple dependency manager for Mac and iOS, created by a group of developers from Github.
+
+###Cartfile
+Simplty add the line below :
+
+```
+github "at-internet/atinternet-ios-swift-sdk" >=2.0
+```
+- After launching the **carthage update** command, add the dependency from Project/Carthage/Build/iOS/Tracker.framework in **Linked Frameworks and Libraries**
+- In **project build phase**, add a **new run script phase** with the command /usr/local/bin/carthage copy-frameworks and add $(SRCROOT)/Carthage/Build/iOS/Tracker.framework as **input files**
+- Finally **project build phase**, add a **new copy files**, select **products directory** then add the Tracker.framework.dSYM file
 
 ### License
 MIT

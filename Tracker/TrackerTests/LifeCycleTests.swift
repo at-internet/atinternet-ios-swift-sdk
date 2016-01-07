@@ -41,7 +41,6 @@ class LifeCycleTests: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        
         LifeCycle.parameters = [String: AnyObject]()
         LifeCycle.appVersionChanged = false
         LifeCycle.daysSinceLastUse = 0
@@ -67,6 +66,28 @@ class LifeCycleTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
+        LifeCycle.parameters = [String: AnyObject]()
+        LifeCycle.appVersionChanged = false
+        LifeCycle.daysSinceLastUse = 0
+        LifeCycle.isInitialized = false
+        
+        dateFormatter.dateFormat = "yyyyMMdd"
+        now = dateFormatter.stringFromDate(NSDate())
+        
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.ApplicationUpdate.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.FirstLaunch.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.FirstLaunchDate.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LastApplicationVersion.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LastUse.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchCount.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchCountSinceUpdate.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchDayCount.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchMonthCount.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchWeekCount.rawValue)
+        
+        userDefaults.synchronize()
+        
+        
     }
     
     func testRetrieveSDKV1Lifecycle() {
@@ -390,4 +411,42 @@ class LifeCycleTests: XCTestCase {
         
         XCTAssert(json["lifecycle"]["dsu"].intValue == 7, "la variable dsu doit être égale à 7")
     }
+    
+    func testSecondSinceBackground() {
+        let now = NSDate()
+        let nowWith65 = NSDate().dateByAddingTimeInterval(65)
+        let delta = Tool.secondsBetweenDates(now, toDate: nowWith65)
+        XCTAssert(delta == 65)
+    }
+    
+    func testUpdateFirstLaunch() {
+        _ = Tracker()
+        LifeCycle.updateFirstLaunch()
+        XCTAssertFalse(LifeCycle.firstLaunch)
+    }
+    
+    func testSwitchSessionIfMoreThan60Seconds() {
+        _ = Tracker()
+        let nowMinus65 = NSDate().dateByAddingTimeInterval(-65)
+        LifeCycle.applicationActive(["sessionBackgroundDuration":"60"])
+        let idSession = LifeCycle.sessionId
+        
+        LifeCycle.timeInBackground = nowMinus65
+        LifeCycle.applicationActive(["sessionBackgroundDuration":"60"])
+        XCTAssertNotEqual(LifeCycle.sessionId, idSession)
+        
+    }
+    
+    func testKeepSessionIfLessThan60Seconds() {
+        _ = Tracker()
+        let nowMinus65 = NSDate().dateByAddingTimeInterval(-35)
+        LifeCycle.applicationActive(["sessionBackgroundDuration":"60"])
+        let idSession = LifeCycle.sessionId
+        
+        LifeCycle.timeInBackground = nowMinus65
+        LifeCycle.applicationActive(["sessionBackgroundDuration":"60"])
+        XCTAssertEqual(LifeCycle.sessionId, idSession)
+        
+    }
+    
 }

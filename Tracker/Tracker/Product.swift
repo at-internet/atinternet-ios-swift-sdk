@@ -86,7 +86,8 @@ public class Product : BusinessObject {
         tracker.setParam("type", value: "pdt")
         
         let option = ParamOption()
-        option.append = true;
+        option.append = true
+        option.encode = true
         option.separator = "|"
         tracker.setParam("pdtl", value: buildProductName(), options: option)
     }

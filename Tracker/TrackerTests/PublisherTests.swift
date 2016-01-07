@@ -108,7 +108,7 @@ class PublisherTests: XCTestCase {
             }).first!
         
         XCTAssertTrue(p0.param.key == "ati", "Le paramètre doit être ati")
-        XCTAssertTrue(p0.str == "&ati=" + "PUB-1-------,PUB-2-creation-variante-format-quelquePart-enBasAGauche-advId-atinternet")
+        XCTAssertTrue(p0.str == "&ati=" + "PUB%2D1%2D%2D%2D%2D%2D%2D%2D%2CPUB%2D2%2Dcreation%2Dvariante%2Dformat%2DquelquePart%2DenBasAGauche%2DadvId%2Datinternet")
     }
 
     func testSetScreenWithPublisherView() {

@@ -98,7 +98,7 @@ class SelfPromotionTests: XCTestCase {
             }).first!
         
         XCTAssertTrue(p0.param.key == "ati", "Le paramètre doit être ati")
-        XCTAssertTrue(p0.str == "&ati=" + "INT-1-||,INT-2-format||productId")
+        XCTAssertTrue(p0.str == "&ati=" + "INT%2D1%2D%7C%7C%2CINT%2D2%2Dformat%7C%7CproductId")
     }
     
     func testSetScreenWithPublisherView() {

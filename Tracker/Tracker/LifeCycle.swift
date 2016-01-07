@@ -48,6 +48,10 @@ class LifeCycle {
     static var isInitialized: Bool = false
     /// Calendar type
     static var calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+    /// SessionId
+    static var sessionId: String? = nil
+    /// Time during the app is in background
+    static var timeInBackground: NSDate? = nil
     
     /// Lifecycle keys
     enum LifeCycleKey: String {
@@ -204,9 +208,71 @@ class LifeCycle {
             LifeCycle.daysSinceLastUse = Tool.daysBetweenDates(optLastUseDate, toDate: now)
         }
         userDefaults.setObject(now, forKey: LifeCycleKey.LastUse.rawValue)
-
         
         userDefaults.synchronize()
+    }
+    
+    //MARK: - Session
+    
+    /**
+    Called when application goes to background
+    should save the timestamp to know if we have to start a new session on the next launch
+    
+    - parameter notification: notif
+    */
+    class func applicationDidEnterBackground() {
+        LifeCycle.timeInBackground = NSDate()
+        updateFirstLaunch()
+    }
+    
+    /**
+     Called when app is active
+     Should create a new SessionId if necessary
+     */
+    class func applicationActive(parameters: Dictionary<String, String>) {
+        guard let sessionConfig = Int(parameters["sessionBackgroundDuration"]!) else {
+            return
+        }
+        
+        if sessionConfig < 0 {
+            return
+        }
+
+        if !assignNewSession() {
+            if let ts = LifeCycle.timeInBackground {
+                let now = NSDate()
+                if Tool.secondsBetweenDates(ts, toDate: now) > sessionConfig {
+                    LifeCycle.sessionId = NSUUID().UUIDString
+                }
+                LifeCycle.timeInBackground = nil
+            }
+        }
+    }
+    
+    /**
+     set firstLaunch to false (0)
+     */
+    class func updateFirstLaunch() {
+        self.firstLaunch = false
+        self.appVersionChanged = false
+        
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        userDefaults.setInteger(0, forKey: LifeCycle.LifeCycleKey.FirstLaunch.rawValue)
+        userDefaults.synchronize()
+    }
+    
+    /**
+     Create a new session if current SessionId is nil
+     
+     - returns: True if a new session has been created false otherwise
+     */
+    class func assignNewSession() -> Bool {
+        if let _ = LifeCycle.sessionId {
+            return false
+        } else {
+            LifeCycle.sessionId = NSUUID().UUIDString
+            return true
+        }
     }
     
     /**
@@ -265,6 +331,9 @@ class LifeCycle {
             
             // Days sinces last use
             LifeCycle.parameters["dslu"] = self.daysSinceLastUse
+            
+            // SessionId
+            LifeCycle.parameters["sessionId"] = LifeCycle.sessionId
             
             let json = Tool.JSONStringify(["lifecycle": LifeCycle.parameters], prettyPrinted: false)
             

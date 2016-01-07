@@ -123,6 +123,14 @@
             "type": "bool",
             "public": true,
             "global": true
+        },
+        "sessionBackgroundDuration": {
+            "title" : "Geode_Tag_SDK_Config_Title_sessionBackgroundDuration",
+            "description": "Geode_Tag_SDK_Config_Description_sessionBackgroundDuration",
+            "defaultValue": "60",
+            "type": "int",
+            "public": true,
+            "global": true
         }
     }
 }

@@ -252,6 +252,7 @@ public class Tracker {
     /// Richmedia tracking
     private(set) public lazy var mediaPlayers: MediaPlayers = MediaPlayers(tracker: self)
 
+
     
     //MARK: - Initializer
     
@@ -276,10 +277,30 @@ public class Tracker {
         self.configuration = Configuration(customConfiguration: configuration)
         
         if(!LifeCycle.isInitialized) {
+            let notificationCenter = NSNotificationCenter.defaultCenter()
+            notificationCenter.addObserver(self, selector: "applicationDidEnterBackground", name: UIApplicationDidEnterBackgroundNotification, object: nil)
+            notificationCenter.addObserver(self, selector: "applicationActive", name: UIApplicationDidBecomeActiveNotification, object: nil)
+            LifeCycle.applicationActive(self.configuration.parameters)
             LifeCycle.initLifeCycle()
         }
     }
-
+    
+    /**
+     Called when application goes to background
+     should save the timestamp to know if we have to start a new session on the next launch
+     */
+    @objc func applicationDidEnterBackground() {
+        LifeCycle.applicationDidEnterBackground()
+    }
+    
+    /**
+     Called when app is active
+     Should create a new SessionId if necessary
+     */
+    @objc func applicationActive() {
+        LifeCycle.applicationActive(self.configuration.parameters)
+    }
+    
     // MARK: - Configuration
     
     /** 

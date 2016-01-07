@@ -1,0 +1,37 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "2FE8C417B6970DB0DA154DD024F6166AB4B4E253+++1873129",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "2FE8C417B6970DB0DA154DD024F6166AB4B4E253+++1873129" : 0,
+    "2FE8C417B6970DB0DA154DD024F6166AB4B4E253+++4B27832" : 0,
+    "2FE8C417B6970DB0DA154DD024F6166AB4B4E253+++FCB22F5" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "0FAA7B4A-F08A-45DD-BBB8-131D38E0BD57",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "2FE8C417B6970DB0DA154DD024F6166AB4B4E253+++1873129" : "Tracker\/",
+    "2FE8C417B6970DB0DA154DD024F6166AB4B4E253+++4B27832" : "AT_Tag_SDK_iOS_v2",
+    "2FE8C417B6970DB0DA154DD024F6166AB4B4E253+++FCB22F5" : "AT_Tag_SDK_iOS_v2"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "ATMobileAnalytics",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "ATMobileAnalytics.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/bdxsvn001:8090\/r\/Tag\/iOS\/V2\/Swift\/Tracker.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2FE8C417B6970DB0DA154DD024F6166AB4B4E253+++1873129"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/bdxsvn001:8080\/AT_Tag_SDK_iOS_v2.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2FE8C417B6970DB0DA154DD024F6166AB4B4E253+++4B27832"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/at-internet\/atinternet-ios-swift-sdk.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "2FE8C417B6970DB0DA154DD024F6166AB4B4E253+++FCB22F5"
+    }
+  ]
+}
