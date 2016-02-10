@@ -52,7 +52,7 @@ end
 
 ###Installation with Carthage
 
-Carthage is an alternative to **Cocoapods**. It’s a simple dependency manager for Mac and iOS, created by a group of developers from Github.
+Carthage is an alternative to **CocoaPods**. It’s a simple dependency manager for Mac and iOS, created by a group of developers from Github.
 
 ###Cartfile
 Simplty add the line below :
