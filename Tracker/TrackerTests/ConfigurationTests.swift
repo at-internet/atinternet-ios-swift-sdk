@@ -38,9 +38,9 @@ import Tracker
 class ConfigurationTests: XCTestCase {
     
     // Configuration définie
-    let myConf = ["log":"customlog", "logSSL":"customlogs", "domain":"customdomain", "pixelPath":"custompixelpath","site":"customsite", "secure":"customsecure", "identifier":"customidentifier"]
+    let myConf = ["log":"customlog", "logSSL":"customlogs", "domain":"customdomain", "pixelPath":"custompixelpath","site":"customsite", "secure":"customsecure", "identifier":"customidentifier", "plugins":"", "enableBackgroundTask":"false", "storage":"never", "hashUserId":"false", "persistIdentifiedVisitor":"true", "tvtURL": "", "tvtVisitDuration":"10","sessionBackgroundDuration":"60", "campaignLastPersistence": "true", "campaignLifetime": "30","downloadSource":"ext", "tvtSpotValidityTime":"5"]
     // Configuration par défaut
-    let defaultConf = ["log":"logp", "logSSL":"logs", "domain":"xiti.com", "pixelPath":"/hit.xiti", "site":"549808", "secure":"false", "identifier":"uuid", "plugins":"", "enableBackgroundTask":"false", "storage":"never", "hashUserId":"false", "persistIdentifiedVisitor":"true", "tvtURL": "", "tvtVisitDuration":"10", "campaignLastPersistence": "true", "campaignLifetime": "30","downloadSource":"ext", "tvtSpotValidityTime":"5"]
+    let defaultConf = ["log":"", "logSSL":"", "domain":"xiti.com", "pixelPath":"/hit.xiti", "site":"", "secure":"false", "identifier":"uuid", "plugins":"", "enableBackgroundTask":"false", "storage":"never", "hashUserId":"false", "persistIdentifiedVisitor":"true", "tvtURL": "", "tvtVisitDuration":"10","sessionBackgroundDuration":"60", "campaignLastPersistence": "true", "campaignLifetime": "30","downloadSource":"ext", "tvtSpotValidityTime":"5"]
 
     override func setUp() {
         super.setUp()

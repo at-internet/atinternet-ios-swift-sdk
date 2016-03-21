@@ -159,6 +159,26 @@ class Tool {
     }
     
     /**
+     Gets the number of seconds between two dates
+     
+     - parameter fromDate:
+     - parameter toDate:
+     
+     - returns: the number of seconds between fromDate and toDate
+     */
+    class func secondsBetweenDates(fromDate: NSDate, toDate: NSDate) -> Int {
+        let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+        let unitFlags = NSCalendarUnit.Second
+        let dateComponents = calendar?.components(unitFlags, fromDate: fromDate, toDate: toDate, options: NSCalendarOptions(rawValue: 0))
+        
+        if let optDate = dateComponents {
+            return optDate.second
+        }
+        
+        return 0
+    }
+    
+    /**
     Append parameter values from buffer
     
     - parameter parameter: key

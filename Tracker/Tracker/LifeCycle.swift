@@ -39,28 +39,29 @@ class LifeCycle {
     /// List of lifecycle metrics
     static var parameters = [String: AnyObject]()
     /// App was launched for the first time
-    static var firstLaunch: Bool = false
+    static var firstSession: Bool = false
     /// Indicates whether the app version has changed
     static var appVersionChanged: Bool = false
     // Number of days since last app use
-    static var daysSinceLastUse: Int = 0
+    static var daysSinceLastSession: Int = 0
     /// Check whether lifecycle has already been initialized
     static var isInitialized: Bool = false
     /// Calendar type
     static var calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+    /// SessionId
+    static var sessionId: String? = nil
+    /// Time during the app is in background
+    static var timeInBackground: NSDate? = nil
     
     /// Lifecycle keys
     enum LifeCycleKey: String {
-        case FirstLaunch = "ATFirstLaunch"
-        case LastUse = "ATLastUse"
-        case FirstLaunchDate = "ATFirstLaunchDate"
-        case LaunchDayCount = "ATLaunchDayCount"
-        case LaunchMonthCount = "ATLaunchMonthount"
-        case LaunchWeekCount = "ATLaunchWeekCount"
-        case LaunchCount = "ATLaunchCount"
+        case FirstSession = "ATFirstLaunch"
+        case LastSession = "ATLastUse"
+        case FirstSessionDate = "ATFirstLaunchDate"
+        case SessionCount = "ATLaunchCount"
         case LastApplicationVersion = "ATLastApplicationVersion"
         case ApplicationUpdate = "ATApplicationUpdate"
-        case LaunchCountSinceUpdate = "ATLaunchCountSinceUpdate"
+        case SessionCountSinceUpdate = "ATLaunchCountSinceUpdate"
     }
     
     /**
@@ -81,48 +82,19 @@ class LifeCycle {
         weekFormatter.dateFormat = "yyyyww"
         
         let now = NSDate()
-        var lastUse = now
         
         // Not first launch
-        if let _ = userDefaults.objectForKey(LifeCycleKey.FirstLaunch.rawValue) as? Int {
-            LifeCycle.firstLaunch = false
+        if let _ = userDefaults.objectForKey(LifeCycleKey.FirstSession.rawValue) as? Int {
+            LifeCycle.firstSession = false
             
-            // Last use
-            if let optLastUse = userDefaults.objectForKey(LifeCycleKey.LastUse.rawValue) as? NSDate {
-                LifeCycle.daysSinceLastUse = Tool.daysBetweenDates(optLastUse, toDate: now)
-                lastUse = optLastUse
+            // Last session
+            if let optLastSession = userDefaults.objectForKey(LifeCycleKey.LastSession.rawValue) as? NSDate {
+                LifeCycle.daysSinceLastSession = Tool.daysBetweenDates(optLastSession, toDate: now)
             }
             
-            // Launch count
-            if let launchCount = userDefaults.objectForKey(LifeCycleKey.LaunchCount.rawValue) as? Int {
-                userDefaults.setInteger(launchCount + 1, forKey: LifeCycleKey.LaunchCount.rawValue)
-            }
-            
-            // Launches of day
-            if let launchDayCount = userDefaults.objectForKey(LifeCycleKey.LaunchDayCount.rawValue) as? Int {
-                if(dateFormatter.stringFromDate(lastUse) == dateFormatter.stringFromDate(now)) {
-                    userDefaults.setInteger(launchDayCount + 1, forKey: LifeCycleKey.LaunchDayCount.rawValue)
-                } else {
-                    userDefaults.setInteger(1, forKey: LifeCycleKey.LaunchDayCount.rawValue)
-                }
-            }
-            
-            // Launches of week
-            if let launchWeekCount = userDefaults.objectForKey(LifeCycleKey.LaunchWeekCount.rawValue) as? Int {
-                if(weekFormatter.stringFromDate(lastUse) == weekFormatter.stringFromDate(now)) {
-                    userDefaults.setInteger((launchWeekCount + 1), forKey: LifeCycleKey.LaunchWeekCount.rawValue)
-                } else {
-                    userDefaults.setInteger(1, forKey: LifeCycleKey.LaunchWeekCount.rawValue)
-                }
-            }
-            
-            // Launches of month
-            if let launchMonthCount = userDefaults.objectForKey(LifeCycleKey.LaunchMonthCount.rawValue) as? Int {
-                if(monthFormatter.stringFromDate(lastUse) == monthFormatter.stringFromDate(now)) {
-                    userDefaults.setInteger((launchMonthCount + 1), forKey: LifeCycleKey.LaunchMonthCount.rawValue)
-                } else {
-                    userDefaults.setInteger(1, forKey: LifeCycleKey.LaunchMonthCount.rawValue)
-                }
+            // session count
+            if let sessionCount = userDefaults.objectForKey(LifeCycleKey.SessionCount.rawValue) as? Int {
+                userDefaults.setInteger(sessionCount + 1, forKey: LifeCycleKey.SessionCount.rawValue)
             }
             
             // Application version changed
@@ -130,23 +102,24 @@ class LifeCycle {
                 if(appVersion != TechnicalContext.applicationVersion) {
                     LifeCycle.appVersionChanged = true
                     userDefaults.setObject(now, forKey: LifeCycleKey.ApplicationUpdate.rawValue)
-                    userDefaults.setInteger(1, forKey: LifeCycleKey.LaunchCountSinceUpdate.rawValue)
+                    userDefaults.setInteger(1, forKey: LifeCycleKey.SessionCountSinceUpdate.rawValue)
                     userDefaults.setObject(TechnicalContext.applicationVersion, forKey: LifeCycleKey.LastApplicationVersion.rawValue)
                 } else {
-                    if let launchCountSinceUpdate = userDefaults.objectForKey(LifeCycleKey.LaunchCountSinceUpdate.rawValue) as? Int {
-                        userDefaults.setInteger(launchCountSinceUpdate + 1, forKey: LifeCycleKey.LaunchCountSinceUpdate.rawValue)
+                    LifeCycle.appVersionChanged = false
+                    if let sessionCountSinceUpdate = userDefaults.objectForKey(LifeCycleKey.SessionCountSinceUpdate.rawValue) as? Int {
+                        userDefaults.setInteger(sessionCountSinceUpdate + 1, forKey: LifeCycleKey.SessionCountSinceUpdate.rawValue)
                     }
                 }
             }
             
-            userDefaults.setObject(now, forKey: LifeCycleKey.LastUse.rawValue)
+            userDefaults.setObject(now, forKey: LifeCycleKey.LastSession.rawValue)
             // Save user defaults
             userDefaults.synchronize()
         } else {
             LifeCycle.firstLaunchInit()
         }
-
         
+        LifeCycle.sessionId = NSUUID().UUIDString
         LifeCycle.isInitialized = true
     }
     
@@ -156,8 +129,7 @@ class LifeCycle {
     class func firstLaunchInit() {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         let now = NSDate()
-        self.firstLaunch = true
-       
+        self.firstSession = true
         
         // If SDK V1 first launch exists
         if let optFirstLaunchDate = userDefaults.objectForKey("firstLaunchDate") as? String {
@@ -166,47 +138,105 @@ class LifeCycle {
             dateFormatter.dateFormat = "YYYYMMdd"
             let fld = dateFormatter.dateFromString(optFirstLaunchDate)
             
-            userDefaults.setObject(fld, forKey: LifeCycleKey.FirstLaunchDate.rawValue)
-                    userDefaults.setInteger(0, forKey: LifeCycleKey.FirstLaunch.rawValue)
+            userDefaults.setObject(fld, forKey: LifeCycleKey.FirstSessionDate.rawValue)
+                    userDefaults.setInteger(0, forKey: LifeCycleKey.FirstSession.rawValue)
             
             userDefaults.setObject(nil, forKey: "firstLaunchDate")
-            self.firstLaunch = false
+            self.firstSession = false
             
         } else {
-            userDefaults.setInteger(1, forKey: LifeCycleKey.FirstLaunch.rawValue)
+            userDefaults.setInteger(1, forKey: LifeCycleKey.FirstSession.rawValue)
             
-            // First launch date
-            userDefaults.setObject(now, forKey: LifeCycleKey.FirstLaunchDate.rawValue)
+            // First session date
+            userDefaults.setObject(now, forKey: LifeCycleKey.FirstSessionDate.rawValue)
         }
         
         // Launch Count update from SDK V1
-        if let optLaunchCount = userDefaults.objectForKey("ATLaunchCount") as? Int {
-            userDefaults.setInteger(optLaunchCount + 1, forKey: LifeCycleKey.LaunchCount.rawValue)
+        if let optSessionCount = userDefaults.objectForKey("ATLaunchCount") as? Int {
+            userDefaults.setInteger(optSessionCount + 1, forKey: LifeCycleKey.SessionCount.rawValue)
         } else {
-            userDefaults.setInteger(1, forKey: LifeCycleKey.LaunchCount.rawValue)
+            userDefaults.setInteger(1, forKey: LifeCycleKey.SessionCount.rawValue)
         }
         
-        // Launches of day
-        userDefaults.setInteger(1, forKey: LifeCycleKey.LaunchDayCount.rawValue)
-        
-        // Launches of week
-        userDefaults.setInteger(1, forKey: LifeCycleKey.LaunchWeekCount.rawValue)
-        
-        // Launches of month
-        userDefaults.setInteger(1, forKey: LifeCycleKey.LaunchMonthCount.rawValue)
         
         // Application version changed
         userDefaults.setObject(TechnicalContext.applicationVersion, forKey: LifeCycleKey.LastApplicationVersion.rawValue)
         
         // Last use update from SDK V1
-        if let optLastUseDate = userDefaults.objectForKey("lastUseDate") as? NSDate  {
+        if let optLastSessionDate = userDefaults.objectForKey("lastUseDate") as? NSDate  {
             userDefaults.setObject(nil, forKey: "lastUseDate")
-            LifeCycle.daysSinceLastUse = Tool.daysBetweenDates(optLastUseDate, toDate: now)
+            LifeCycle.daysSinceLastSession = Tool.daysBetweenDates(optLastSessionDate, toDate: now)
         }
-        userDefaults.setObject(now, forKey: LifeCycleKey.LastUse.rawValue)
-
-        
+        userDefaults.setObject(now, forKey: LifeCycleKey.LastSession.rawValue)
         userDefaults.synchronize()
+    }
+    
+    //MARK: - Session
+    
+    /**
+    Called when application goes to background
+    should save the timestamp to know if we have to start a new session on the next launch
+    
+    - parameter notification: notif
+    */
+    class func applicationDidEnterBackground() {
+        LifeCycle.timeInBackground = NSDate()
+    }
+    
+    /**
+     Get the default sessionBackground duraion
+     
+     - parameter parameters: the default parameters
+     
+     - returns: the background session duration (default: 60)
+     */
+    class func sessionBackgroundDuration(parameters: Dictionary<String, String>) -> Int {
+        guard let sessionBackgroundDuration = parameters["sessionBackgroundDuration"] else {
+            return 60
+        }
+        
+        guard let sessionConfig = Int(sessionBackgroundDuration) else {
+            return 60
+        }
+        
+        if sessionConfig < 0 {
+            return 60
+        }
+        
+        return sessionConfig
+    }
+    
+    /**
+     Called when app is active
+     Should create a new SessionId if necessary and update lifecycles data
+     */
+    class func applicationActive(parameters: Dictionary<String, String>) {
+        let sessionConfig: Int = sessionBackgroundDuration(parameters)
+        
+        if !hasAssignedNewSession() {
+            if let ts = LifeCycle.timeInBackground {
+                let now = NSDate()
+                // do we need a new session after background ?
+                if Tool.secondsBetweenDates(ts, toDate: now) > sessionConfig {
+                    LifeCycle.initLifeCycle()
+                }
+                LifeCycle.timeInBackground = nil
+            }
+        }
+    }
+    
+    /**
+     Create a new session if current SessionId is nil
+     
+     - returns: True if a new session has been created false otherwise
+     */
+    class func hasAssignedNewSession() -> Bool {
+        if let _ = LifeCycle.sessionId {
+            return false
+        } else {
+            LifeCycle.initLifeCycle()
+            return true
+        }
     }
     
     /**
@@ -218,53 +248,47 @@ class LifeCycle {
         return {
             let userDefaults = NSUserDefaults.standardUserDefaults()
             
-            if userDefaults.objectForKey(LifeCycleKey.FirstLaunch.rawValue) == nil {
+            if userDefaults.objectForKey(LifeCycleKey.FirstSession.rawValue) == nil {
                 LifeCycle.firstLaunchInit()
             }
             
-            let firstLaunchDate = userDefaults.objectForKey(LifeCycleKey.FirstLaunchDate.rawValue) as! NSDate
+            let firstSessionDate = userDefaults.objectForKey(LifeCycleKey.FirstSessionDate.rawValue) as! NSDate
             let now = NSDate()
             let dateFormatter = NSDateFormatter()
             dateFormatter.calendar = calendar
             dateFormatter.dateFormat = "yyyyMMdd"
 
-            // First launch
-            LifeCycle.parameters["fl"] = (self.firstLaunch ? 1 : 0)
+            // First session: fs
+            LifeCycle.parameters["fs"] = (self.firstSession ? 1 : 0)
             
-            // First launch after update
-            LifeCycle.parameters["flau"] = (self.appVersionChanged ? 1 : 0)
+            // First session after update: fsau
+            LifeCycle.parameters["fsau"] = (self.appVersionChanged ? 1 : 0)
             
-            // First launch of day
-            LifeCycle.parameters["ldc"] = userDefaults.integerForKey(LifeCycleKey.LaunchDayCount.rawValue)
-            
-            // First launch of week
-            LifeCycle.parameters["lwc"] = userDefaults.integerForKey(LifeCycleKey.LaunchWeekCount.rawValue)
-            
-            // First launch of month
-            LifeCycle.parameters["lmc"] = userDefaults.integerForKey(LifeCycleKey.LaunchMonthCount.rawValue)
-            
-            // Launch count since update
-            if let launchCountSinceUpdate = userDefaults.objectForKey(LifeCycleKey.LaunchCountSinceUpdate.rawValue) as? Int {
-                LifeCycle.parameters["lcsu"] = launchCountSinceUpdate
+            // session count since update: scsu
+            if let sessionCountSinceUpdate = userDefaults.objectForKey(LifeCycleKey.SessionCountSinceUpdate.rawValue) as? Int {
+                LifeCycle.parameters["scsu"] = sessionCountSinceUpdate
             }
             
-            // Launch count
-            LifeCycle.parameters["lc"] = userDefaults.integerForKey(LifeCycleKey.LaunchCount.rawValue)
+            // session count: sc
+            LifeCycle.parameters["sc"] = userDefaults.integerForKey(LifeCycleKey.SessionCount.rawValue)
             
-            // First launch date
-            LifeCycle.parameters["fld"] = Int(dateFormatter.stringFromDate(firstLaunchDate))!
+            // First session date: fsd
+            LifeCycle.parameters["fsd"] = Int(dateFormatter.stringFromDate(firstSessionDate))!
             
-            // Days since first launch
-            LifeCycle.parameters["dsfl"] = Tool.daysBetweenDates(firstLaunchDate, toDate: now)
+            // Days since first session: dsfs
+            LifeCycle.parameters["dsfs"] = Tool.daysBetweenDates(firstSessionDate, toDate: now)
             
-            // Update launch date & days since update
+            // first session date after update & days since update: usd / dsu
             if let applicationUpdate = userDefaults.objectForKey(LifeCycleKey.ApplicationUpdate.rawValue) as? NSDate {
-                LifeCycle.parameters["uld"] = Int(dateFormatter.stringFromDate(applicationUpdate))!
+                LifeCycle.parameters["fsdau"] = Int(dateFormatter.stringFromDate(applicationUpdate))!
                 LifeCycle.parameters["dsu"] = Tool.daysBetweenDates(applicationUpdate, toDate: now)
             }
             
-            // Days sinces last use
-            LifeCycle.parameters["dslu"] = self.daysSinceLastUse
+            // Days sinces last session: dsls
+            LifeCycle.parameters["dsls"] = self.daysSinceLastSession
+            
+            // SessionId
+            LifeCycle.parameters["sessionId"] = LifeCycle.sessionId
             
             let json = Tool.JSONStringify(["lifecycle": LifeCycle.parameters], prettyPrinted: false)
             

@@ -99,6 +99,9 @@
 		4FEB53801A37671A00925CEC /* BuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEB537F1A37671A00925CEC /* BuilderTests.swift */; };
 		4FEB53821A38486100925CEC /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEB53811A38486100925CEC /* Tool.swift */; };
 		4FEB53831A38486100925CEC /* Tool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FEB53811A38486100925CEC /* Tool.swift */; };
+		8E06B7181C98175C004F4970 /* DefaultTrackerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E06B7171C98175C004F4970 /* DefaultTrackerDelegate.swift */; };
+		8E06B7191C98175C004F4970 /* DefaultTrackerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E06B7171C98175C004F4970 /* DefaultTrackerDelegate.swift */; };
+		8E06B71A1C98175C004F4970 /* DefaultTrackerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E06B7171C98175C004F4970 /* DefaultTrackerDelegate.swift */; };
 		AE11D4B71ADBC8FF0059E7E5 /* SelfPromotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE11D4B61ADBC8FF0059E7E5 /* SelfPromotion.swift */; };
 		AE11D4B81ADBC8FF0059E7E5 /* SelfPromotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE11D4B61ADBC8FF0059E7E5 /* SelfPromotion.swift */; };
 		AE11D4C01ADBFB5A0059E7E5 /* PublisherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE11D4BF1ADBFB5A0059E7E5 /* PublisherTests.swift */; };
@@ -267,6 +270,7 @@
 		4FE904911A56E51F003409B8 /* Tracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Tracker.xcdatamodel; sourceTree = "<group>"; };
 		4FEB537F1A37671A00925CEC /* BuilderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BuilderTests.swift; sourceTree = "<group>"; };
 		4FEB53811A38486100925CEC /* Tool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tool.swift; sourceTree = "<group>"; };
+		8E06B7171C98175C004F4970 /* DefaultTrackerDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DefaultTrackerDelegate.swift; sourceTree = "<group>"; };
 		AE11D4B61ADBC8FF0059E7E5 /* SelfPromotion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfPromotion.swift; sourceTree = "<group>"; };
 		AE11D4BF1ADBFB5A0059E7E5 /* PublisherTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublisherTests.swift; sourceTree = "<group>"; };
 		AE11D4C11ADC07E00059E7E5 /* SelfPromotionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelfPromotionTests.swift; sourceTree = "<group>"; };
@@ -450,6 +454,7 @@
 				4F2147071A43422400E9AA30 /* TechnicalContext.swift */,
 				4FEB53811A38486100925CEC /* Tool.swift */,
 				AE47AC381A3890A800AE967F /* Tracker.swift */,
+				8E06B7171C98175C004F4970 /* DefaultTrackerDelegate.swift */,
 				4F2147061A4341D600E9AA30 /* Modules */,
 				4F2147051A4341CD00E9AA30 /* Extensions */,
 				AE887E4B1A2F13D4005682DA /* Supporting Files */,
@@ -724,6 +729,7 @@
 				AECB52EA1A35DC8000C32C85 /* BufferTests.swift in Sources */,
 				4F02D8131B28856F00BAE595 /* CustomTreeStructureTests.swift in Sources */,
 				AE47FD601B0B2346002E526B /* CustomVarTests.swift in Sources */,
+				8E06B71A1C98175C004F4970 /* DefaultTrackerDelegate.swift in Sources */,
 				AEAC7EF21AC4088F0071B8B4 /* GestureTests.swift in Sources */,
 				4F5A18641ACAABCF00596557 /* CustomObjectTests.swift in Sources */,
 				AEF83F7C1AE1375B00EDA4CB /* GPSTests.swift in Sources */,
@@ -807,6 +813,7 @@
 				AE14AA701B272EAC00770630 /* StringExtension.swift in Sources */,
 				AE14AA671B272E9600770630 /* Plugin.swift in Sources */,
 				AE14AA911B272EED00770630 /* TVTracking.swift in Sources */,
+				8E06B7191C98175C004F4970 /* DefaultTrackerDelegate.swift in Sources */,
 				AE14AA7E1B272EE400770630 /* Campaign.swift in Sources */,
 				AE14AA8A1B272EED00770630 /* OnAppAd.swift in Sources */,
 				AE14AA9E1B2733C700770630 /* BackgroundTask.swift in Sources */,
@@ -865,6 +872,7 @@
 				4FEB53821A38486100925CEC /* Tool.swift in Sources */,
 				4F906D551A372F5E00F6C2EA /* Builder.swift in Sources */,
 				4F3016161A9F0FD0002BCC2C /* Hash.m in Sources */,
+				8E06B7181C98175C004F4970 /* DefaultTrackerDelegate.swift in Sources */,
 				4FE904921A56E51F003409B8 /* Tracker.xcdatamodeld in Sources */,
 				4F7FCA5A1A7686210082FAA8 /* LifeCycle.swift in Sources */,
 				4F9BEB501B03427B003BFD41 /* Campaign.swift in Sources */,

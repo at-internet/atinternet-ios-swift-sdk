@@ -94,7 +94,8 @@ public class SelfPromotion : OnAppAd {
         }
         
         let option = ParamOption()
-        option.append = true;
+        option.append = true
+        option.encode = true
         self.tracker.setParam(self.action.rawValue, value: spot, options: option)
         
         if(action == Action.Touch) {

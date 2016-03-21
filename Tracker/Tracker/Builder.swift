@@ -484,6 +484,7 @@ class Builder: NSOperation {
             if let optOption = parameter.options {
                 if(optOption.encode) {
                     value = value.percentEncodedString
+                    parameter.options!.separator = optOption.separator.percentEncodedString
                 }
             }
 

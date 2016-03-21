@@ -46,7 +46,7 @@ class BufferTests: XCTestCase {
     let arrayVol = [Param(key:"key0v", value: {"value0v"}, type: .String), Param(key:"key1v", value: {"value1v"}, type: .String)]
     
     // Instance de buffer utilisée pour les tests
-    let buffer = Buffer(tracker: Tracker(configuration: ["log":"logp", "logSSL":"logs", "domain":"xiti.com", "pixelPath":"/hit.xiti", "site":"549808", "secure":"false", "identifier":"uuid"]))
+    let buffer = Buffer(tracker: Tracker(configuration: ["log":"logp", "logSSL":"logs", "domain":"xiti.com", "pixelPath":"/hit.xiti", "site":"549808", "secure":"false", "identifier":"uuid", "sessionBackgroundDuration":"60" ]))
 
     override func setUp() {
         super.setUp()

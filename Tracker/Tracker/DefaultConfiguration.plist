@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>sessionBackgroundDuration</key>
+	<string>60</string>
 	<key>campaignLifetime</key>
 	<string>30</string>
 	<key>campaignLastPersistence</key>
@@ -23,15 +25,15 @@
 	<key>plugins</key>
 	<string></string>
 	<key>log</key>
-	<string>logp</string>
+	<string></string>
 	<key>logSSL</key>
-	<string>logs</string>
+	<string></string>
 	<key>domain</key>
 	<string>xiti.com</string>
 	<key>pixelPath</key>
 	<string>/hit.xiti</string>
 	<key>site</key>
-	<string>549808</string>
+	<string></string>
 	<key>secure</key>
 	<string>false</string>
 	<key>identifier</key>
