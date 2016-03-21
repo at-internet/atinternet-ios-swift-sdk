@@ -32,9 +32,48 @@ SOFTWARE.
 
 import UIKit
 
+
+public enum OfflineModeKey: String {
+    case Always = "always"
+    case Never = "never"
+    case Required = "required"
+}
+
+public enum PluginKey: String {
+    case TvTracking = "tvtracking"
+    case NuggAd = "nuggad"
+}
+
+public enum IdentifierTypeKey: String {
+    case UUID = "uuid"
+    case IDFV = "idfv"
+}
+
+public class TrackerConfigurationKeys {
+    public static let SessionBackgroundDuration = "sessionBackgroundDuration"
+    public static let CampaignLifetime = "campaignLifetime"
+    public static let CampaignLastPersistence = "campaignLastPersistence"
+    public static let TvTrackingURL = "tvtURL"
+    public static let TvTrackingVisitDuration = "tvtVisitDuration"
+    public static let TvTrackingSpotValidityTime = "tvtSpotValidityTime"
+    public static let PersistIdentifiedVisitor = "persistIdentifiedVisitor"
+    public static let HashUserId = "hashUserId"
+    public static let EnableBackgroundTask = "enableBackgroundTask"
+    public static let OfflineMode = "storage"
+    public static let Log = "log"
+    public static let LogSSL = "logSSL"
+    public static let Domain = "domain"
+    public static let PixelPath = "pixelPath"
+    public static let Site = "site"
+    public static let Secure = "secure"
+    public static let Identifier = "identifier"
+    static let DownloadSource = "downloadSource"
+    public static let Plugins = "plugins"
+}
+
 /// Tracker configuraiton
 class Configuration {
-
+    
     /// Dictionary of configuration parameters
     var parameters = [String: String]()
     
@@ -74,7 +113,10 @@ class Configuration {
     
     - returns: a configuration
     */
-    init(customConfiguration: [String: String]) {
-        parameters = customConfiguration
+    convenience init(customConfiguration: [String: String]) {
+        self.init()
+        for key in customConfiguration.keys {
+            parameters[key] = customConfiguration[key]
+        }
     }
 }

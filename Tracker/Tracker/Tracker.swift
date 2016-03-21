@@ -140,7 +140,7 @@ public class Tracker {
         }
         set {
             _delegate = newValue
-            if LifeCycle.firstLaunch {
+            if LifeCycle.firstSession {
                 _delegate?.trackerNeedsFirstLaunchApproval("Tracker first launch")
             }
         }
@@ -281,7 +281,6 @@ public class Tracker {
             notificationCenter.addObserver(self, selector: "applicationDidEnterBackground", name: UIApplicationDidEnterBackgroundNotification, object: nil)
             notificationCenter.addObserver(self, selector: "applicationActive", name: UIApplicationDidBecomeActiveNotification, object: nil)
             LifeCycle.applicationActive(self.configuration.parameters)
-            LifeCycle.initLifeCycle()
         }
     }
     
@@ -337,7 +336,6 @@ public class Tracker {
                 delegate?.warningDidOccur(String(format: "Configuration %@ is read only. Value will not be updated", key))
             }
         }
-        
     }
     
     /**
@@ -365,6 +363,69 @@ public class Tracker {
             }
             delegate?.warningDidOccur(String(format: "Configuration %@ is read only. Value will not be updated", key))
         }
+    }
+    
+    /// Get the current configuration (read-only)
+    public var config: [String:String] {
+        get {
+            return self.configuration.parameters
+        }
+    }
+    
+    public func setLog(log: String, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.Log, value: log, completionHandler: completionHandler)
+    }
+    public func setSecuredLog(securedLog: String, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.LogSSL, value: securedLog, completionHandler: completionHandler)
+    }
+    public func setDomain(domain: String, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.Domain, value: domain, completionHandler: completionHandler)
+    }
+    public func setSiteId(siteId: Int, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.Site, value: String(siteId), completionHandler: completionHandler)
+    }
+    public func setOfflineMode(offlineMode: OfflineModeKey, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.OfflineMode, value: offlineMode.rawValue, completionHandler: completionHandler)
+    }
+    public func setSecureModeEnabled(enabled: Bool, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.Secure, value: String(enabled), completionHandler: completionHandler)
+    }
+    public func setIdentifierType(identifierType: IdentifierTypeKey, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.Identifier, value: identifierType.rawValue, completionHandler: completionHandler)
+    }
+    public func setHashUserIdEnabled(enabled: Bool, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.HashUserId, value: String(enabled), completionHandler: completionHandler)
+    }
+    public func setPlugins(pluginNames: [PluginKey], completionHandler: ((isSet: Bool) -> Void)?) {
+        let newValue = pluginNames.map({$0.rawValue}).joinWithSeparator(",")
+        setConfig(TrackerConfigurationKeys.Plugins, value: newValue, completionHandler: completionHandler)
+    }
+    public func setBackgroundTaskEnabled(enabled: Bool, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.EnableBackgroundTask, value: String(enabled), completionHandler: completionHandler)
+    }
+    public func setPixelPath(pixelPath: String, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.PixelPath, value: pixelPath, completionHandler: completionHandler)
+    }
+    public func setPersistentIdentifiedVisitorEnabled(enabled: Bool, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.PersistIdentifiedVisitor, value: String(enabled), completionHandler: completionHandler)
+    }
+    public func setTvTrackingUrl(url: String, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.TvTrackingURL, value: url, completionHandler: completionHandler)
+    }
+    public func setTvTrackingVisitDuration(visitDuration: Int, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.TvTrackingVisitDuration, value: String(visitDuration), completionHandler: completionHandler)
+    }
+    public func setTvTrackingSpotValidityTime(time: Int, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.TvTrackingSpotValidityTime, value: String(time), completionHandler: completionHandler)
+    }
+    public func setCampaignLastPersistenceEnabled(enabled: Bool, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.CampaignLastPersistence, value: String(enabled), completionHandler: completionHandler)
+    }
+    public func setCampaignLifetime(lifetime: Int, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.CampaignLifetime, value: String(lifetime), completionHandler: completionHandler)
+    }
+    public func setSessionBackgroundDuration(duration: Int, completionHandler: ((isSet: Bool) -> Void)?) {
+        setConfig(TrackerConfigurationKeys.SessionBackgroundDuration, value: String(duration), completionHandler: completionHandler)
     }
     
     // MARK: - Parameter

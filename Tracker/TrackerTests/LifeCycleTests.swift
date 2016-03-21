@@ -43,22 +43,19 @@ class LifeCycleTests: XCTestCase {
         super.setUp()
         LifeCycle.parameters = [String: AnyObject]()
         LifeCycle.appVersionChanged = false
-        LifeCycle.daysSinceLastUse = 0
+        LifeCycle.daysSinceLastSession = 0
         LifeCycle.isInitialized = false
         
         dateFormatter.dateFormat = "yyyyMMdd"
         now = dateFormatter.stringFromDate(NSDate())
         
         userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.ApplicationUpdate.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.FirstLaunch.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.FirstLaunchDate.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.FirstSession.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.FirstSessionDate.rawValue)
         userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LastApplicationVersion.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LastUse.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchCount.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchCountSinceUpdate.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchDayCount.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchMonthCount.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchWeekCount.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LastSession.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.SessionCount.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.SessionCountSinceUpdate.rawValue)
         
         userDefaults.synchronize()
     }
@@ -68,22 +65,19 @@ class LifeCycleTests: XCTestCase {
         super.tearDown()
         LifeCycle.parameters = [String: AnyObject]()
         LifeCycle.appVersionChanged = false
-        LifeCycle.daysSinceLastUse = 0
+        LifeCycle.daysSinceLastSession = 0
         LifeCycle.isInitialized = false
         
         dateFormatter.dateFormat = "yyyyMMdd"
         now = dateFormatter.stringFromDate(NSDate())
         
         userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.ApplicationUpdate.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.FirstLaunch.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.FirstLaunchDate.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.FirstSession.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.FirstSessionDate.rawValue)
         userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LastApplicationVersion.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LastUse.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchCount.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchCountSinceUpdate.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchDayCount.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchMonthCount.rawValue)
-        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LaunchWeekCount.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.LastSession.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.SessionCount.rawValue)
+        userDefaults.removeObjectForKey(LifeCycle.LifeCycleKey.SessionCountSinceUpdate.rawValue)
         
         userDefaults.synchronize()
         
@@ -93,7 +87,7 @@ class LifeCycleTests: XCTestCase {
     func testRetrieveSDKV1Lifecycle() {
         let now = NSDate()
         
-        let oldLastUse: AnyObject? = userDefaults.objectForKey(LifeCycle.LifeCycleKey.LastUse.rawValue)
+        let oldLastUse: AnyObject? = userDefaults.objectForKey(LifeCycle.LifeCycleKey.LastSession.rawValue)
         
         XCTAssertNil(oldLastUse, "oldLastUse doit être nil")
         
@@ -104,14 +98,14 @@ class LifeCycleTests: XCTestCase {
         
         LifeCycle.firstLaunchInit()
         
-        XCTAssert(userDefaults.objectForKey("firstLaunchDate") == nil, "firstLaunchDate doit être nil")
-        XCTAssert(userDefaults.objectForKey(LifeCycle.LifeCycleKey.FirstLaunch.rawValue) as! Int == 0, "firstLaunch doit être égale à 0")
+        XCTAssert(userDefaults.objectForKey("firstLaunchDate") == nil, "firstSessionDate doit être nil")
+        XCTAssert(userDefaults.objectForKey(LifeCycle.LifeCycleKey.FirstSession.rawValue) as! Int == 0, "firstSession doit être égale à 0")
         
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = "YYYYMMdd"
-        XCTAssert((userDefaults.objectForKey(LifeCycle.LifeCycleKey.FirstLaunchDate.rawValue) as! NSDate) == dateFormatter.dateFromString("20110201"), "firstLaunchDate doit être égale à 20110201")
-        XCTAssertNotNil(userDefaults.objectForKey(LifeCycle.LifeCycleKey.LastUse.rawValue) as! NSDate, "LastUse ne doit pas etre nil")
-        XCTAssert(userDefaults.objectForKey(LifeCycle.LifeCycleKey.LaunchCount.rawValue) as! Int == 6, "LaunchCount doit être égale à 5")
+        XCTAssert((userDefaults.objectForKey(LifeCycle.LifeCycleKey.FirstSessionDate.rawValue) as! NSDate) == dateFormatter.dateFromString("20110201"), "firstLaunchDate doit être égale à 20110201")
+        XCTAssertNotNil(userDefaults.objectForKey(LifeCycle.LifeCycleKey.LastSession.rawValue) as! NSDate, "LastSession ne doit pas etre nil")
+        XCTAssert(userDefaults.objectForKey(LifeCycle.LifeCycleKey.SessionCount.rawValue) as! Int == 6, "SessionCount doit être égale à 5")
         
     }
 
@@ -123,15 +117,12 @@ class LifeCycleTests: XCTestCase {
         
         let json = JSON(data: data!)
         
-        XCTAssert(json["lifecycle"]["fl"].intValue == 1, "la variable fl doit être égale à 1")
-        XCTAssert(json["lifecycle"]["flau"].intValue == 0, "la variable flau doit être égale à 0")
-        XCTAssert(json["lifecycle"]["ldc"].intValue == 1, "la variable ldc doit être égale à 1")
-        XCTAssert(json["lifecycle"]["lwc"].intValue == 1, "la variable lwc doit être égale à 1")
-        XCTAssert(json["lifecycle"]["lmc"].intValue == 1, "la variable lmc doit être égale à 1")
-        XCTAssert(json["lifecycle"]["fld"].intValue == Int(now!), "la variable fld doit être égale à aujourd'hui")
-        XCTAssert(json["lifecycle"]["dsfl"].intValue == 0, "la variable dsfl doit être égale à 0")
-        XCTAssert(json["lifecycle"]["dslu"].intValue == 0, "la variable dslu doit être égale à 0")
-        XCTAssert(json["lifecycle"]["lc"].intValue == 1, "la variable lc doit être égale à 1")
+        XCTAssert(json["lifecycle"]["fs"].intValue == 1, "la variable fs doit être égale à 1")
+        XCTAssert(json["lifecycle"]["fsau"].intValue == 0, "la variable fsau doit être égale à 0")
+        XCTAssert(json["lifecycle"]["fsd"].intValue == Int(now!), "la variable fsd doit être égale à aujourd'hui")
+        XCTAssert(json["lifecycle"]["dsfs"].intValue == 0, "la variable dsfs doit être égale à 0")
+        XCTAssert(json["lifecycle"]["dsls"].intValue == 0, "la variable dsls doit être égale à 0")
+        XCTAssert(json["lifecycle"]["sc"].intValue == 1, "la variable sc doit être égale à 1")
     }
     
     func testDaysSinceFirstLaunch() {
@@ -142,8 +133,8 @@ class LifeCycleTests: XCTestCase {
         let past = NSCalendar.currentCalendar().dateByAddingComponents(dateComponent, toDate: today, options: NSCalendarOptions(rawValue: 0))
         
         // Set first launch date two days in the past
-        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstLaunch.rawValue)
-        userDefaults.setObject(past, forKey: LifeCycle.LifeCycleKey.FirstLaunchDate.rawValue)
+        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstSession.rawValue)
+        userDefaults.setObject(past, forKey: LifeCycle.LifeCycleKey.FirstSessionDate.rawValue)
         userDefaults.synchronize()
         
         _ = Tracker()
@@ -153,10 +144,10 @@ class LifeCycleTests: XCTestCase {
         
         let json = JSON(data: data!)
 
-        XCTAssert(json["lifecycle"]["dsfl"].intValue == 2, "la variable dsfl doit être égale à 0")
+        XCTAssert(json["lifecycle"]["dsfs"].intValue == 2, "la variable dsfs doit être égale à 0")
     }
     
-    func testDaysSinceLastUse() {
+    func testDaysSinceLastSession() {
         let today = NSDate()
         let dateComponent = NSDateComponents()
         dateComponent.day = -10
@@ -164,9 +155,9 @@ class LifeCycleTests: XCTestCase {
         let past = NSCalendar.currentCalendar().dateByAddingComponents(dateComponent, toDate: today, options: NSCalendarOptions(rawValue: 0))
         
         // Set first launch date two days in the past
-        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstLaunch.rawValue)
-        userDefaults.setObject(past, forKey: LifeCycle.LifeCycleKey.FirstLaunchDate.rawValue)
-        userDefaults.setObject(past, forKey: LifeCycle.LifeCycleKey.LastUse.rawValue)
+        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstSession.rawValue)
+        userDefaults.setObject(past, forKey: LifeCycle.LifeCycleKey.FirstSessionDate.rawValue)
+        userDefaults.setObject(past, forKey: LifeCycle.LifeCycleKey.LastSession.rawValue)
         userDefaults.synchronize()
         
         _ = Tracker()
@@ -176,14 +167,14 @@ class LifeCycleTests: XCTestCase {
         
         let json = JSON(data: data!)
         
-        XCTAssert(json["lifecycle"]["dslu"].intValue == 10, "la variable dslu doit être égale à 0")
+        XCTAssert(json["lifecycle"]["dsls"].intValue == 10, "la variable fsdau doit être égale à 0")
     }
     
-    func testLaunchCount() {
+    func testSessionCount() {
         let today = NSDate()
-        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstLaunch.rawValue)
-        userDefaults.setObject(today, forKey: LifeCycle.LifeCycleKey.FirstLaunchDate.rawValue)
-        userDefaults.setInteger(10, forKey: LifeCycle.LifeCycleKey.LaunchCount.rawValue)
+        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstSession.rawValue)
+        userDefaults.setObject(today, forKey: LifeCycle.LifeCycleKey.FirstSessionDate.rawValue)
+        userDefaults.setInteger(10, forKey: LifeCycle.LifeCycleKey.SessionCount.rawValue)
         userDefaults.synchronize()
         
         _ = Tracker()
@@ -193,171 +184,13 @@ class LifeCycleTests: XCTestCase {
         
         let json = JSON(data: data!)
         
-        XCTAssert(json["lifecycle"]["lc"].intValue == 11, "la variable lc doit être égale à 11")
+        XCTAssert(json["lifecycle"]["sc"].intValue == 11, "la variable lc doit être égale à 11")
     }
     
-    func testLaunchDayCount() {
-        
-        _ = Tracker()
-        
-        let stringData = LifeCycle.getMetrics()()
-        let data = stringData.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        
-        let json = JSON(data: data!)
-        
-        XCTAssert(json["lifecycle"]["ldc"].intValue == 1, "la variable ldc doit être égale à 1")
-    }
-    
-    func testLaunchDayCountSinceSameDay() {
-        // Set last use to now in the past
+    func testFirstSessionAfterUpdate() {
         let today = NSDate()
-        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstLaunch.rawValue)
-        userDefaults.setObject(today, forKey: LifeCycle.LifeCycleKey.FirstLaunchDate.rawValue)
-        userDefaults.setObject(today, forKey: LifeCycle.LifeCycleKey.LastUse.rawValue)
-        userDefaults.setObject(5, forKey: LifeCycle.LifeCycleKey.LaunchDayCount.rawValue)
-        userDefaults.synchronize()
-        
-        _ = Tracker()
-        
-        let stringData = LifeCycle.getMetrics()()
-        let data = stringData.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        
-        let json = JSON(data: data!)
-        
-        XCTAssert(json["lifecycle"]["ldc"].intValue == 6, "la variable ldc doit être égale à 6")
-    }
-    
-    func testLaunchDayCountSinceLastUseInPast() {
-        let today = NSDate()
-        let dateComponent = NSDateComponents()
-        dateComponent.day = -10
-        
-        let past = NSCalendar.currentCalendar().dateByAddingComponents(dateComponent, toDate: today, options: NSCalendarOptions(rawValue: 0))
-        
-        // Set last use 10 days in the past
-        userDefaults.setObject(past, forKey: LifeCycle.LifeCycleKey.LastUse.rawValue)
-        userDefaults.setObject(5, forKey: LifeCycle.LifeCycleKey.LaunchDayCount.rawValue)
-        userDefaults.synchronize()
-        
-        _ = Tracker()
-        
-        let stringData = LifeCycle.getMetrics()()
-        let data = stringData.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        
-        let json = JSON(data: data!)
-        
-        XCTAssert(json["lifecycle"]["ldc"].intValue == 1, "la variable ldc doit être égale à 1")
-    }
-    
-    func testLaunchMonthCount() {
-        
-        _ = Tracker()
-        
-        let stringData = LifeCycle.getMetrics()()
-        let data = stringData.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        
-        let json = JSON(data: data!)
-        
-        XCTAssert(json["lifecycle"]["lmc"].intValue == 1, "la variable ldc doit être égale à 1")
-    }
-    
-    func testLaunchMonthCountSinceSameDay() {
-        // Set last use to now in the past
-        let today = NSDate()
-        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstLaunch.rawValue)
-        userDefaults.setObject(today, forKey: LifeCycle.LifeCycleKey.FirstLaunchDate.rawValue)
-        userDefaults.setObject(today, forKey: LifeCycle.LifeCycleKey.LastUse.rawValue)
-        userDefaults.setObject(5, forKey: LifeCycle.LifeCycleKey.LaunchMonthCount.rawValue)
-        userDefaults.synchronize()
-        
-        _ = Tracker()
-        
-        let stringData = LifeCycle.getMetrics()()
-        let data = stringData.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        
-        let json = JSON(data: data!)
-        
-        XCTAssert(json["lifecycle"]["lmc"].intValue == 6, "la variable lmc doit être égale à 6")
-    }
-    
-    func testLaunchMonthCountSinceLastUseInPast() {
-        let today = NSDate()
-        let dateComponent = NSDateComponents()
-        dateComponent.day = -32
-        
-        let past = NSCalendar.currentCalendar().dateByAddingComponents(dateComponent, toDate: today, options: NSCalendarOptions(rawValue: 0))
-        
-        // Set last use 10 days in the past
-        userDefaults.setObject(past, forKey: LifeCycle.LifeCycleKey.LastUse.rawValue)
-        userDefaults.setObject(5, forKey: LifeCycle.LifeCycleKey.LaunchMonthCount.rawValue)
-        userDefaults.synchronize()
-        
-        _ = Tracker()
-        
-        let stringData = LifeCycle.getMetrics()()
-        let data = stringData.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        
-        let json = JSON(data: data!)
-        
-        XCTAssert(json["lifecycle"]["lmc"].intValue == 1, "la variable lmc doit être égale à 1")
-    }
-    
-    func testLaunchWeekCount() {
-        _ = Tracker()
-        
-        let stringData = LifeCycle.getMetrics()()
-        let data = stringData.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        
-        let json = JSON(data: data!)
-        
-        XCTAssert(json["lifecycle"]["lwc"].intValue == 1, "la variable lwc doit être égale à 1")
-    }
-    
-    func testLaunchWeekCountSinceSameDay() {
-        // Set last use to now in the past
-        let today = NSDate()
-        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstLaunch.rawValue)
-        userDefaults.setObject(today, forKey: LifeCycle.LifeCycleKey.FirstLaunchDate.rawValue)
-        userDefaults.setObject(today, forKey: LifeCycle.LifeCycleKey.LastUse.rawValue)
-        userDefaults.setObject(5, forKey: LifeCycle.LifeCycleKey.LaunchWeekCount.rawValue)
-        userDefaults.synchronize()
-        
-        _ = Tracker()
-        
-        let stringData = LifeCycle.getMetrics()()
-        let data = stringData.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        
-        let json = JSON(data: data!)
-        
-        XCTAssert(json["lifecycle"]["lwc"].intValue == 6, "la variable lwc doit être égale à 6")
-    }
-    
-    func testLaunchWeekCountSinceLastUseInPast() {
-        let today = NSDate()
-        let dateComponent = NSDateComponents()
-        dateComponent.day = -7
-        
-        let past = NSCalendar.currentCalendar().dateByAddingComponents(dateComponent, toDate: today, options: NSCalendarOptions(rawValue: 0))
-        
-        // Set last use 10 days in the past
-        userDefaults.setObject(past, forKey: LifeCycle.LifeCycleKey.LastUse.rawValue)
-        userDefaults.setObject(5, forKey: LifeCycle.LifeCycleKey.LaunchWeekCount.rawValue)
-        userDefaults.synchronize()
-        
-        _ = Tracker()
-        
-        let stringData = LifeCycle.getMetrics()()
-        let data = stringData.dataUsingEncoding(NSUTF8StringEncoding, allowLossyConversion: false)
-        
-        let json = JSON(data: data!)
-        
-        XCTAssert(json["lifecycle"]["lwc"].intValue == 1, "la variable lwc doit être égale à 1")
-    }
-    
-    func testFirstLaunchAfterUpdate() {
-        let today = NSDate()
-        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstLaunch.rawValue)
-        userDefaults.setObject(today, forKey: LifeCycle.LifeCycleKey.FirstLaunchDate.rawValue)
+        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstSession.rawValue)
+        userDefaults.setObject(today, forKey: LifeCycle.LifeCycleKey.FirstSessionDate.rawValue)
         userDefaults.setObject("[0.0]", forKey: LifeCycle.LifeCycleKey.LastApplicationVersion.rawValue)
         userDefaults.synchronize()
         
@@ -368,18 +201,18 @@ class LifeCycleTests: XCTestCase {
         
         let json = JSON(data: data!)
         
-        XCTAssert(json["lifecycle"]["flau"].intValue == 1, "la variable flai doit être égale à 1")
-        XCTAssert(json["lifecycle"]["uld"].intValue == Int(now!), "la variable uld doit être égale à aujourd'hui")
-        XCTAssert(json["lifecycle"]["lcsu"].intValue == 1, "la variable lcsu doit être égale à 1")
+        XCTAssert(json["lifecycle"]["fsau"].intValue == 1, "la variable flai doit être égale à 1")
+        XCTAssert(json["lifecycle"]["fsdau"].intValue == Int(now!), "la variable uld doit être égale à aujourd'hui")
+        XCTAssert(json["lifecycle"]["scsu"].intValue == 1, "la variable lcsu doit être égale à 1")
         XCTAssert(json["lifecycle"]["dsu"].intValue == 0, "la variable dsu doit être égale à 0")
     }
     
     func testUpdateLaunchCount() {
         let today = NSDate()
-        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstLaunch.rawValue)
-        userDefaults.setObject(today, forKey: LifeCycle.LifeCycleKey.FirstLaunchDate.rawValue)
+        userDefaults.setInteger(1, forKey: LifeCycle.LifeCycleKey.FirstSession.rawValue)
+        userDefaults.setObject(today, forKey: LifeCycle.LifeCycleKey.FirstSessionDate.rawValue)
         userDefaults.setObject("", forKey: LifeCycle.LifeCycleKey.LastApplicationVersion.rawValue)
-        userDefaults.setInteger(10, forKey: LifeCycle.LifeCycleKey.LaunchCountSinceUpdate.rawValue)
+        userDefaults.setInteger(10, forKey: LifeCycle.LifeCycleKey.SessionCountSinceUpdate.rawValue)
         userDefaults.synchronize()
         
         _ = Tracker()
@@ -389,7 +222,7 @@ class LifeCycleTests: XCTestCase {
         
         let json = JSON(data: data!)
         
-        XCTAssert(json["lifecycle"]["lcsu"].intValue == 11, "la variable lcsu doit être égale à 11")
+        XCTAssert(json["lifecycle"]["scsu"].intValue == 11, "la variable scsu doit être égale à 11")
     }
     
     func testDaysSinceUpdate() {
@@ -417,12 +250,6 @@ class LifeCycleTests: XCTestCase {
         let nowWith65 = NSDate().dateByAddingTimeInterval(65)
         let delta = Tool.secondsBetweenDates(now, toDate: nowWith65)
         XCTAssert(delta == 65)
-    }
-    
-    func testUpdateFirstLaunch() {
-        _ = Tracker()
-        LifeCycle.updateFirstLaunch()
-        XCTAssertFalse(LifeCycle.firstLaunch)
     }
     
     func testSwitchSessionIfMoreThan60Seconds() {

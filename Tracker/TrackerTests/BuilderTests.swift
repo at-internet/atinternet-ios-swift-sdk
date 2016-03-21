@@ -63,12 +63,12 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         print(message)
     }
     
-    let tracker = Tracker()
+    var tracker = Tracker()
     let configuration = ["log":"logp", "logSSL":"logs", "domain":"xiti.com", "pixelPath":"/hit.xiti", "site":"549808", "secure":"false", "identifier":"uuid"]
     
     override func setUp() {
         super.setUp()
-        
+        tracker = Tracker(configuration: configuration)
         tracker.delegate = self
     }
     

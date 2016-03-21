@@ -2,3 +2,4 @@
 *.xcuserstate
 Tracker/docs/
 Tracker/build/
+*/xcuserdata/*
