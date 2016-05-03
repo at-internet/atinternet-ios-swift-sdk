@@ -81,7 +81,7 @@ public class BackgroundTask {
         
         objc_sync_enter(self)
         taskKey = taskCounter
-        taskCounter++;
+        taskCounter += 1
         objc_sync_exit(self)
 
 #if !AT_EXTENSION

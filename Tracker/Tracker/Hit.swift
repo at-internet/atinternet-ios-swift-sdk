@@ -166,8 +166,8 @@ public class Hit: CustomStringConvertible {
         var params = [Param]()
         var hitType = HitType.Screen
         
-        for(var i = 0; i < parameters.count; i++) {
-            params += parameters[i]
+        for p in parameters {
+            params += p
         }
         
         for p in params {

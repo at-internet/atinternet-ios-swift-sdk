@@ -240,20 +240,6 @@ class LifeCycle {
     }
     
     /**
-     Create a new session if current SessionId is nil
-     
-     - returns: True if a new session has been created false otherwise
-     */
-    class func assignNewSession() -> Bool {
-        if let _ = LifeCycle.sessionId {
-            return false
-        } else {
-            LifeCycle.sessionId = NSUUID().UUIDString
-            return true
-        }
-    }
-    
-    /**
     Get all lifecycle metrics in a JSON format
     
     - returns: a closure that will return a JSON
@@ -300,9 +286,6 @@ class LifeCycle {
             
             // Days sinces last session: dsls
             LifeCycle.parameters["dsls"] = self.daysSinceLastSession
-            
-            // SessionId
-            LifeCycle.parameters["sessionId"] = LifeCycle.sessionId
             
             // SessionId
             LifeCycle.parameters["sessionId"] = LifeCycle.sessionId

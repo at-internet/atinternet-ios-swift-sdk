@@ -228,7 +228,7 @@ public class RichMedia : BusinessObject {
     func initRefresh() {
         if self.timer == nil {
             self.timer = NSTimer.scheduledTimerWithTimeInterval(
-                NSTimeInterval(self.refreshDuration), target: self, selector: Selector("sendRefresh"), userInfo: nil, repeats: true)
+                NSTimeInterval(self.refreshDuration), target: self, selector: #selector(RichMedia.sendRefresh), userInfo: nil, repeats: true)
         }
         
     }

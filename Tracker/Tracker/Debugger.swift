@@ -1,25 +1,25 @@
 /*
-This SDK is licensed under the MIT license (MIT)
-Copyright (c) 2015- Applied Technologies Internet SAS (registration number B 403 261 258 - Trade and Companies Register of Bordeaux – France)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
+ This SDK is licensed under the MIT license (MIT)
+ Copyright (c) 2015- Applied Technologies Internet SAS (registration number B 403 261 258 - Trade and Companies Register of Bordeaux – France)
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
 
 
 
@@ -34,9 +34,9 @@ import UIKit
 
 class Debugger {
     /// View controller where to display debugger
-    var _viewController: UIViewController?
+    weak var _viewController: UIViewController?
     
-    var viewController: UIViewController? {
+    weak var viewController: UIViewController? {
         get {
             return _viewController
         }
@@ -45,9 +45,9 @@ class Debugger {
                 if(_viewController != nil) {
                     if(newValue != _viewController) {
                         _viewController = newValue
-                        
                         deinitDebugger()
                         initDebugger()
+                        updateEventList()
                     }
                 } else {
                     _viewController = newValue
@@ -86,7 +86,7 @@ class Debugger {
     /// Date formatter (dd/MM/yyyy HH:mm:ss)
     let dateHourFormatter = NSDateFormatter()
     /// Offline storage
-    let storage = Storage()
+    let storage = Storage.sharedInstance
     
     class var sharedInstance: Debugger {
         struct Static {
@@ -102,28 +102,28 @@ class Debugger {
     }
     
     /**
-    Add debugger to view controller
-    */
-    func initDebugger() {        
+     Add debugger to view controller
+     */
+    func initDebugger() {
         hourFormatter.dateFormat = "HH':'mm':'ss"
         dateHourFormatter.dateFormat = "dd'/'MM'/'YYYY' 'HH':'mm':'ss"
         
         createDebugButton()
         createEventViewer()
         
-        gestureRecogniser = UIPanGestureRecognizer(target: self, action: "debugButtonWasDragged:")
+        gestureRecogniser = UIPanGestureRecognizer(target: self, action: #selector(Debugger.debugButtonWasDragged(_:)))
         debugButton.addGestureRecognizer(gestureRecogniser)
         
         viewController!.view.bringSubviewToFront(debugButton)
     }
     
     /**
-    Remove debugger from view controller
-    */
+     Remove debugger from view controller
+     */
     func deinitDebugger() {
         debuggerShown = false
         debuggerAnimating = false
-
+        
         debugButton.removeFromSuperview()
         
         for(_, window) in self.windows.enumerate() {
@@ -134,8 +134,8 @@ class Debugger {
     }
     
     /**
-    Add an event to the event list
-    */
+     Add an event to the event list
+     */
     func addEvent(message: String, icon: String) {
         let event = DebuggerEvent()
         event.date = NSDate()
@@ -143,18 +143,16 @@ class Debugger {
         event.message = message
         
         self.receivedEvents.insert(event, atIndex: 0)
-        
-        dispatch_async(dispatch_get_main_queue(), {
-            self.updateEventList()
+        dispatch_sync(dispatch_get_main_queue(), {
+            self.addEventToList()
         })
-        
     }
     
     // MARK: Debug button
     
     /**
-    Create debug button
-    */
+     Create debug button
+     */
     func createDebugButton() {
         debugButton.setBackgroundImage(UIImage(named: "atinternet-logo", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil), forState: UIControlState.Normal)
         debugButton.frame = CGRectMake(0, 0, 94, 73)
@@ -166,20 +164,20 @@ class Debugger {
         // align atButton from the left
         if(debugButtonPosition == "Right") {
             debugButtonConstraint = NSLayoutConstraint(item: debugButton,
-                attribute: NSLayoutAttribute.Trailing,
-                relatedBy: NSLayoutRelation.Equal,
-                toItem: self.viewController!.view,
-                attribute: NSLayoutAttribute.Trailing,
-                multiplier: 1.0,
-                constant: 0)
+                                                       attribute: NSLayoutAttribute.Trailing,
+                                                       relatedBy: NSLayoutRelation.Equal,
+                                                       toItem: self.viewController!.view,
+                                                       attribute: NSLayoutAttribute.Trailing,
+                                                       multiplier: 1.0,
+                                                       constant: 0)
         } else {
             debugButtonConstraint = NSLayoutConstraint(item: debugButton,
-                attribute: NSLayoutAttribute.Leading,
-                relatedBy: NSLayoutRelation.Equal,
-                toItem: self.viewController!.view,
-                attribute: NSLayoutAttribute.Leading,
-                multiplier: 1.0,
-                constant: 0)
+                                                       attribute: NSLayoutAttribute.Leading,
+                                                       relatedBy: NSLayoutRelation.Equal,
+                                                       toItem: self.viewController!.view,
+                                                       attribute: NSLayoutAttribute.Leading,
+                                                       multiplier: 1.0,
+                                                       constant: 0)
         }
         
         self.viewController!.view.addConstraint(debugButtonConstraint)
@@ -198,7 +196,7 @@ class Debugger {
         // height constraint
         self.viewController!.view.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[debugButton(==73)]", options:NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["debugButton": debugButton]))
         
-        debugButton.addTarget(self, action: "debuggerTouched", forControlEvents: UIControlEvents.TouchUpInside)
+        debugButton.addTarget(self, action: #selector(Debugger.debuggerTouched), forControlEvents: UIControlEvents.TouchUpInside)
         
         UIView.animateWithDuration(
             0.4,
@@ -211,8 +209,8 @@ class Debugger {
     }
     
     /**
-    Debug button was dragged (change postion from left to right ...)
-    */
+     Debug button was dragged (change postion from left to right ...)
+     */
     @objc func debugButtonWasDragged(recogniser: UIPanGestureRecognizer) {
         let button = recogniser.view as! UIButton
         let translation = recogniser.translationInView(button)
@@ -271,11 +269,11 @@ class Debugger {
     }
     
     /**
-    Debug button was touched
-    */
+     Debug button was touched
+     */
     @objc func debuggerTouched() {
-        for(var i = 0; i < self.windows.count; i++) {
-            self.windows[i].window.hidden = false
+        for w in self.windows {
+            w.window.hidden = false
         }
         
         if(self.debuggerShown && !debuggerAnimating) {
@@ -286,9 +284,9 @@ class Debugger {
                 delay: 0.0,
                 options: UIViewAnimationOptions.CurveLinear,
                 animations: {
-                    for(var i = 0; i < self.windows.count; i++) {
-                        self.windows[i].content.alpha = 0.0;
-                        self.windows[i].menu.alpha = 0.0;
+                    for w in self.windows {
+                        w.content.alpha = 0.0
+                        w.menu.alpha = 0.0
                     }
                 },
                 completion: {
@@ -303,8 +301,8 @@ class Debugger {
     }
     
     /**
-    Animate window (show or hide)
-    */
+     Animate window (show or hide)
+     */
     func animateEventLog() {
         UIView.animateWithDuration(
             0.2,
@@ -313,17 +311,17 @@ class Debugger {
             animations: {
                 if(self.debuggerShown) {
                     if(self.debugButtonPosition == "Right") {
-                        for(var i = 0; i < self.windows.count; i++) {
-                            self.windows[i].window.frame = CGRectMake(self.viewController!.view.frame.width - 47, self.viewController!.view.frame.height - (self.viewController!.bottomLayoutGuide.length + 93), 0, 0)
+                        for w in self.windows {
+                            w.window.frame = CGRectMake(self.viewController!.view.frame.width - 47, self.viewController!.view.frame.height - (self.viewController!.bottomLayoutGuide.length + 93), 0, 0)
                         }
                     } else {
-                        for(var i = 0; i < self.windows.count; i++) {
-                            self.windows[i].window.frame = CGRectMake(47, self.viewController!.view.frame.height - (self.viewController!.bottomLayoutGuide.length + 93), 0, 0)
+                        for w in self.windows {
+                            w.window.frame = CGRectMake(47, self.viewController!.view.frame.height - (self.viewController!.bottomLayoutGuide.length + 93), 0, 0)
                         }
                     }
                 } else {
-                    for(var i = 0; i < self.windows.count; i++) {
-                        self.windows[i].window.frame = CGRectMake(10, (self.viewController!.topLayoutGuide.length + 10), self.viewController!.view.frame.width - 20, self.viewController!.view.frame.height - (self.viewController!.bottomLayoutGuide.length + 93) - (self.viewController!.topLayoutGuide.length + 10))
+                    for w in self.windows {
+                        w.window.frame = CGRectMake(10, (self.viewController!.topLayoutGuide.length + 10), self.viewController!.view.frame.width - 20, self.viewController!.view.frame.height - (self.viewController!.bottomLayoutGuide.length + 93) - (self.viewController!.topLayoutGuide.length + 10))
                     }
                 }
             },
@@ -336,17 +334,17 @@ class Debugger {
                         delay: 0.0,
                         options: UIViewAnimationOptions.CurveLinear,
                         animations: {
-                            for(var i = 0; i < self.windows.count; i++) {
-                                self.windows[i].content.alpha = 1.0;
-                                self.windows[i].menu.alpha = 1.0;
+                            for w in self.windows {
+                                w.content.alpha = 1.0
+                                w.menu.alpha = 1.0
                             }
                         },
                         completion: nil)
                     
                     self.viewController!.view.bringSubviewToFront(self.windows[self.windows.count - 1].window)
                 } else {
-                    for(var i = 0; i < self.windows.count; i++) {
-                        self.windows[i].window.hidden = true
+                    for w in self.windows {
+                        w.window.hidden = true
                     }
                 }
                 
@@ -358,15 +356,15 @@ class Debugger {
     //MARK: Event viewer
     
     /**
-    Create event viewer window
-    */
+     Create event viewer window
+     */
     func createEventViewer() {
         let eventViewer: (window: UIView, content: UIView, menu: UIView, windowTitle: String) = self.createWindow("Event viewer")
         
         let offlineButton = UIButton()
         offlineButton.translatesAutoresizingMaskIntoConstraints = false
         offlineButton.setBackgroundImage(UIImage(named: "database64", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil), forState: UIControlState.Normal)
-        offlineButton.addTarget(self, action: "createOfflineHitsViewer", forControlEvents: UIControlEvents.TouchUpInside)
+        offlineButton.addTarget(self, action: #selector(Debugger.createOfflineHitsViewer), forControlEvents: UIControlEvents.TouchUpInside)
         
         eventViewer.menu.addSubview(offlineButton)
         
@@ -416,7 +414,7 @@ class Debugger {
         trashButton.translatesAutoresizingMaskIntoConstraints = false
         
         trashButton.setBackgroundImage(UIImage(named: "trash64", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil), forState: UIControlState.Normal)
-        trashButton.addTarget(self, action: "trashEvents", forControlEvents: UIControlEvents.TouchUpInside)
+        trashButton.addTarget(self, action: #selector(Debugger.trashEvents), forControlEvents: UIControlEvents.TouchUpInside)
         
         // width constraint
         eventViewer.menu.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[trashButton(==32)]", options:NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["trashButton": trashButton]))
@@ -439,8 +437,8 @@ class Debugger {
     }
     
     /**
-    Builds offline hits list rows
-    */
+     Builds offline hits list rows
+     */
     func getEventsList(eventViewer: (window:UIView, content:UIView, menu: UIView, windowTitle: String)) {
         
         let scrollViews = eventViewer.content.subviews.filter({ return $0 is UIScrollView }) as! [UIScrollView]
@@ -453,6 +451,11 @@ class Debugger {
         }
         
         if(scrollViews.count > 0) {
+            for row in scrollViews[0].subviews {
+                row.tag = 9999999
+                row.removeFromSuperview()
+            }
+            
             scrollViews[0].removeFromSuperview()
         }
         
@@ -465,6 +468,7 @@ class Debugger {
         scrollView.showsVerticalScrollIndicator = true
         scrollView.scrollEnabled = true
         scrollView.userInteractionEnabled = true
+        scrollView.tag = -100
         
         eventViewer.content.addSubview(scrollView)
         
@@ -499,8 +503,6 @@ class Debugger {
             attribute: .Trailing,
             multiplier: 1.0,
             constant: 0))
-        
-        var previousRow: UIView!
         
         if(receivedEvents.count == 0) {
             let emptyContentView = UIView()
@@ -549,206 +551,227 @@ class Debugger {
                 multiplier: 1.0,
                 constant: 0))
         } else {
-            for(i, event) in receivedEvents.enumerate() {
-                let rowView = UIView()
-                rowView.translatesAutoresizingMaskIntoConstraints = false
-                rowView.userInteractionEnabled = true
-                rowView.tag = i
-                rowView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "eventRowSelected:"))
-                
-                scrollView.addSubview(rowView)
-                
-                scrollView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[rowView]-0-|", options:NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["rowView": rowView]))
-                
-                if(i == 0) {
-                    scrollView.addConstraint(NSLayoutConstraint(item: rowView,
-                        attribute: .Top,
-                        relatedBy: .Equal,
-                        toItem: scrollView,
-                        attribute: .Top,
-                        multiplier: 1.0,
-                        constant: 0))
-                    
-                    scrollView.addConstraint(NSLayoutConstraint(item: rowView,
-                        attribute: .CenterX,
-                        relatedBy: .Equal,
-                        toItem: scrollView,
-                        attribute: .CenterX,
-                        multiplier: 1.0,
-                        constant: 0))
-                } else {
-                    scrollView.addConstraint(NSLayoutConstraint(item: rowView,
-                        attribute: .Top,
-                        relatedBy: .Equal,
-                        toItem: previousRow,
-                        attribute: .Bottom,
-                        multiplier: 1.0,
-                        constant: 0))
-                }
-                
-                if(i % 2 == 0) {
-                    rowView.backgroundColor = UIColor(red: 214/255, green: 214/255, blue: 214/255, alpha: 1)
-                } else {
-                    rowView.backgroundColor = UIColor.whiteColor()
-                }
-                
-                if(i == receivedEvents.count - 1) {
-                    scrollView.addConstraint(NSLayoutConstraint(item: rowView,
-                        attribute: .Bottom,
-                        relatedBy: .Equal,
-                        toItem: scrollView,
-                        attribute: .Bottom,
-                        multiplier: 1.0,
-                        constant: 0))
-                }
-                
-                let iconView = UIImageView()
-                let dateLabel = UILabel()
-                let messageLabel = UILabel()
-                let hitTypeView = UIImageView()
-                
-                iconView.translatesAutoresizingMaskIntoConstraints = false
-                dateLabel.translatesAutoresizingMaskIntoConstraints = false
-                messageLabel.translatesAutoresizingMaskIntoConstraints = false
-                hitTypeView.translatesAutoresizingMaskIntoConstraints = false
-                
-                rowView.addSubview(iconView)
-                rowView.addSubview(dateLabel)
-                rowView.addSubview(messageLabel)
-                rowView.addSubview(hitTypeView)
-                
-                /******* ICON ********/
-                iconView.image = UIImage(named: event.type, inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
-                
-                rowView.addConstraint(NSLayoutConstraint(item: iconView,
-                    attribute: .Left,
-                    relatedBy: .Equal,
-                    toItem: rowView,
-                    attribute: .Left,
-                    multiplier: 1.0,
-                    constant: 5))
-                
-                // align iconView from the top and bottom
-                rowView.addConstraint(NSLayoutConstraint(item: iconView,
-                    attribute: .CenterY,
-                    relatedBy: .Equal,
-                    toItem: rowView,
-                    attribute: .CenterY,
-                    multiplier: 1.0,
-                    constant: -1))
-                
-                // width constraint
-                rowView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[iconView(==24)]", options: NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["iconView": iconView]))
-                
-                // height constraint
-                rowView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[iconView(==24)]", options: NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["iconView": iconView]))
-                /******* END ICON ********/
-                
-                /******* DATE ********/
-                dateLabel.text = hourFormatter.stringFromDate(event.date)
-                dateLabel.sizeToFit();
-                
-                // align iconView from the top and bottom
-                rowView.addConstraint(NSLayoutConstraint(item: dateLabel,
-                    attribute: .Left,
-                    relatedBy: .Equal,
-                    toItem: iconView,
-                    attribute: .Right,
-                    multiplier: 1.0,
-                    constant: 5))
-                
-                rowView.addConstraint(NSLayoutConstraint(item: dateLabel,
-                    attribute: .CenterY,
-                    relatedBy: .Equal,
-                    toItem: rowView,
-                    attribute: .CenterY,
-                    multiplier: 1.0,
-                    constant: 0))
-                /******* END DATE ********/
-                
-                /******* HIT ********/
-                messageLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
-                messageLabel.baselineAdjustment = UIBaselineAdjustment.None
-                messageLabel.text = event.message
-                
-                rowView.addConstraint(NSLayoutConstraint(item: messageLabel,
-                    attribute: .Left,
-                    relatedBy: .Equal,
-                    toItem: dateLabel,
-                    attribute: .Right,
-                    multiplier: 1.0,
-                    constant: 10))
-                
-                rowView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-12-[messageLabel]-12-|", options:NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["messageLabel": messageLabel]))
-                
-                /******* END HIT ********/
-                
-                /******* HIT TYPE ********/
-                let URL = NSURL(string: event.message)
-                
-                if let optURL = URL {
-                    hitTypeView.hidden = false
-                    
-                    let hit = Hit(url: optURL.absoluteString)
-                    
-                    switch(hit.getHitType()) {
-                    case Hit.HitType.Touch:
-                        hitTypeView.image = UIImage(named: "touch48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
-                    case Hit.HitType.AdTracking:
-                        hitTypeView.image = UIImage(named: "tv48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
-                    case Hit.HitType.Audio:
-                        hitTypeView.image = UIImage(named: "audio48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
-                    case Hit.HitType.Video:
-                        hitTypeView.image = UIImage(named: "video48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
-                    case Hit.HitType.ProductDisplay:
-                        hitTypeView.image = UIImage(named: "product48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
-                    default:
-                        hitTypeView.image = UIImage(named: "smartphone48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
-                    }
-                } else {
-                    hitTypeView.hidden = true
-                }
-                
-                rowView.addConstraint(NSLayoutConstraint(item: hitTypeView,
-                    attribute: .Left,
-                    relatedBy: NSLayoutRelation.GreaterThanOrEqual,
-                    toItem: messageLabel,
-                    attribute: .Right,
-                    multiplier: 1.0,
-                    constant: 10))
-                
-                // align iconView from the top and bottom
-                rowView.addConstraint(NSLayoutConstraint(item: hitTypeView,
-                    attribute: .CenterY,
-                    relatedBy: .Equal,
-                    toItem: rowView,
-                    attribute: .CenterY,
-                    multiplier: 1.0,
-                    constant: -1))
-                
-                // width constraint
-                rowView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[hitTypeView(==24)]", options: NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["hitTypeView": hitTypeView]))
-                
-                // height constraint
-                rowView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[hitTypeView(==24)]", options: NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["hitTypeView": hitTypeView]))
-                
-                rowView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[hitTypeView]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["hitTypeView": hitTypeView]))
-                
-                previousRow = rowView
+            previousConstraintForEvents = nil
+            var previous: UIView?
+            for (i,event) in receivedEvents.enumerate() {
+                previous = buildEventRow(event, tag: i, scrollView: scrollView, previousRow: previous)
             }
         }
     }
     
+    var previousConstraintForEvents: NSLayoutConstraint!
+    func buildEventRow(event: DebuggerEvent, tag: Int, scrollView: UIScrollView, previousRow: UIView?) -> UIView {
+        let rowView = UIView()
+        rowView.translatesAutoresizingMaskIntoConstraints = false
+        rowView.userInteractionEnabled = true
+        rowView.tag = tag
+        rowView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Debugger.eventRowSelected(_:))))
+        
+        scrollView.addSubview(rowView)
+        
+        scrollView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:|-0-[rowView]-0-|", options:NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["rowView": rowView]))
+        
+        if(tag == 0) {
+            scrollView.addConstraint(NSLayoutConstraint(item: rowView,
+                attribute: .Top,
+                relatedBy: .Equal,
+                toItem: scrollView,
+                attribute: .Top,
+                multiplier: 1.0,
+                constant: 0))
+            
+            scrollView.addConstraint(NSLayoutConstraint(item: rowView,
+                attribute: .CenterX,
+                relatedBy: .Equal,
+                toItem: scrollView,
+                attribute: .CenterX,
+                multiplier: 1.0,
+                constant: 0))
+        } else {
+            scrollView.addConstraint(NSLayoutConstraint(item: rowView,
+                attribute: .Top,
+                relatedBy: .Equal,
+                toItem: previousRow,
+                attribute: .Bottom,
+                multiplier: 1.0,
+                constant: 0))
+        }
+        
+        if(tag % 2 == 0) {
+            rowView.backgroundColor = UIColor(red: 214/255, green: 214/255, blue: 214/255, alpha: 1)
+        } else {
+            rowView.backgroundColor = UIColor.whiteColor()
+        }
+        
+        if(tag == receivedEvents.count - 1) {
+            if previousConstraintForEvents != nil {
+                scrollView.removeConstraint(previousConstraintForEvents)
+            }
+            previousConstraintForEvents = NSLayoutConstraint(item: rowView,
+                                                             attribute: .Bottom,
+                                                             relatedBy: .Equal,
+                                                             toItem: scrollView,
+                                                             attribute: .Bottom,
+                                                             multiplier: 1.0,
+                                                             constant: 0)
+            scrollView.addConstraint(previousConstraintForEvents)
+        }
+        
+        let iconView = UIImageView()
+        let dateLabel = UILabel()
+        let messageLabel = UILabel()
+        let hitTypeView = UIImageView()
+        
+        iconView.translatesAutoresizingMaskIntoConstraints = false
+        dateLabel.translatesAutoresizingMaskIntoConstraints = false
+        messageLabel.translatesAutoresizingMaskIntoConstraints = false
+        hitTypeView.translatesAutoresizingMaskIntoConstraints = false
+        
+        rowView.addSubview(iconView)
+        rowView.addSubview(dateLabel)
+        rowView.addSubview(messageLabel)
+        rowView.addSubview(hitTypeView)
+        
+        /******* ICON ********/
+        iconView.image = UIImage(named: event.type, inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
+        
+        rowView.addConstraint(NSLayoutConstraint(item: iconView,
+            attribute: .Left,
+            relatedBy: .Equal,
+            toItem: rowView,
+            attribute: .Left,
+            multiplier: 1.0,
+            constant: 5))
+        
+        // align iconView from the top and bottom
+        rowView.addConstraint(NSLayoutConstraint(item: iconView,
+            attribute: .CenterY,
+            relatedBy: .Equal,
+            toItem: rowView,
+            attribute: .CenterY,
+            multiplier: 1.0,
+            constant: -1))
+        
+        // width constraint
+        rowView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[iconView(==24)]", options: NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["iconView": iconView]))
+        
+        // height constraint
+        rowView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[iconView(==24)]", options: NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["iconView": iconView]))
+        /******* END ICON ********/
+        
+        /******* DATE ********/
+        dateLabel.text = hourFormatter.stringFromDate(event.date)
+        dateLabel.sizeToFit();
+        
+        // align iconView from the top and bottom
+        rowView.addConstraint(NSLayoutConstraint(item: dateLabel,
+            attribute: .Left,
+            relatedBy: .Equal,
+            toItem: iconView,
+            attribute: .Right,
+            multiplier: 1.0,
+            constant: 5))
+        
+        rowView.addConstraint(NSLayoutConstraint(item: dateLabel,
+            attribute: .CenterY,
+            relatedBy: .Equal,
+            toItem: rowView,
+            attribute: .CenterY,
+            multiplier: 1.0,
+            constant: 0))
+        /******* END DATE ********/
+        
+        /******* HIT ********/
+        messageLabel.lineBreakMode = NSLineBreakMode.ByTruncatingTail
+        messageLabel.baselineAdjustment = UIBaselineAdjustment.None
+        messageLabel.text = event.message
+        
+        rowView.addConstraint(NSLayoutConstraint(item: messageLabel,
+            attribute: .Left,
+            relatedBy: .Equal,
+            toItem: dateLabel,
+            attribute: .Right,
+            multiplier: 1.0,
+            constant: 10))
+        
+        rowView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:|-12-[messageLabel]-12-|", options:NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["messageLabel": messageLabel]))
+        
+        /******* END HIT ********/
+        
+        /******* HIT TYPE ********/
+        let URL = NSURL(string: event.message)
+        
+        if let optURL = URL {
+            hitTypeView.hidden = false
+            
+            let hit = Hit(url: optURL.absoluteString)
+            
+            switch(hit.getHitType()) {
+            case Hit.HitType.Touch:
+                hitTypeView.image = UIImage(named: "touch48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
+            case Hit.HitType.AdTracking:
+                hitTypeView.image = UIImage(named: "tv48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
+            case Hit.HitType.Audio:
+                hitTypeView.image = UIImage(named: "audio48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
+            case Hit.HitType.Video:
+                hitTypeView.image = UIImage(named: "video48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
+            case Hit.HitType.ProductDisplay:
+                hitTypeView.image = UIImage(named: "product48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
+            default:
+                hitTypeView.image = UIImage(named: "smartphone48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil)
+            }
+        } else {
+            hitTypeView.hidden = true
+        }
+        
+        rowView.addConstraint(NSLayoutConstraint(item: hitTypeView,
+            attribute: .Left,
+            relatedBy: NSLayoutRelation.GreaterThanOrEqual,
+            toItem: messageLabel,
+            attribute: .Right,
+            multiplier: 1.0,
+            constant: 10))
+        
+        // align iconView from the top and bottom
+        rowView.addConstraint(NSLayoutConstraint(item: hitTypeView,
+            attribute: .CenterY,
+            relatedBy: .Equal,
+            toItem: rowView,
+            attribute: .CenterY,
+            multiplier: 1.0,
+            constant: -1))
+        
+        // width constraint
+        rowView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[hitTypeView(==24)]", options: NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["hitTypeView": hitTypeView]))
+        
+        // height constraint
+        rowView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("V:[hitTypeView(==24)]", options: NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["hitTypeView": hitTypeView]))
+        
+        rowView.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[hitTypeView]-5-|", options: NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["hitTypeView": hitTypeView]))
+        
+        return rowView
+    }
+    
     /**
-    Reload event list
-    */
+     Reload event list
+     */
     func updateEventList() {
         getEventsList(self.windows[0])
     }
     
+    @objc func addEventToList() {
+        let window = self.windows[0]
+        
+        window.content.viewWithTag(-2)?.removeFromSuperview()
+        
+        let scrollview = window.content.viewWithTag(-100) as! UIScrollView
+        
+        buildEventRow(self.receivedEvents[self.receivedEvents.count - 1], tag: self.receivedEvents.count - 1, scrollView: scrollview, previousRow: scrollview.viewWithTag(self.receivedEvents.count - 2))
+    }
+    
     /**
-    event list row selected
-    */
+     event list row selected
+     */
     @objc func eventRowSelected(recogniser: UIPanGestureRecognizer) {
         self.windows[0].content.hidden = true
         
@@ -760,8 +783,8 @@ class Debugger {
     }
     
     /**
-    Delete received events
-    */
+     Delete received events
+     */
     @objc func trashEvents() {
         self.receivedEvents.removeAll(keepCapacity: false)
         updateEventList()
@@ -770,10 +793,10 @@ class Debugger {
     //MARK: Event detail
     
     /**
-    Create event detail window
-    
-    - parameter hit: or message to display
-    */
+     Create event detail window
+     
+     - parameter hit: or message to display
+     */
     func createEventDetailView(hit: String) -> UIView {
         var eventDetail: (window: UIView, content: UIView, menu: UIView, windowTitle: String) = self.createWindow("Hit Detail")
         eventDetail.window.alpha = 0.0;
@@ -789,7 +812,7 @@ class Debugger {
         
         backButton.setBackgroundImage(UIImage(named: "back64", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil), forState: UIControlState.Normal)
         backButton.tag = self.windows.count - 1
-        backButton.addTarget(self, action: "backButtonWasTouched:", forControlEvents: UIControlEvents.TouchUpInside)
+        backButton.addTarget(self, action: #selector(Debugger.backButtonWasTouched(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         
         // width constraint
         eventDetail.menu.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[backButton(==32)]", options:NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["backButton": backButton]))
@@ -1014,7 +1037,7 @@ class Debugger {
                 
                 previousRow = rowView
                 
-                i++
+                i += 1
             }
         } else {
             eventDetail.windowTitle = "Event detail"
@@ -1063,8 +1086,8 @@ class Debugger {
     //MARK: Offline hits
     
     /**
-    Create offline hits window
-    */
+     Create offline hits window
+     */
     @objc func createOfflineHitsViewer() {
         let offlineHits: (window: UIView, content: UIView, menu: UIView, windowTitle: String) = self.createWindow("Offline Hits")
         offlineHits.window.alpha = 0.0;
@@ -1082,7 +1105,7 @@ class Debugger {
         
         backButton.setBackgroundImage(UIImage(named: "back64", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil), forState: UIControlState.Normal)
         backButton.tag = self.windows.count - 1
-        backButton.addTarget(self, action: "backButtonWasTouched:", forControlEvents: UIControlEvents.TouchUpInside)
+        backButton.addTarget(self, action: #selector(Debugger.backButtonWasTouched(_:)), forControlEvents: UIControlEvents.TouchUpInside)
         
         // width constraint
         offlineHits.menu.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[backButton(==32)]", options:NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["backButton": backButton]))
@@ -1108,7 +1131,7 @@ class Debugger {
         trashButton.translatesAutoresizingMaskIntoConstraints = false
         
         trashButton.setBackgroundImage(UIImage(named: "trash64", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil), forState: UIControlState.Normal)
-        trashButton.addTarget(self, action: "trashOfflineHits", forControlEvents: UIControlEvents.TouchUpInside)
+        trashButton.addTarget(self, action: #selector(Debugger.trashOfflineHits), forControlEvents: UIControlEvents.TouchUpInside)
         
         // width constraint
         offlineHits.menu.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[trashButton(==32)]", options:NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["trashButton": trashButton]))
@@ -1134,7 +1157,7 @@ class Debugger {
         refreshButton.translatesAutoresizingMaskIntoConstraints = false
         
         refreshButton.setBackgroundImage(UIImage(named: "refresh64", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil), forState: UIControlState.Normal)
-        refreshButton.addTarget(self, action: "refreshOfflineHits", forControlEvents: UIControlEvents.TouchUpInside)
+        refreshButton.addTarget(self, action: #selector(Debugger.refreshOfflineHits), forControlEvents: UIControlEvents.TouchUpInside)
         
         // width constraint
         offlineHits.menu.addConstraints(NSLayoutConstraint.constraintsWithVisualFormat("H:[refreshButton(==32)]", options:NSLayoutFormatOptions(rawValue: 0), metrics:nil, views:["refreshButton": refreshButton]))
@@ -1166,15 +1189,15 @@ class Debugger {
     }
     
     /**
-    Refresh offline hits list
-    */
+     Refresh offline hits list
+     */
     @objc func refreshOfflineHits() {
         getOfflineHitsList(self.windows[self.windows.count - 1])
     }
     
     /**
-    Builds offline hits list rows
-    */
+     Builds offline hits list rows
+     */
     func getOfflineHitsList(offlineHits: (window:UIView, content:UIView, menu: UIView, windowTitle: String)) {
         
         let scrollViews = offlineHits.content.subviews.filter({ return $0 is UIScrollView }) as! [UIScrollView]
@@ -1290,7 +1313,7 @@ class Debugger {
                 rowView.translatesAutoresizingMaskIntoConstraints = false
                 rowView.userInteractionEnabled = true
                 rowView.tag = i
-                rowView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: "offlineHitRowSelected:"))
+                rowView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(Debugger.offlineHitRowSelected(_:))))
                 
                 scrollView.addSubview(rowView)
                 
@@ -1435,7 +1458,7 @@ class Debugger {
                 
                 deleteButton.setBackgroundImage(UIImage(named: "trash48", inBundle: NSBundle(forClass: Tracker.self), compatibleWithTraitCollection: nil), forState: UIControlState.Normal)
                 deleteButton.tag = i
-                deleteButton.addTarget(self, action: "deleteOfflineHit:", forControlEvents: UIControlEvents.TouchUpInside)
+                deleteButton.addTarget(self, action: #selector(Debugger.deleteOfflineHit(_:)), forControlEvents: UIControlEvents.TouchUpInside)
                 
                 rowView.addConstraint(NSLayoutConstraint(item: deleteButton,
                     attribute: .Leading,
@@ -1468,8 +1491,8 @@ class Debugger {
     }
     
     /**
-    Offline hit list row selected
-    */
+     Offline hit list row selected
+     */
     @objc func offlineHitRowSelected(recogniser: UIPanGestureRecognizer) {
         self.windows[1].content.hidden = true
         
@@ -1481,17 +1504,17 @@ class Debugger {
     }
     
     /**
-    Delete offline hit
-    */
+     Delete offline hit
+     */
     @objc func deleteOfflineHit(sender: UIButton) {
-        let storage = Storage()
+        //let storage = Storage(concurrencyType: .MainQueueConcurrencyType)
         storage.delete(hits[sender.tag].url)
         getOfflineHitsList(self.windows[self.windows.count - 1])
     }
     
     /**
-    Delete all offline hits
-    */
+     Delete all offline hits
+     */
     @objc func trashOfflineHits() {
         storage.delete()
         
@@ -1501,8 +1524,8 @@ class Debugger {
     //MARK: Window management
     
     /**
-    Create a new window
-    */
+     Create a new window
+     */
     func createWindow(windowTitle: String) -> (window:UIView, content:UIView, menu: UIView, windowTitle: String) {
         let window = UIView()
         if(windows.count == 0) {
@@ -1537,14 +1560,14 @@ class Debugger {
                 attribute: NSLayoutAttribute.Bottom,
                 multiplier: 1.0,
                 constant: 10))
-
+            
             let popupVsButtonConstraint = NSLayoutConstraint(item: self.debugButton,
-                attribute: .Top,
-                relatedBy: .Equal,
-                toItem: window,
-                attribute: .Bottom,
-                multiplier: 1.0,
-                constant: 10.0)
+                                                             attribute: .Top,
+                                                             relatedBy: .Equal,
+                                                             toItem: window,
+                                                             attribute: .Bottom,
+                                                             multiplier: 1.0,
+                                                             constant: 10.0)
             
             self.viewController!.view.addConstraint(popupVsButtonConstraint)
         } else {
@@ -1628,8 +1651,8 @@ class Debugger {
     }
     
     /**
-    Back button pressed
-    */
+     Back button pressed
+     */
     @objc func backButtonWasTouched(sender:UIButton) {
         for(_, view) in self.windows[sender.tag - 1].menu.subviews.enumerate() {
             if let button = view as? UIButton {
@@ -1645,10 +1668,10 @@ class Debugger {
     }
     
     /**
-    Hide menu buttons from previous window
-    
-    - parameter window: where buttons need to be hidden
-    */
+     Hide menu buttons from previous window
+     
+     - parameter window: where buttons need to be hidden
+     */
     private func hidePreviousWindowMenuButtons(window: UIView) {
         UIView.animateWithDuration(
             0.2,
@@ -1668,20 +1691,20 @@ class Debugger {
     }
     
     /**
-    Sort hit by date from most recent to oldest
-    
-    - parameter first: hit to compare
-    - parameter second: hit
-    
-    */
+     Sort hit by date from most recent to oldest
+     
+     - parameter first: hit to compare
+     - parameter second: hit
+     
+     */
     func sortOfflineHits(hit1: Hit, hit2: Hit) -> Bool {
         return hit1.creationDate.timeIntervalSince1970 > hit2.creationDate.timeIntervalSince1970
     }
 }
 
 /**
-Event class
-*/
+ Event class
+ */
 public class DebuggerEvent {
     /// Date of event
     var date: NSDate
@@ -1698,8 +1721,8 @@ public class DebuggerEvent {
 }
 
 /**
-Rounded corner for debugger menu
-*/
+ Rounded corner for debugger menu
+ */
 class DebuggerTopBar: UIView {
     
     override init(frame: CGRect) {

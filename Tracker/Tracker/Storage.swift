@@ -1,25 +1,25 @@
 /*
-This SDK is licensed under the MIT license (MIT)
-Copyright (c) 2015- Applied Technologies Internet SAS (registration number B 403 261 258 - Trade and Companies Register of Bordeaux – France)
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-*/
+ This SDK is licensed under the MIT license (MIT)
+ Copyright (c) 2015- Applied Technologies Internet SAS (registration number B 403 261 258 - Trade and Companies Register of Bordeaux – France)
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+ */
 
 
 
@@ -35,20 +35,22 @@ import CoreData
 
 /// Offline hit storage
 class Storage {
-    
-    // MARK: - Core Data Management
-    
-    /// Name of the entity
-    let entityName = "StoredOfflineHit"
+
+    static let sharedInstance = Storage()
     
     /// Directory where the database is saved
-    lazy var databaseDirectory: NSURL = {
+    let databaseDirectory: NSURL = {
         let urls = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask)
-        return urls[urls.count - 1] 
+        return urls[urls.count - 1]
+    }()
+
+    /// Context
+    let managedObjectContext: NSManagedObjectContext? = {
+        return NSManagedObjectContext(concurrencyType: .PrivateQueueConcurrencyType)
     }()
     
     /// Data model
-    lazy var managedObjectModel: NSManagedObjectModel = {
+    let managedObjectModel: NSManagedObjectModel = {
         let bundle = NSBundle(forClass: Tracker.self)
         let modelPath = bundle.pathForResource("Tracker", ofType: "momd")
         let modelURL = NSURL(fileURLWithPath: modelPath!)
@@ -56,72 +58,80 @@ class Storage {
         return NSManagedObjectModel(contentsOfURL: modelURL)!
     }()
     
-    /// Database handler
-    lazy var persistentStoreCoordinator: NSPersistentStoreCoordinator? = {
-        var coordinator: NSPersistentStoreCoordinator? = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
+    let persistentStoreCoordinator: NSPersistentStoreCoordinator?
+    
+    // MARK: - Core Data Management
+    
+    /// Name of the entity
+    let entityName = "StoredOfflineHit"
+
+
+    /**
+     Default initializer
+     */
+    private init() {
+        persistentStoreCoordinator = NSPersistentStoreCoordinator(managedObjectModel: self.managedObjectModel)
         // URL of database
-        let url = self.databaseDirectory.URLByAppendingPathComponent("Tracker.sqlite")
-        
-        var error: NSError? = nil
+        let url = self.databaseDirectory
         do {
-            try coordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: url, options: [
+            try NSFileManager.defaultManager().createDirectoryAtURL(url, withIntermediateDirectories: true, attributes: nil)
+        }
+        catch {
+            print("Error creating Document folder")
+        }
+        
+        let dbURL = url.URLByAppendingPathComponent("Tracker.sqlite")
+
+        do {
+            try persistentStoreCoordinator!.addPersistentStoreWithType(NSSQLiteStoreType, configuration: nil, URL: dbURL, options: [
                     NSMigratePersistentStoresAutomaticallyOption: true,
                     NSInferMappingModelAutomaticallyOption: true
-                ])
-        } catch var error1 as NSError {
-            error = error1
-            coordinator = nil
+            ])
+        } catch _ as NSError {
+            fatalError()
         } catch {
             fatalError()
         }
-        
-        return coordinator
-    }()
-    
-    /// Context
-    lazy var managedObjectContext: NSManagedObjectContext? = {
-        let coordinator = self.persistentStoreCoordinator
-        if coordinator == nil {
-            return nil
-        }
-        var managedObjectContext = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        managedObjectContext.persistentStoreCoordinator = coordinator
-        return managedObjectContext
-    }()
+        managedObjectContext!.persistentStoreCoordinator = persistentStoreCoordinator
+    }
     
     /**
-    Save changes the data context
-    
-    - returns: true if the hit was saved successfully
-    */
+     Save changes the data context
+     
+     - returns: true if the hit was saved successfully
+     */
     func saveContext() -> Bool {
+        var done = false
         if let moc = self.managedObjectContext {
-            if(moc.hasChanges) {
-                do {
-                    try moc.save()
-                    return true
+            moc.performBlockAndWait({
+                if(moc.hasChanges) {
+                    done = false
+                    do {
+                        try moc.save()
+                        done = true
+                    }
+                    catch {
+                        done = false
+                    }
+                } else {
+                    done = true
                 }
-                catch {
-                    return false
-                }
-            } else {
-                return true
-            }
+            })
+            return done
         }
-        
         return false
     }
     
     // MARK: - CRUD
     
     /**
-    Insert hit in database
-    
-    :params: hit to be saved
-    :params: fixed olt used in case of offline and multihits
-    
-    - returns: true if hit has been successfully saved
-    */
+     Insert hit in database
+     
+     :params: hit to be saved
+     :params: fixed olt used in case of offline and multihits
+     
+     - returns: true if hit has been successfully saved
+     */
     func insert(inout hit: String, mhOlt: String?) -> Bool {
         
         if let moc = self.managedObjectContext {
@@ -137,14 +147,22 @@ class Storage {
             
             // Format hit before storage (olt, cn)
             hit = buildHitToStore(hit, olt: olt)
-            
+            var done = false
             if(exists(hit) == false) {
-                let managedHit = NSEntityDescription.insertNewObjectForEntityForName(entityName, inManagedObjectContext: moc) as! StoredOfflineHit
-                managedHit.hit = hit
-                managedHit.date = now
-                managedHit.retry = 0
-                
-                return saveContext()
+                moc.performBlockAndWait({
+                    let managedHit = NSEntityDescription.insertNewObjectForEntityForName(self.entityName, inManagedObjectContext: moc) as! StoredOfflineHit
+                    managedHit.hit = hit
+                    managedHit.date = now
+                    managedHit.retry = 0
+                    do {
+                        try moc.save()
+                        done = true
+                    }
+                    catch {
+                        done = false
+                    }
+                })
+                return done
             } else {
                 return true
             }
@@ -154,55 +172,59 @@ class Storage {
     }
     
     /**
-    Get all hits stored in database
-    
-    - returns: hits
-    */
+     Get all hits stored in database
+     
+     - returns: hits
+     */
     func get() -> [Hit] {
         if let moc = self.managedObjectContext {
             let request = NSFetchRequest(entityName: entityName)
             var hits = [Hit]()
             
-            if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
-                for object in objects {
-                    let hit = Hit()
-                    hit.url = object.hit
-                    hit.creationDate = object.date
-                    hit.retryCount = object.retry
-                    hit.isOffline = true
-                    
-                    hits.append(hit)
+            moc.performBlockAndWait({
+                if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
+                    for object in objects {
+                        let hit = Hit()
+                        hit.url = object.hit
+                        hit.creationDate = object.date
+                        hit.retryCount = object.retry
+                        hit.isOffline = true
+                        
+                        hits.append(hit)
+                    }
                 }
-                
-                return hits
-            }
+            })
+            return hits
         }
         return [Hit]()
     }
     
     /**
-    Get all hits stored in database
-    
-    - returns: hits
-    */
+     Get all hits stored in database
+     
+     - returns: hits
+     */
     func getStoredHits() -> [StoredOfflineHit] {
         if let moc = self.managedObjectContext {
             let request = NSFetchRequest(entityName: entityName)
-            
-            if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
-                return objects
-            }
+            var objects = [StoredOfflineHit]()
+            moc.performBlockAndWait({
+                if let o = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
+                    objects = o
+                }
+            })
+            return objects
         }
         return [StoredOfflineHit]()
     }
     
     /**
-    Get one hit stored in database
-    
-    :params: hit to select
-    
-    - returns: an offline hit
-    */
+     Get one hit stored in database
+     
+     :params: hit to select
+     
+     - returns: an offline hit
+     */
     func get(hit: String) -> Hit? {
         if let moc = self.managedObjectContext {
             let request = NSFetchRequest(entityName: entityName)
@@ -210,29 +232,31 @@ class Storage {
             let filter = NSPredicate(format: "hit == %@", hit);
             request.predicate = filter
             
-            if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
-                if(objects.count > 0) {
-                    let hit = Hit()
-                    hit.url = objects.first!.hit
-                    hit.creationDate = objects.first!.date
-                    hit.retryCount = objects.first!.retry
-                    hit.isOffline = true
-                    
-                    return hit
+            var hit : Hit?
+            moc.performBlockAndWait({
+                if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
+                    if(objects.count > 0) {
+                        hit = Hit()
+                        hit!.url = objects.first!.hit
+                        hit!.creationDate = objects.first!.date
+                        hit!.retryCount = objects.first!.retry
+                        hit!.isOffline = true
+                    }
                 }
-            }
+            })
+            return hit
         }
         
         return nil
     }
     
     /**
-    Get one hit stored in database
-    
-    :params: hit to select
-    
-    - returns: an offline hit
-    */
+     Get one hit stored in database
+     
+     :params: hit to select
+     
+     - returns: an offline hit
+     */
     func getStoredHit(hit: String) -> StoredOfflineHit? {
         if let moc = self.managedObjectContext {
             let request = NSFetchRequest(entityName: entityName)
@@ -240,21 +264,25 @@ class Storage {
             let filter = NSPredicate(format: "hit == %@", hit);
             request.predicate = filter
             
-            if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
-                if(objects.count > 0) {
-                    return objects.first!
+            var object : StoredOfflineHit?
+            moc.performBlockAndWait({
+                if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
+                    if(objects.count > 0) {
+                        object = objects.first!
+                    }
                 }
-            }
+            })
+            return object
         }
         
         return nil
     }
     
     /**
-    Count number of stored hits
-    
-    - returns: number of hits stored in database
-    */
+     Count number of stored hits
+     
+     - returns: number of hits stored in database
+     */
     func count() -> Int {
         if let moc = self.managedObjectContext {
             let request = NSFetchRequest()
@@ -263,22 +291,26 @@ class Storage {
             request.includesPropertyValues = false
             
             var error: NSError?
-            let count = moc.countForFetchRequest(request, error:&error);
-            if(count == NSNotFound) {
-                return 0
-            } else {
-                return count
-            }
+            var result = -1
+            moc.performBlockAndWait({
+                let count = moc.countForFetchRequest(request, error:&error);
+                if(count == NSNotFound) {
+                    result = 0
+                } else {
+                    result = count
+                }
+            })
+            return result
         }
         
         return 0
     }
     
     /**
-    Check whether hit already exists in database
-    
-    - returns: true or false if hit exists
-    */
+     Check whether hit already exists in database
+     
+     - returns: true or false if hit exists
+     */
     func exists(hit: String) -> Bool {
         if let moc = self.managedObjectContext {
             let request = NSFetchRequest()
@@ -290,19 +322,23 @@ class Storage {
             request.predicate = filter
             
             var error: NSError?
-            let count = moc.countForFetchRequest(request, error:&error);
+            var exists = false
+            moc.performBlockAndWait({
+                let count = moc.countForFetchRequest(request, error:&error);
+                exists = (count > 0)
+            })
             
-            return (count > 0)
+            return exists
         }
         
         return false
     }
     
     /**
-    Delete all hits stored in database
-    
-    - returns: number of deleted hits (-1 if error occured)
-    */
+     Delete all hits stored in database
+     
+     - returns: number of deleted hits (-1 if error occured)
+     */
     func delete() -> Int {
         if let moc = self.managedObjectContext {
             let request = NSFetchRequest()
@@ -310,29 +346,33 @@ class Storage {
             request.includesSubentities = false
             request.includesPropertyValues = false
             
-            if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
-                for object in objects {
-                    moc.deleteObject(object)
+            var count = -2
+            moc.performBlockAndWait({
+                if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
+                    for object in objects {
+                        moc.deleteObject(object)
+                    }
+                    
+                    do {
+                        try moc.save()
+                        count = objects.count
+                    } catch {
+                        count = -1
+                    }
+                } else {
+                    count = 0
                 }
-                
-                do {
-                    try moc.save()
-                    return objects.count
-                } catch {
-                    return -1
-                }
-            } else {
-                return 0
-            }
+            })
+            return count
         }
         return -1
     }
     
     /**
-    Delete hits stored in database older than number of days passed in parameter
-    
-    - returns: number of deleted hits (-1 if error occured)
-    */
+     Delete hits stored in database older than number of days passed in parameter
+     
+     - returns: number of deleted hits (-1 if error occured)
+     */
     func delete(olderThan: NSDate) -> Int {
         if let moc = self.managedObjectContext {
             let request = NSFetchRequest()
@@ -343,30 +383,34 @@ class Storage {
             let filter = NSPredicate(format: "date < %@", olderThan)
             request.predicate = filter
             
-            if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
-                for object in objects {
-                    moc.deleteObject(object)
+            var count = -2
+            moc.performBlockAndWait({
+                if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
+                    for object in objects {
+                        moc.deleteObject(object)
+                    }
+                    
+                    do {
+                        try moc.save()
+                        count = objects.count
+                    } catch {
+                        count = -1
+                    }
+                    
+                } else {
+                    count = 0
                 }
-                
-                do {
-                    try moc.save()
-                    return objects.count
-                } catch {
-                    return -1
-                }
-                
-            } else {
-                return 0
-            }
+            })
+            return count
         }
         return -1
     }
     
     /**
-    Delete one hit from database
-    
-    - returns: true if deletion was successful
-    */
+     Delete one hit from database
+     
+     - returns: true if deletion was successful
+     */
     func delete(hit: String) -> Bool {
         if let moc = self.managedObjectContext {
             let request = NSFetchRequest()
@@ -377,30 +421,33 @@ class Storage {
             let filter = NSPredicate(format: "hit == %@", hit);
             request.predicate = filter
             
-            if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
-                for object in objects {
-                    moc.deleteObject(object)
+            var done = false
+            moc.performBlockAndWait({
+                if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
+                    for object in objects {
+                        moc.deleteObject(object)
+                    }
+                    
+                    do {
+                        try moc.save()
+                        done = true
+                    } catch {
+                        done = false
+                    }
+                } else {
+                    done = false
                 }
-                
-                do {
-                    try moc.save()
-                    return true
-                } catch {
-                    return false
-                }
-            } else {
-                return false
-            }
-
+            })
+            return done
         }
         return false
     }
     
     /**
-    Get the first offline hit
-    
-    - returns: the first offline hit stored in database (nil if not found)
-    */
+     Get the first offline hit
+     
+     - returns: the first offline hit stored in database (nil if not found)
+     */
     func first() -> Hit? {
         if let moc = self.managedObjectContext {
             let request = NSFetchRequest(entityName: entityName)
@@ -409,27 +456,29 @@ class Storage {
             request.sortDescriptors = [sortDescriptor]
             request.fetchLimit = 1
             
-            if let objects = try? moc.executeFetchRequest(request) as![StoredOfflineHit] {
-                if(objects.count > 0) {
-                    let hit = Hit()
-                    hit.url = objects.first!.hit
-                    hit.creationDate = objects.first!.date
-                    hit.retryCount = objects.first!.retry
-                    hit.isOffline = true
-                    
-                    return hit
+            var hit : Hit?
+            moc.performBlockAndWait({
+                if let objects = try? moc.executeFetchRequest(request) as![StoredOfflineHit] {
+                    if(objects.count > 0) {
+                        hit = Hit()
+                        hit!.url = objects.first!.hit
+                        hit!.creationDate = objects.first!.date
+                        hit!.retryCount = objects.first!.retry
+                        hit!.isOffline = true
+                    }
                 }
-            }
+            })
+            return hit
         }
         
         return nil
     }
     
     /**
-    Get the last offline hit
-    
-    - returns: the last offline hit stored in database (nil if not found)
-    */
+     Get the last offline hit
+     
+     - returns: the last offline hit stored in database (nil if not found)
+     */
     func last() -> Hit? {
         if let moc = self.managedObjectContext {
             let request = NSFetchRequest(entityName: entityName)
@@ -438,17 +487,19 @@ class Storage {
             request.sortDescriptors = [sortDescriptor]
             request.fetchLimit = 1
             
-            if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
-                if(objects.count > 0) {
-                    let hit = Hit()
-                    hit.url = objects.first!.hit
-                    hit.creationDate = objects.first!.date
-                    hit.retryCount = objects.first!.retry
-                    hit.isOffline = true
-                    
-                    return hit
+            var hit : Hit?
+            moc.performBlockAndWait({
+                if let objects = try? moc.executeFetchRequest(request) as! [StoredOfflineHit] {
+                    if(objects.count > 0) {
+                        hit = Hit()
+                        hit!.url = objects.first!.hit
+                        hit!.creationDate = objects.first!.date
+                        hit!.retryCount = objects.first!.retry
+                        hit!.isOffline = true
+                    }
                 }
-            }
+            })
+            return hit
         }
         
         return nil
@@ -457,11 +508,11 @@ class Storage {
     // MARK: - Hit building
     
     /**
-    Add the olt parameter to the hit querystring
-    
-    :params: hit to store
-    :params: olt value to add to querystring
-    */
+     Add the olt parameter to the hit querystring
+     
+     :params: hit to store
+     :params: olt value to add to querystring
+     */
     func buildHitToStore(hit: String, olt: String) -> String {
         let url = NSURL(string: hit)
         
@@ -474,7 +525,7 @@ class Storage {
             components.path = optURL.path
             
             var query = ""
-
+            
             var oltAdded = false
             
             for (index,component) in (urlComponents as [String]).enumerate() {

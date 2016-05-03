@@ -114,7 +114,7 @@ class BufferTests: XCTestCase {
             if (param.key != arrayPer[i].key || param.value() != arrayPer[i].value()) {
                 testOK = false
             }
-            i++
+            i += 1
         }
         if (buffer.persistentParameters.count != arrayPer.count) {
             testOK = false
@@ -131,7 +131,7 @@ class BufferTests: XCTestCase {
             if (param.key != arrayVol[i].key || param.value() != arrayVol[i].value()) {
                 testOK = false
             }
-            i++
+            i += 1
         }
         if (buffer.volatileParameters.count != arrayVol.count) {
             testOK = false

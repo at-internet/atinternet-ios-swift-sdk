@@ -88,14 +88,14 @@ class Builder: NSOperation {
             if let optLogs = self.tracker.configuration.parameters[sslLogKey] {
                 hitConf += "https://" + optLogs + "."
                 if (optLogs != "") {
-                    hitConfChunks++
+                    hitConfChunks += 1
                 }
             }
         } else {
             if let optLog = self.tracker.configuration.parameters[logKey] {
                 hitConf += "http://" + optLog + "."
                 if (optLog != "") {
-                    hitConfChunks++
+                    hitConfChunks += 1
                 }
             }
         }
@@ -103,21 +103,21 @@ class Builder: NSOperation {
         if let optDomain = self.tracker.configuration.parameters[domainKey] {
             hitConf += optDomain
             if (optDomain != "") {
-                hitConfChunks++
+                hitConfChunks += 1
             }
         }
         
         if let optPixelPath = self.tracker.configuration.parameters[pixelPathKey] {
             hitConf += optPixelPath
             if (optPixelPath != "") {
-                hitConfChunks++
+                hitConfChunks += 1
             }
         }
         
         if let optSite = self.tracker.configuration.parameters[siteKey] {
             hitConf += "?s=" + optSite
             if (optSite != "") {
-                hitConfChunks++
+                hitConfChunks += 1
             }
         }
         
@@ -211,7 +211,7 @@ class Builder: NSOperation {
                         } else if (keyAdded && (hit + separator + valChunk).characters.count < refMaxSize){
                             hit = hit + separator + valChunk
                         } else {
-                            chunksCount++
+                            chunksCount += 1
                             if (hit != "") {
                                 hits.append(hit + separator)
                             }
@@ -256,7 +256,7 @@ class Builder: NSOperation {
             
             // Else, we add a new hit
             } else {
-                chunksCount++
+                chunksCount += 1
                 hits.append(hit)
                 hit = queryString.str
                 
@@ -338,7 +338,8 @@ class Builder: NSOperation {
     
     - returns: An array of sorted parameters
     */
-    func organizeParameters(var parameters: [Param]) -> [Param] {
+    func organizeParameters(parameters: [Param]) -> [Param] {
+        var parameters = parameters;
         
         let refParamPositions = Tool.findParameterPosition(referrerParameterKey, arrays: parameters)
         var refParamIndex = -1
@@ -479,6 +480,13 @@ class Builder: NSOperation {
                 } else {
                     value = "opt-out"
                 }
+            }
+            
+            // Referrer processing
+            if(parameter.key == "ref"){
+                value = value.stringByReplacingOccurrencesOfString("&", withString: "$")
+                            .stringByReplacingOccurrencesOfString("<", withString: "")
+                            .stringByReplacingOccurrencesOfString(">", withString: "")
             }
             
             if let optOption = parameter.options {

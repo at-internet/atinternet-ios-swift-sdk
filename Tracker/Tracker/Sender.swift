@@ -92,7 +92,7 @@ class Sender: NSOperation {
     - parameter a: callback to indicate whether hit was sent successfully or not
     */
     func sendWithCompletionHandler(completionHandler: ((success: Bool) -> Void)!) {
-        let db = Storage()
+        let db = Storage.sharedInstance
         
         // Si pas de connexion ou que le mode offline est à "always"
         if((self.tracker.configuration.parameters["storage"] == "always" && !self.forceSendOfflineHits)
@@ -102,9 +102,7 @@ class Sender: NSOperation {
                 if(self.tracker.configuration.parameters["storage"] != "never") {
                     // Si le hit ne provient pas du stockage offline, on le sauvegarde
                     if(!hit.isOffline) {
-                        let storage = Storage()
-                        
-                        if(storage.insert(&hit.url, mhOlt: self.mhOlt)) {
+                        if(db.insert(&hit.url, mhOlt: self.mhOlt)) {
                             self.tracker.delegate?.saveDidEnd(hit.url)
                             
                             if(Debugger.sharedInstance.viewController != nil) {
@@ -146,10 +144,8 @@ class Sender: NSOperation {
                         if(data == nil || error != nil || statusCode != 200) {
                             // Si le hit ne provient pas du stockage offline, on le sauvegarde si le mode offline est différent de "never"
                             if(self.tracker.configuration.parameters["storage"] != "never") {
-                                let storage = Storage()
-                                
                                 if(!self.hit.isOffline) {
-                                    if(storage.insert(&self.hit.url, mhOlt: self.mhOlt)) {
+                                    if(db.insert(&self.hit.url, mhOlt: self.mhOlt)) {
                                         self.tracker.delegate?.saveDidEnd(self.hit.url)
                                         
                                         if(Debugger.sharedInstance.viewController != nil) {
@@ -163,14 +159,14 @@ class Sender: NSOperation {
                                         }
                                     }
                                 } else {
-                                    let offlineHit = storage.getStoredHit(self.hit.url)
+                                    let offlineHit = db.getStoredHit(self.hit.url)
                                     if let optOfflineHit = offlineHit {
                                         if(optOfflineHit.retry < NSNumber(integer: self.retryCount)) {
                                             let retry: Int32 = optOfflineHit.retry.intValue
                                             optOfflineHit.retry = NSNumber(int: retry + 1)
-                                            storage.saveContext()
+                                            db.saveContext()
                                         } else {
-                                            storage.delete(self.hit.url)
+                                            db.delete(self.hit.url)
                                         }
                                     }
                                 }
@@ -196,8 +192,7 @@ class Sender: NSOperation {
                             // Si le hit provient du stockage et que l'envoi a réussi, on le supprime de la base
                             if(self.hit.isOffline) {
                                 OfflineHit.sentWithSuccess = true
-                                let storage = Storage()
-                                storage.delete(self.hit.url)
+                                db.delete(self.hit.url)
                             }
                             
                             self.tracker.delegate?.sendDidEnd(HitStatus.Success, message: self.hit.url)
@@ -221,9 +216,7 @@ class Sender: NSOperation {
                     dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
                 } else {
                     if(!hit.isOffline) {
-                        let storage = Storage()
-                        
-                        if(storage.insert(&hit.url, mhOlt: self.mhOlt)) {
+                        if(db.insert(&hit.url, mhOlt: self.mhOlt)) {
                             self.tracker.delegate?.saveDidEnd(hit.url)
                             
                             if(Debugger.sharedInstance.viewController != nil) {
@@ -275,7 +268,7 @@ class Sender: NSOperation {
                     
                     // If there's no offline hit being sent
                     if(offlineOperations.count == 0) {
-                        let storage = Storage()
+                        let storage = Storage.sharedInstance
                         
                         // Check if offline hits exists in database
                         if(storage.count() > 0) {

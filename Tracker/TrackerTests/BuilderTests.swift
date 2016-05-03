@@ -376,7 +376,7 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         let refParamOption = ParamOption()
         refParamOption.relativePosition = ParamOption.RelativePosition.last
         
-        let refParam = Param(key: "ref", value: {"www.atinternet.com"}, type: .String, options: refParamOption)
+        let refParam = Param(key: "ref", value: {"www.atinternet.com?test1=1&test2=2&test3=<script></script>"}, type: .String, options: refParamOption)
         let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .Integer)
         let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .Bool)
         
@@ -394,7 +394,7 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         XCTAssert(strings[15].str == "&stc=chou,patate,carotte", "le second paramètre doit être égal à &stc=chou,patate,carotte")
         XCTAssert(strings[16].str == "&dslu=10", "le paramètre dslu doit être égal à &dslu=10")
         XCTAssert(strings[17].str == "&crash=false", "le paramètre crash doit être égal à &crash=false")
-        XCTAssert(strings[18].str == "&ref=www.atinternet.com", "le paramètre ref doit être égal à &ref=www.atinternet.com et doit être le dernier paramètre")
+        XCTAssert(strings[18].str == "&ref=www.atinternet.com?test1=1$test2=2$test3=script/script", "le paramètre ref doit être égal à &ref=www.atinternet.com et doit être le dernier paramètre")
     }
     
     // Teste le formattage de paramètres permanents
@@ -405,7 +405,7 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         let refParamOption = ParamOption()
         refParamOption.relativePosition = ParamOption.RelativePosition.last
         
-        let refParam = Param(key: "ref", value: {"www.atinternet.com"}, type: .String, options: refParamOption)
+        let refParam = Param(key: "ref", value: {"www.atinternet.com?test1=1&test2=2&test3=<script></script>"}, type: .String, options: refParamOption)
         let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .Integer)
         let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .Bool)
         
@@ -423,7 +423,7 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         XCTAssert(strings[15].str == "&stc=chou,patate,carotte", "le second paramètre doit être égal à &stc=chou,patate,carotte")
         XCTAssert(strings[16].str == "&dslu=10", "le paramètre dslu doit être égal à &dslu=10")
         XCTAssert(strings[17].str == "&crash=false", "le paramètre crash doit être égal à &crash=false")
-        XCTAssert(strings[18].str == "&ref=www.atinternet.com", "le paramètre ref doit être égal à &ref=www.atinternet.com et doit être le dernier paramètre")
+        XCTAssert(strings[18].str == "&ref=www.atinternet.com?test1=1$test2=2$test3=script/script", "le paramètre ref doit être égal à &ref=www.atinternet.com et doit être le dernier paramètre")
     }
     
     // Teste le formattage de paramètres volatiles et persistents
@@ -434,7 +434,7 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         let refParamOption = ParamOption()
         refParamOption.relativePosition = ParamOption.RelativePosition.last
         
-        let refParam = Param(key: "ref", value: {"www.atinternet.com"}, type: .String, options: refParamOption)
+        let refParam = Param(key: "ref", value: {"www.atinternet.com?test1=1&test2=2&test3=<script></script>"}, type: .String, options: refParamOption)
         let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .Integer)
         let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .Bool)
         
@@ -452,7 +452,7 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         XCTAssert(strings[15].str == "&stc=chou,patate,carotte", "le second paramètre doit être égal à &stc=chou,patate,carotte")
         XCTAssert(strings[16].str == "&dslu=10", "le paramètre dslu doit être égal à &dslu=10")
         XCTAssert(strings[17].str == "&crash=false", "le paramètre crash doit être égal à &crash=false")
-        XCTAssert(strings[18].str == "&ref=www.atinternet.com", "le paramètre ref doit être égal à &ref=www.atinternet.com et doit être le dernier paramètre")
+        XCTAssert(strings[18].str == "&ref=www.atinternet.com?test1=1$test2=2$test3=script/script", "le paramètre ref doit être égal à &ref=www.atinternet.com et doit être le dernier paramètre")
     }
     
     func testOrganizeParameters() {

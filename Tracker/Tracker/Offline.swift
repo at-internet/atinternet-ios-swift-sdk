@@ -58,9 +58,7 @@ public class Offline {
     - returns: array of offline hits
     */
     public func get() -> [Hit] {
-        let storage = Storage()
-        
-        return storage.get()
+        return Storage.sharedInstance.get()
     }
     
     /**
@@ -69,9 +67,7 @@ public class Offline {
     - returns: number of offline hits
     */
     public func count() -> Int {
-        let storage = Storage()
-        
-        return storage.count()
+        return Storage.sharedInstance.count()
     }
     
     /**
@@ -80,9 +76,7 @@ public class Offline {
     - returns: number of deleted hits (-1 if an error occured)
     */
     public func delete() -> Int {
-        let storage = Storage()
-        
-        return storage.delete()
+        return Storage.sharedInstance.delete()
     }
     
     /**
@@ -93,7 +87,7 @@ public class Offline {
     - returns: number of deleted hits (-1 if an error occured)
     */
     public func delete(olderThan: Int) -> Int {
-        let storage = Storage()
+        let storage = Storage.sharedInstance
         
         let now = NSDate()
         let dateComponent = NSDateComponents()
@@ -112,9 +106,7 @@ public class Offline {
     - returns: number of deleted hits (-1 if an error occured)
     */
     public func delete(olderThan: NSDate) -> Int {
-        let storage = Storage()
-        
-        return storage.delete(olderThan)
+        return Storage.sharedInstance.delete(olderThan)
     }
     
     /**
@@ -123,9 +115,7 @@ public class Offline {
     - returns: the oldest hit
     */
     public func oldest() -> Hit? {
-        let storage = Storage()
-        
-        return storage.first()
+        return Storage.sharedInstance.first()
     }
     
     /**
@@ -134,8 +124,6 @@ public class Offline {
     - returns: the latest hit
     */
     public func latest() -> Hit? {
-        let storage = Storage()
-        
-        return storage.last()
+        return Storage.sharedInstance.last()
     }
 }

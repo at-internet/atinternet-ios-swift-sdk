@@ -278,8 +278,8 @@ public class Tracker {
         
         if(!LifeCycle.isInitialized) {
             let notificationCenter = NSNotificationCenter.defaultCenter()
-            notificationCenter.addObserver(self, selector: "applicationDidEnterBackground", name: UIApplicationDidEnterBackgroundNotification, object: nil)
-            notificationCenter.addObserver(self, selector: "applicationActive", name: UIApplicationDidBecomeActiveNotification, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(Tracker.applicationDidEnterBackground), name: UIApplicationDidEnterBackgroundNotification, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(Tracker.applicationActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
             LifeCycle.applicationActive(self.configuration.parameters)
         }
     }
@@ -316,7 +316,7 @@ public class Tracker {
         }
         
         for (key, value) in configuration {
-            keyCount++
+            keyCount = keyCount + 1
             if (!Configuration.ReadOnlyConfiguration.list.contains(key)) {
                 let configurationOperation = NSBlockOperation(block: {
                     self.configuration.parameters[key] = value

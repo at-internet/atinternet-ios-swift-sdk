@@ -103,7 +103,7 @@ public class Cart: BusinessObject {
                 tracker.setParam("pcode" + String(i), value: optPromotionalCode, options:encodingOption)
             }
             
-            i++
+            i += 1
         }
     }
 }
