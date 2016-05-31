@@ -159,15 +159,11 @@ class Sender: NSOperation {
                                         }
                                     }
                                 } else {
-                                    let offlineHit = db.getStoredHit(self.hit.url)
-                                    if let optOfflineHit = offlineHit {
-                                        if(optOfflineHit.retry < NSNumber(integer: self.retryCount)) {
-                                            let retry: Int32 = optOfflineHit.retry.intValue
-                                            optOfflineHit.retry = NSNumber(int: retry + 1)
-                                            db.saveContext()
-                                        } else {
-                                            db.delete(self.hit.url)
-                                        }
+                                    let retryCount = db.getRetryCountForHit(self.hit.url)
+                                    if(retryCount < self.retryCount) {
+                                        db.setRetryCount(retryCount+1, hit: self.hit.url)
+                                    } else {
+                                        db.delete(self.hit.url)
                                     }
                                 }
                                 

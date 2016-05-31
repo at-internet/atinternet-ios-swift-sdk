@@ -99,32 +99,25 @@ public class Reachability: NSObject {
     }
     
     public class func reachabilityForInternetConnection() -> Reachability? {
-        
-        var zeroAddress = sockaddr_in()
-        zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
-        zeroAddress.sin_family = sa_family_t(AF_INET)
-        
-        let ref = withUnsafePointer(&zeroAddress) {
-            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+        if #available(iOS 9.0, *) {
+            var zeroAddress = sockaddr_in6()
+            zeroAddress.sin6_len = UInt8(sizeofValue(zeroAddress))
+            zeroAddress.sin6_family = sa_family_t(AF_INET6)
+            
+            let ref = withUnsafePointer(&zeroAddress, {
+                SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+            })
+            return Reachability(reachabilityRef: ref)
+        } else {
+            var zeroAddress = sockaddr_in()
+            zeroAddress.sin_len = UInt8(sizeofValue(zeroAddress))
+            zeroAddress.sin_family = sa_family_t(AF_INET)
+            
+            let ref = withUnsafePointer(&zeroAddress) {
+                SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
+            }
+            return Reachability(reachabilityRef: ref)
         }
-        
-        return Reachability(reachabilityRef: ref)
-    }
-    
-    public class func reachabilityForLocalWiFi() -> Reachability? {
-        
-        var localWifiAddress: sockaddr_in = sockaddr_in(sin_len: __uint8_t(0), sin_family: sa_family_t(0), sin_port: in_port_t(0), sin_addr: in_addr(s_addr: 0), sin_zero: (0, 0, 0, 0, 0, 0, 0, 0))
-        localWifiAddress.sin_len = UInt8(sizeofValue(localWifiAddress))
-        localWifiAddress.sin_family = sa_family_t(AF_INET)
-        
-        // IN_LINKLOCALNETNUM is defined in <netinet/in.h> as 169.254.0.0
-        let address: UInt32 = 0xA9FE0000
-        localWifiAddress.sin_addr.s_addr = in_addr_t(address.bigEndian)
-        
-        let ref = withUnsafePointer(&localWifiAddress) {
-            SCNetworkReachabilityCreateWithAddress(nil, UnsafePointer($0))
-        }
-        return Reachability(reachabilityRef: ref)
     }
     
     // MARK: - *** Notifier methods ***
