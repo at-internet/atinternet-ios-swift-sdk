@@ -181,6 +181,7 @@ class TechnicalContext {
     class var localHour: String {
         get {
             let hourFormatter = NSDateFormatter()
+            hourFormatter.locale = LifeCycle.locale
             hourFormatter.dateFormat = "HH'x'mm'x'ss"
             
             return hourFormatter.stringFromDate(NSDate())

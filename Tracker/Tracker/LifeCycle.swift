@@ -47,7 +47,7 @@ class LifeCycle {
     /// Check whether lifecycle has already been initialized
     static var isInitialized: Bool = false
     /// Calendar type
-    static var calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
+    static var locale = NSLocale(localeIdentifier: "en_US_POSIX")
     /// SessionId
     static var sessionId: String? = nil
     /// Time during the app is in background
@@ -72,13 +72,13 @@ class LifeCycle {
     class func initLifeCycle() {
         let userDefaults = NSUserDefaults.standardUserDefaults()
         let dateFormatter = NSDateFormatter()
-        dateFormatter.calendar = calendar
+        dateFormatter.locale = locale
         dateFormatter.dateFormat = "yyyyMMdd"
         let monthFormatter = NSDateFormatter()
-        monthFormatter.calendar = calendar
+        monthFormatter.locale = locale
         monthFormatter.dateFormat = "yyyyMM"
         let weekFormatter = NSDateFormatter()
-        weekFormatter.calendar = calendar
+        weekFormatter.locale = locale
         weekFormatter.dateFormat = "yyyyww"
         
         let now = NSDate()
@@ -134,7 +134,7 @@ class LifeCycle {
         // If SDK V1 first launch exists
         if let optFirstLaunchDate = userDefaults.objectForKey("firstLaunchDate") as? String {
             let dateFormatter = NSDateFormatter()
-            dateFormatter.calendar = calendar
+            dateFormatter.locale = locale
             dateFormatter.dateFormat = "YYYYMMdd"
             let fld = dateFormatter.dateFromString(optFirstLaunchDate)
             
@@ -255,7 +255,7 @@ class LifeCycle {
             let firstSessionDate = userDefaults.objectForKey(LifeCycleKey.FirstSessionDate.rawValue) as! NSDate
             let now = NSDate()
             let dateFormatter = NSDateFormatter()
-            dateFormatter.calendar = calendar
+            dateFormatter.locale = locale
             dateFormatter.dateFormat = "yyyyMMdd"
 
             // First session: fs

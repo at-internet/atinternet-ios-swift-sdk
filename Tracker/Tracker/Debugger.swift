@@ -106,7 +106,9 @@ class Debugger {
      */
     func initDebugger() {
         hourFormatter.dateFormat = "HH':'mm':'ss"
+        hourFormatter.locale = LifeCycle.locale
         dateHourFormatter.dateFormat = "dd'/'MM'/'YYYY' 'HH':'mm':'ss"
+        dateHourFormatter.locale = LifeCycle.locale
         
         createDebugButton()
         createEventViewer()

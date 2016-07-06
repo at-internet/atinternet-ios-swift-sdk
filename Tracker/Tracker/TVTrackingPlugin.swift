@@ -86,6 +86,7 @@ class TVTrackingPlugin: Plugin {
                     if let optPartnerTime = spot["time"] as? String{
                         timeData = optPartnerTime;
                         let dateFormatter = NSDateFormatter()
+                        dateFormatter.locale = LifeCycle.locale
                         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
                         dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
                         

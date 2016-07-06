@@ -71,7 +71,7 @@ public enum BackgroundMode {
 // MARK: - Tracker Delegate
 
 /// Tracker's delegate
-public protocol TrackerDelegate {
+public protocol TrackerDelegate: class {
     
     /**
     First launch of the tracker
@@ -131,7 +131,7 @@ public protocol TrackerDelegate {
 /// Wrapper class for tracking usage of your application
 public class Tracker {
     
-    internal var _delegate: TrackerDelegate? = nil
+    internal weak var _delegate: TrackerDelegate? = nil
     
     /// Tracker's delegate
     public var delegate: TrackerDelegate? {
