@@ -55,7 +55,6 @@
 		4FBC19181A56F5460011B9F9 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBC19171A56F5460011B9F9 /* Storage.swift */; };
 		4FC05E051A6E96750077E294 /* BackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC05E031A6E96750077E294 /* BackgroundTask.swift */; };
 		4FC290EB1B0CB6FC0008768B /* OrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC290EA1B0CB6FC0008768B /* OrderTests.swift */; };
-		4FC768E41AA846960057FE9D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC768E31AA846960057FE9D /* Images.xcassets */; };
 		4FE5DD131BA31DDE009F9A50 /* Crash.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE5DD111BA31DDE009F9A50 /* Crash.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE5DD151BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; };
 		4FE904921A56E51F003409B8 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
@@ -91,21 +90,15 @@
 		4FF5DD921CE3398700102324 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; };
 		4FF5DD931CE3399200102324 /* TVTrackingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3533A91A530FA0007922E7 /* TVTrackingPlugin.swift */; };
 		4FF5DD941CE339A200102324 /* NSNumberExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4405311A403A7B000014BD /* NSNumberExtension.swift */; };
-		4FF5DD951CE339B200102324 /* DefaultConfiguration~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5A1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist */; };
 		4FF5DD961CE339B200102324 /* DefaultConfiguration~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5A1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist */; };
 		4FF5DD971CE339B300102324 /* DefaultConfiguration~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5A1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist */; };
-		4FF5DD981CE339B500102324 /* DefaultConfiguration~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5B1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist */; };
 		4FF5DD991CE339B500102324 /* DefaultConfiguration~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5B1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist */; };
 		4FF5DD9A1CE339B600102324 /* DefaultConfiguration~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5B1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist */; };
 		4FF5DD9B1CE339B800102324 /* DefaultConfiguration~ipod.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5C1A36E968007BF6B7 /* DefaultConfiguration~ipod.plist */; };
 		4FF5DD9C1CE339B800102324 /* DefaultConfiguration~ipod.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5C1A36E968007BF6B7 /* DefaultConfiguration~ipod.plist */; };
-		4FF5DD9D1CE339BA00102324 /* DefaultConfiguration~ipod.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5C1A36E968007BF6B7 /* DefaultConfiguration~ipod.plist */; };
 		4FF5DD9E1CE339C700102324 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
-		4FF5DD9F1CE339D100102324 /* core.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = AE8C081F1AA705F8006067FB /* core.manifest.json */; };
 		4FF5DDA01CE339D100102324 /* core.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = AE8C081F1AA705F8006067FB /* core.manifest.json */; };
-		4FF5DDA11CE339D300102324 /* nuggad.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F90C7931B0E33550038A57C /* nuggad.manifest.json */; };
 		4FF5DDA21CE339D400102324 /* nuggad.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F90C7931B0E33550038A57C /* nuggad.manifest.json */; };
-		4FF5DDA31CE339D600102324 /* tvtracking.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F90C7951B0E33650038A57C /* tvtracking.manifest.json */; };
 		4FF5DDA41CE339D600102324 /* tvtracking.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F90C7951B0E33650038A57C /* tvtracking.manifest.json */; };
 		4FF5DDA51CE339F900102324 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEA4E2B1B2ED19100F68EBD /* Audio.swift */; };
 		4FF5DDA61CE339FA00102324 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEA4E2B1B2ED19100F68EBD /* Audio.swift */; };
@@ -132,6 +125,7 @@
 		4FF5DDBB1CE33A4600102324 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F85D2D01AF76EB30080F4C2 /* Video.swift */; };
 		4FF5DDBC1CE33A4700102324 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F85D2D01AF76EB30080F4C2 /* Video.swift */; };
 		8E06B7181C98175C004F4970 /* DefaultTrackerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E06B7171C98175C004F4970 /* DefaultTrackerDelegate.swift */; };
+		8EEE01E51D48B08A00E78712 /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE7B60921A2F1C3D00CA12EB /* DefaultConfiguration.plist */; };
 		AE11D4B71ADBC8FF0059E7E5 /* SelfPromotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE11D4B61ADBC8FF0059E7E5 /* SelfPromotion.swift */; };
 		AE11D4C01ADBFB5A0059E7E5 /* PublisherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE11D4BF1ADBFB5A0059E7E5 /* PublisherTests.swift */; };
 		AE11D4C21ADC07E00059E7E5 /* SelfPromotionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE11D4C11ADC07E00059E7E5 /* SelfPromotionTests.swift */; };
@@ -191,7 +185,6 @@
 		AE533D181AC2BA78005DDD3F /* IdentifiedVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE533D171AC2BA78005DDD3F /* IdentifiedVisitor.swift */; };
 		AE5B4F141AF775D300E446F3 /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5B4F131AF775D300E446F3 /* Dispatcher.swift */; };
 		AE5B4F191AF77CC400E446F3 /* CustomVar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5B4F181AF77CC400E446F3 /* CustomVar.swift */; };
-		AE5C6C561A35DF59007BF6B7 /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE7B60921A2F1C3D00CA12EB /* DefaultConfiguration.plist */; };
 		AE5C6C571A35DF64007BF6B7 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7B60941A2F1E2600CA12EB /* Configuration.swift */; };
 		AE5C6C581A35DF67007BF6B7 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECB52E61A35DC7200C32C85 /* Buffer.swift */; };
 		AE5C6C591A35DF69007BF6B7 /* Param.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDFC03E1A30ABF50071FECB /* Param.swift */; };
@@ -690,6 +683,7 @@
 				4FF5DD9A1CE339B600102324 /* DefaultConfiguration~iphone.plist in Resources */,
 				4FF5DD971CE339B300102324 /* DefaultConfiguration~ipad.plist in Resources */,
 				4F3CE1F91A31F5E100AF9C8B /* DefaultConfiguration.plist in Resources */,
+				8EEE01E51D48B08A00E78712 /* DefaultConfiguration.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -705,6 +699,8 @@
 				AE14AA7C1B272EDC00770630 /* Images.xcassets in Resources */,
 				AE14AA721B272EB500770630 /* DefaultConfiguration.plist in Resources */,
 				4FF5DD991CE339B500102324 /* DefaultConfiguration~iphone.plist in Resources */,
+				AE14AA7C1B272EDC00770630 /* Images.xcassets in Resources */,
+				AE14AA721B272EB500770630 /* DefaultConfiguration.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -712,14 +708,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FF5DD9F1CE339D100102324 /* core.manifest.json in Resources */,
-				4FF5DDA11CE339D300102324 /* nuggad.manifest.json in Resources */,
-				4FF5DDA31CE339D600102324 /* tvtracking.manifest.json in Resources */,
-				4FF5DD951CE339B200102324 /* DefaultConfiguration~ipad.plist in Resources */,
-				4FF5DD9D1CE339BA00102324 /* DefaultConfiguration~ipod.plist in Resources */,
-				AE5C6C561A35DF59007BF6B7 /* DefaultConfiguration.plist in Resources */,
-				4FC768E41AA846960057FE9D /* Images.xcassets in Resources */,
-				4FF5DD981CE339B500102324 /* DefaultConfiguration~iphone.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

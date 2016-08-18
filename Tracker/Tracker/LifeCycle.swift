@@ -138,8 +138,8 @@ class LifeCycle {
             dateFormatter.dateFormat = "YYYYMMdd"
             let fld = dateFormatter.dateFromString(optFirstLaunchDate)
             
-            userDefaults.setObject(fld, forKey: LifeCycleKey.FirstSessionDate.rawValue)
-                    userDefaults.setInteger(0, forKey: LifeCycleKey.FirstSession.rawValue)
+            userDefaults.setObject(fld ?? NSDate(), forKey: LifeCycleKey.FirstSessionDate.rawValue)
+            userDefaults.setInteger(0, forKey: LifeCycleKey.FirstSession.rawValue)
             
             userDefaults.setObject(nil, forKey: "firstLaunchDate")
             self.firstSession = false
@@ -252,7 +252,13 @@ class LifeCycle {
                 LifeCycle.firstLaunchInit()
             }
             
-            let firstSessionDate = userDefaults.objectForKey(LifeCycleKey.FirstSessionDate.rawValue) as! NSDate
+            var fsd = userDefaults.objectForKey(LifeCycleKey.FirstSessionDate.rawValue) as? NSDate
+            if fsd == nil {
+                fsd = NSDate()
+                userDefaults.setObject(fsd, forKey: LifeCycleKey.FirstSessionDate.rawValue)
+            }
+            let firstSessionDate = fsd!
+ 
             let now = NSDate()
             let dateFormatter = NSDateFormatter()
             dateFormatter.locale = locale
@@ -273,14 +279,14 @@ class LifeCycle {
             LifeCycle.parameters["sc"] = userDefaults.integerForKey(LifeCycleKey.SessionCount.rawValue)
             
             // First session date: fsd
-            LifeCycle.parameters["fsd"] = Int(dateFormatter.stringFromDate(firstSessionDate))!
+            LifeCycle.parameters["fsd"] = Int(dateFormatter.stringFromDate(firstSessionDate))
             
             // Days since first session: dsfs
             LifeCycle.parameters["dsfs"] = Tool.daysBetweenDates(firstSessionDate, toDate: now)
             
             // first session date after update & days since update: usd / dsu
             if let applicationUpdate = userDefaults.objectForKey(LifeCycleKey.ApplicationUpdate.rawValue) as? NSDate {
-                LifeCycle.parameters["fsdau"] = Int(dateFormatter.stringFromDate(applicationUpdate))!
+                LifeCycle.parameters["fsdau"] = Int(dateFormatter.stringFromDate(applicationUpdate))
                 LifeCycle.parameters["dsu"] = Tool.daysBetweenDates(applicationUpdate, toDate: now)
             }
             
