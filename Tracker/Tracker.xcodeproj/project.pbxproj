@@ -90,16 +90,10 @@
 		4FF5DD921CE3398700102324 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; };
 		4FF5DD931CE3399200102324 /* TVTrackingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3533A91A530FA0007922E7 /* TVTrackingPlugin.swift */; };
 		4FF5DD941CE339A200102324 /* NSNumberExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4405311A403A7B000014BD /* NSNumberExtension.swift */; };
-		4FF5DD961CE339B200102324 /* DefaultConfiguration~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5A1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist */; };
 		4FF5DD971CE339B300102324 /* DefaultConfiguration~ipad.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5A1A36E968007BF6B7 /* DefaultConfiguration~ipad.plist */; };
-		4FF5DD991CE339B500102324 /* DefaultConfiguration~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5B1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist */; };
 		4FF5DD9A1CE339B600102324 /* DefaultConfiguration~iphone.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5B1A36E968007BF6B7 /* DefaultConfiguration~iphone.plist */; };
-		4FF5DD9B1CE339B800102324 /* DefaultConfiguration~ipod.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5C1A36E968007BF6B7 /* DefaultConfiguration~ipod.plist */; };
 		4FF5DD9C1CE339B800102324 /* DefaultConfiguration~ipod.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE5C6C5C1A36E968007BF6B7 /* DefaultConfiguration~ipod.plist */; };
 		4FF5DD9E1CE339C700102324 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
-		4FF5DDA01CE339D100102324 /* core.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = AE8C081F1AA705F8006067FB /* core.manifest.json */; };
-		4FF5DDA21CE339D400102324 /* nuggad.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F90C7931B0E33550038A57C /* nuggad.manifest.json */; };
-		4FF5DDA41CE339D600102324 /* tvtracking.manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = 4F90C7951B0E33650038A57C /* tvtracking.manifest.json */; };
 		4FF5DDA51CE339F900102324 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEA4E2B1B2ED19100F68EBD /* Audio.swift */; };
 		4FF5DDA61CE339FA00102324 /* Audio.swift in Sources */ = {isa = PBXBuildFile; fileRef = AEEA4E2B1B2ED19100F68EBD /* Audio.swift */; };
 		4FF5DDA71CE33A0E00102324 /* BusinessObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F85D2CD1AF76EB30080F4C2 /* BusinessObject.swift */; };
@@ -125,6 +119,10 @@
 		4FF5DDBB1CE33A4600102324 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F85D2D01AF76EB30080F4C2 /* Video.swift */; };
 		4FF5DDBC1CE33A4700102324 /* Video.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F85D2D01AF76EB30080F4C2 /* Video.swift */; };
 		8E06B7181C98175C004F4970 /* DefaultTrackerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E06B7171C98175C004F4970 /* DefaultTrackerDelegate.swift */; };
+		8E7F1BF81D6DD2D60071F90C /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE7B60921A2F1C3D00CA12EB /* DefaultConfiguration.plist */; };
+		8E7F1BF91D6DD2DC0071F90C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC768E31AA846960057FE9D /* Images.xcassets */; };
+		8E7F1BFA1D6DD2EF0071F90C /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC768E31AA846960057FE9D /* Images.xcassets */; };
+		8E7F1BFB1D6DD2F40071F90C /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE7B60921A2F1C3D00CA12EB /* DefaultConfiguration.plist */; };
 		8EEE01E51D48B08A00E78712 /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE7B60921A2F1C3D00CA12EB /* DefaultConfiguration.plist */; };
 		AE11D4B71ADBC8FF0059E7E5 /* SelfPromotion.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE11D4B61ADBC8FF0059E7E5 /* SelfPromotion.swift */; };
 		AE11D4C01ADBFB5A0059E7E5 /* PublisherTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE11D4BF1ADBFB5A0059E7E5 /* PublisherTests.swift */; };
@@ -149,11 +147,9 @@
 		AE14AA6F1B272EA500770630 /* TVTrackingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3533A91A530FA0007922E7 /* TVTrackingPlugin.swift */; };
 		AE14AA701B272EAC00770630 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F44052F1A402C99000014BD /* StringExtension.swift */; };
 		AE14AA711B272EAE00770630 /* NSNumberExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4405311A403A7B000014BD /* NSNumberExtension.swift */; };
-		AE14AA721B272EB500770630 /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE7B60921A2F1C3D00CA12EB /* DefaultConfiguration.plist */; };
 		AE14AA761B272EC000770630 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E4F971A4434A400947800 /* Reachability.swift */; };
 		AE14AA771B272EC400770630 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
 		AE14AA7B1B272ED900770630 /* Debugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CE1B51AAEE675008EEE4F /* Debugger.swift */; };
-		AE14AA7C1B272EDC00770630 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC768E31AA846960057FE9D /* Images.xcassets */; };
 		AE14AA7D1B272EE100770630 /* Aisle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9BEB311B022308003BFD41 /* Aisle.swift */; };
 		AE14AA7E1B272EE400770630 /* Campaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9BEB4F1B03427B003BFD41 /* Campaign.swift */; };
 		AE14AA7F1B272EE600770630 /* BusinessObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F85D2CD1AF76EB30080F4C2 /* BusinessObject.swift */; };
@@ -691,16 +687,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4FF5DDA01CE339D100102324 /* core.manifest.json in Resources */,
-				4FF5DDA21CE339D400102324 /* nuggad.manifest.json in Resources */,
-				4FF5DDA41CE339D600102324 /* tvtracking.manifest.json in Resources */,
-				4FF5DD961CE339B200102324 /* DefaultConfiguration~ipad.plist in Resources */,
-				4FF5DD9B1CE339B800102324 /* DefaultConfiguration~ipod.plist in Resources */,
-				AE14AA7C1B272EDC00770630 /* Images.xcassets in Resources */,
-				AE14AA721B272EB500770630 /* DefaultConfiguration.plist in Resources */,
-				4FF5DD991CE339B500102324 /* DefaultConfiguration~iphone.plist in Resources */,
-				AE14AA7C1B272EDC00770630 /* Images.xcassets in Resources */,
-				AE14AA721B272EB500770630 /* DefaultConfiguration.plist in Resources */,
+				8E7F1BF91D6DD2DC0071F90C /* Images.xcassets in Resources */,
+				8E7F1BF81D6DD2D60071F90C /* DefaultConfiguration.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -708,6 +696,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8E7F1BFB1D6DD2F40071F90C /* DefaultConfiguration.plist in Resources */,
+				8E7F1BFA1D6DD2EF0071F90C /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
