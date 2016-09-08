@@ -55,6 +55,7 @@
 		4FBC19181A56F5460011B9F9 /* Storage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FBC19171A56F5460011B9F9 /* Storage.swift */; };
 		4FC05E051A6E96750077E294 /* BackgroundTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC05E031A6E96750077E294 /* BackgroundTask.swift */; };
 		4FC290EB1B0CB6FC0008768B /* OrderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FC290EA1B0CB6FC0008768B /* OrderTests.swift */; };
+		4FC768E41AA846960057FE9D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC768E31AA846960057FE9D /* Images.xcassets */; };
 		4FE5DD131BA31DDE009F9A50 /* Crash.h in Headers */ = {isa = PBXBuildFile; fileRef = 4FE5DD111BA31DDE009F9A50 /* Crash.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4FE5DD151BA31DDE009F9A50 /* Crash.m in Sources */ = {isa = PBXBuildFile; fileRef = 4FE5DD121BA31DDE009F9A50 /* Crash.m */; };
 		4FE904921A56E51F003409B8 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
@@ -150,6 +151,11 @@
 		AE14AA761B272EC000770630 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E4F971A4434A400947800 /* Reachability.swift */; };
 		AE14AA771B272EC400770630 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
 		AE14AA7B1B272ED900770630 /* Debugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CE1B51AAEE675008EEE4F /* Debugger.swift */; };
+		AE14AA721B272EB500770630 /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE7B60921A2F1C3D00CA12EB /* DefaultConfiguration.plist */; };
+		AE14AA761B272EC000770630 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E4F971A4434A400947800 /* Reachability.swift */; };
+		AE14AA771B272EC400770630 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
+		AE14AA7B1B272ED900770630 /* Debugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CE1B51AAEE675008EEE4F /* Debugger.swift */; };
+		AE14AA7C1B272EDC00770630 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4FC768E31AA846960057FE9D /* Images.xcassets */; };
 		AE14AA7D1B272EE100770630 /* Aisle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9BEB311B022308003BFD41 /* Aisle.swift */; };
 		AE14AA7E1B272EE400770630 /* Campaign.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F9BEB4F1B03427B003BFD41 /* Campaign.swift */; };
 		AE14AA7F1B272EE600770630 /* BusinessObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F85D2CD1AF76EB30080F4C2 /* BusinessObject.swift */; };
@@ -181,6 +187,7 @@
 		AE533D181AC2BA78005DDD3F /* IdentifiedVisitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE533D171AC2BA78005DDD3F /* IdentifiedVisitor.swift */; };
 		AE5B4F141AF775D300E446F3 /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5B4F131AF775D300E446F3 /* Dispatcher.swift */; };
 		AE5B4F191AF77CC400E446F3 /* CustomVar.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE5B4F181AF77CC400E446F3 /* CustomVar.swift */; };
+		AE5C6C561A35DF59007BF6B7 /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE7B60921A2F1C3D00CA12EB /* DefaultConfiguration.plist */; };
 		AE5C6C571A35DF64007BF6B7 /* Configuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = AE7B60941A2F1E2600CA12EB /* Configuration.swift */; };
 		AE5C6C581A35DF67007BF6B7 /* Buffer.swift in Sources */ = {isa = PBXBuildFile; fileRef = AECB52E61A35DC7200C32C85 /* Buffer.swift */; };
 		AE5C6C591A35DF69007BF6B7 /* Param.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4FDFC03E1A30ABF50071FECB /* Param.swift */; };
@@ -689,6 +696,8 @@
 			files = (
 				8E7F1BF91D6DD2DC0071F90C /* Images.xcassets in Resources */,
 				8E7F1BF81D6DD2D60071F90C /* DefaultConfiguration.plist in Resources */,
+				AE14AA7C1B272EDC00770630 /* Images.xcassets in Resources */,
+				AE14AA721B272EB500770630 /* DefaultConfiguration.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -698,6 +707,8 @@
 			files = (
 				8E7F1BFB1D6DD2F40071F90C /* DefaultConfiguration.plist in Resources */,
 				8E7F1BFA1D6DD2EF0071F90C /* Images.xcassets in Resources */,
+				AE5C6C561A35DF59007BF6B7 /* DefaultConfiguration.plist in Resources */,
+				4FC768E41AA846960057FE9D /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
