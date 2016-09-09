@@ -705,10 +705,10 @@ class Debugger {
         /******* HIT TYPE ********/
         let URL = NSURL(string: event.message)
         
-        if let optURL = URL {
+        if let optURL = URL?.absoluteString {
             hitTypeView.hidden = false
             
-            let hit = Hit(url: optURL.absoluteString)
+            let hit = Hit(url: optURL)
             
             switch(hit.getHitType()) {
             case Hit.HitType.Touch:
