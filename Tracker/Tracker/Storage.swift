@@ -101,11 +101,12 @@ class Storage {
     
     func deleteOldDB() {
         let optUrl: NSURL? = NSFileManager.defaultManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).last
-        guard let url = optUrl else {
+        guard let url = optUrl,
+            let db = url.URLByAppendingPathComponent("Tracker.sqlite") else {
             return
         }
         
-        let db = url.URLByAppendingPathComponent("Tracker.sqlite")
+        
         var err: NSError?
         let exists = db.checkResourceIsReachableAndReturnError(&err)
         if exists {
@@ -404,15 +405,10 @@ class Storage {
             request.includesSubentities = false
             request.includesPropertyValues = false
 
-            var error: NSError?
             var result = -1
             privateContext.performBlockAndWait({
-                let count = privateContext.countForFetchRequest(request, error:&error);
-                if(count == NSNotFound) {
-                    result = 0
-                } else {
-                    result = count
-                }
+                let count = try? privateContext.countForFetchRequest(request)
+                result = count ?? 0
             })
             return result
         }
@@ -436,11 +432,11 @@ class Storage {
             let filter = NSPredicate(format: "hit == %@", hit);
             request.predicate = filter
 
-            var error: NSError?
             var exists = false
             privateContext.performBlockAndWait({
-                let count = privateContext.countForFetchRequest(request, error:&error);
-                exists = (count > 0)
+                if let count = try? privateContext.countForFetchRequest(request) {
+                    exists = (count > 0)
+                }
             })
 
             return exists
@@ -670,8 +666,8 @@ class Storage {
 
             components.percentEncodedQuery = query
 
-            if let optNewURL = components.URL {
-                return optNewURL.absoluteString
+            if let optNewURL = components.URL?.absoluteString {
+                return optNewURL
             } else {
                 return hit
             }

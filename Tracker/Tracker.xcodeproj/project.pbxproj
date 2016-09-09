@@ -148,9 +148,6 @@
 		AE14AA6F1B272EA500770630 /* TVTrackingPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3533A91A530FA0007922E7 /* TVTrackingPlugin.swift */; };
 		AE14AA701B272EAC00770630 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F44052F1A402C99000014BD /* StringExtension.swift */; };
 		AE14AA711B272EAE00770630 /* NSNumberExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F4405311A403A7B000014BD /* NSNumberExtension.swift */; };
-		AE14AA761B272EC000770630 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E4F971A4434A400947800 /* Reachability.swift */; };
-		AE14AA771B272EC400770630 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
-		AE14AA7B1B272ED900770630 /* Debugger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F3CE1B51AAEE675008EEE4F /* Debugger.swift */; };
 		AE14AA721B272EB500770630 /* DefaultConfiguration.plist in Resources */ = {isa = PBXBuildFile; fileRef = AE7B60921A2F1C3D00CA12EB /* DefaultConfiguration.plist */; };
 		AE14AA761B272EC000770630 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F8E4F971A4434A400947800 /* Reachability.swift */; };
 		AE14AA771B272EC400770630 /* Tracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 4FE904901A56E51F003409B8 /* Tracker.xcdatamodeld */; };
@@ -655,6 +652,7 @@
 					AE887E471A2F13D3005682DA = {
 						CreatedOnToolsVersion = 6.1;
 						DevelopmentTeam = 3MH35DZSF5;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -1156,6 +1154,7 @@
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 2.3;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
@@ -1186,6 +1185,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 2.3;
 				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
