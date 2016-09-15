@@ -26,25 +26,25 @@ import Foundation
 public class DefaultTrackerDelegate: NSObject, TrackerDelegate {
     let separator = "\n\t"
     
-    public func trackerNeedsFirstLaunchApproval(message: String) {
+    public func trackerNeedsFirstLaunchApproval(_ message: String) {
         print("ATINTERNET Debugging message:\(separator)Event: First Launch\(separator)Message: \(message)")
     }
-    public func buildDidEnd(status: HitStatus, message: String) {
+    public func buildDidEnd(_ status: HitStatus, message: String) {
         print("ATINTERNET Debugging message:\(separator)Event: Building Hit\(separator)Status: \(status)\(separator)Message: \(message)")
     }
-    public func sendDidEnd(status: HitStatus, message: String) {
+    public func sendDidEnd(_ status: HitStatus, message: String) {
         print("ATINTERNET Debugging message:\(separator)Event: Sending Hit\(separator)Message: \(message)")
     }
-    public func saveDidEnd(message: String) {
+    public func saveDidEnd(_ message: String) {
         print("ATINTERNET Debugging message:\(separator)Event: Saving Hit\(separator)Message: \(message)")
     }
-    public func didCallPartner(response: String) {
+    public func didCallPartner(_ response: String) {
         print("ATINTERNET Debugging message:\(separator)Event: Calling Partner\(separator)Message: \(response)")
     }
-    public func warningDidOccur(message: String) {
+    public func warningDidOccur(_ message: String) {
         print("ATINTERNET Debugging message:\(separator)Event: Warning\(separator)Message: \(message)")
     }
-    public func errorDidOccur(message: String) {
+    public func errorDidOccur(_ message: String) {
         print("ATINTERNET Debugging message:\(separator)Event: Error\(separator)Message: \(message)")
     }
 }

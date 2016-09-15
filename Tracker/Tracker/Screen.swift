@@ -61,11 +61,11 @@ public class AbstractScreen: BusinessObject {
     /// Set parameters in buffer
     override func setEvent() {
         if let optLevel2 = level2 {
-            self.tracker.setParam("s2", value: optLevel2)
+            self.tracker = self.tracker.setParam("s2", value: optLevel2)
         }
         
         if (isBasketScreen) {
-            tracker.setParam("tp", value: "cart")
+            tracker = tracker.setParam("tp", value: "cart")
         }
     }
     
@@ -83,7 +83,7 @@ public class Screen: AbstractScreen {
     override func setEvent() {
         super.setEvent()
         
-        tracker.event.set("screen", action: action.rawValue, label: buildScreenName())
+        _ = tracker.event.set("screen", action: action.rawValue, label: buildScreenName())
     }
     
     //MARK: Screen name building
@@ -102,9 +102,9 @@ public class DynamicScreen: AbstractScreen {
     /// Dynamic screen identifier
     public var screenId: String = ""
     /// Dynamic screen update date
-    public var update: NSDate = NSDate()
+    public var update: Date = Date()
     
-    let dateFormatter: NSDateFormatter = NSDateFormatter()
+    let dateFormatter: DateFormatter = DateFormatter()
     
     /// Set parameters in buffer
     override func setEvent() {
@@ -115,19 +115,18 @@ public class DynamicScreen: AbstractScreen {
         let encodingOption = ParamOption()
         encodingOption.encode = true
         
-        tracker.setParam("pchap", value: chapters == nil ? "" : chapters!, options:encodingOption)
-        
         if(screenId.characters.count > 255){
             screenId = ""
             tracker.delegate?.warningDidOccur("screenId too long, replaced by empty value")
         }
-        tracker.setParam("pid", value: screenId)
         
         dateFormatter.dateFormat = "YYYYMMddHHmm"
         dateFormatter.locale = LifeCycle.locale
         
-        tracker.setParam("pidt", value: dateFormatter.stringFromDate(update))
-        tracker.event.set("screen", action: action.rawValue, label: name)
+        tracker = tracker.setParam("pchap", value: chapters == nil ? "" : chapters!, options:encodingOption)
+            .setParam("pid", value: screenId)
+            .setParam("pidt", value: dateFormatter.string(from: update))
+            .event.set("screen", action: action.rawValue, label: name)
     }
     
     //MARK: Chapters building
@@ -187,7 +186,7 @@ public class Screens {
     - parameter screen: name
     - returns: Screen instance
     */
-    public func add(name:String) -> Screen {
+    public func add(_ name:String) -> Screen {
         let screen = Screen(tracker: tracker)
         screen.name = name
         tracker.businessObjects[screen.id] = screen
@@ -201,7 +200,7 @@ public class Screens {
     - parameter first: chapter
     - returns: Screen instance
     */
-    public func add(name: String, chapter1: String) -> Screen {
+    public func add(_ name: String, chapter1: String) -> Screen {
         let screen = Screen(tracker: tracker)
         screen.name = name
         screen.chapter1 = chapter1
@@ -217,7 +216,7 @@ public class Screens {
     - parameter second: chapter
     - returns: Screen instance
     */
-    public func add(name: String, chapter1: String, chapter2: String) -> Screen {
+    public func add(_ name: String, chapter1: String, chapter2: String) -> Screen {
         let screen = Screen(tracker: tracker)
         screen.name = name
         screen.chapter1 = chapter1
@@ -235,7 +234,7 @@ public class Screens {
     - parameter third: chapter
     - returns: Screen instance
     */
-    public func add(name: String, chapter1: String, chapter2: String, chapter3: String) -> Screen {
+    public func add(_ name: String, chapter1: String, chapter2: String, chapter3: String) -> Screen {
         let screen = Screen(tracker: tracker)
         screen.name = name
         screen.chapter1 = chapter1
@@ -260,8 +259,8 @@ public class DynamicScreens {
         self.tracker = tracker
     }
     
-    @available(*, deprecated=2.2.1, message="Use add(screenId: String, update: NSDate, name: String) instead.")
-    public func add(screenId: Int, update: NSDate, name: String) -> DynamicScreen {
+    @available(*, deprecated: 2.2.1, message: "Use add(screenId: String, update: NSDate, name: String) instead.")
+    public func add(_ screenId: Int, update: Date, name: String) -> DynamicScreen {
         let screen = DynamicScreen(tracker: tracker)
         screen.screenId = String(screenId)
         screen.update = update
@@ -271,7 +270,7 @@ public class DynamicScreens {
         return screen
     }
     
-    public func add(screenId: String, update: NSDate, name: String) -> DynamicScreen {
+    public func add(_ screenId: String, update: Date, name: String) -> DynamicScreen {
         let screen = DynamicScreen(tracker: tracker)
         screen.screenId = screenId
         screen.update = update
@@ -288,8 +287,8 @@ public class DynamicScreens {
     - parameter first: chapter
     - returns: DynamicScreen instance
     */
-    @available(*, deprecated=2.2.1, message="Use add(screenId: String, update: NSDate, name: String, chapter1: String) instead.")
-    public func add(screenId: Int, update: NSDate,name: String, chapter1: String) -> DynamicScreen {
+    @available(*, deprecated: 2.2.1, message: "Use add(screenId: String, update: NSDate, name: String, chapter1: String) instead.")
+    public func add(_ screenId: Int, update: Date,name: String, chapter1: String) -> DynamicScreen {
         let screen = DynamicScreen(tracker: tracker)
         screen.screenId = String(screenId)
         screen.update = update
@@ -300,7 +299,7 @@ public class DynamicScreens {
         return screen
     }
     
-    public func add(screenId: String, update: NSDate,name: String, chapter1: String) -> DynamicScreen {
+    public func add(_ screenId: String, update: Date,name: String, chapter1: String) -> DynamicScreen {
         let screen = DynamicScreen(tracker: tracker)
         screen.screenId = screenId
         screen.update = update
@@ -318,8 +317,8 @@ public class DynamicScreens {
     - parameter second: chapter
     - returns: DynamicScreen instance
     */
-    @available(*, deprecated=2.2.1, message="Use add(screenId: String, update: NSDate, name: String, chapter1: String, chapter2: String) instead.")
-    public func add(screenId: Int, update: NSDate,name: String, chapter1: String, chapter2: String) -> DynamicScreen {
+    @available(*, deprecated: 2.2.1, message: "Use add(screenId: String, update: NSDate, name: String, chapter1: String, chapter2: String) instead.")
+    public func add(_ screenId: Int, update: Date,name: String, chapter1: String, chapter2: String) -> DynamicScreen {
         let screen = DynamicScreen(tracker: tracker)
         screen.screenId = String(screenId)
         screen.update = update
@@ -331,7 +330,7 @@ public class DynamicScreens {
         return screen
     }
     
-    public func add(screenId: String, update: NSDate,name: String, chapter1: String, chapter2: String) -> DynamicScreen {
+    public func add(_ screenId: String, update: Date,name: String, chapter1: String, chapter2: String) -> DynamicScreen {
         let screen = DynamicScreen(tracker: tracker)
         screen.screenId = screenId
         screen.update = update
@@ -351,8 +350,8 @@ public class DynamicScreens {
     - parameter third: chapter
     - returns: DynamicScreen instance
     */
-    @available(*, deprecated=2.2.1, message="Use add(screenId: String, update: NSDate, name: String, chapter1: String, chapter2: String, chapter3: String) instead.")
-    public func add(screenId: Int, update: NSDate,name: String, chapter1: String, chapter2: String, chapter3: String) -> DynamicScreen {
+    @available(*, deprecated: 2.2.1, message: "Use add(screenId: String, update: NSDate, name: String, chapter1: String, chapter2: String, chapter3: String) instead.")
+    public func add(_ screenId: Int, update: Date,name: String, chapter1: String, chapter2: String, chapter3: String) -> DynamicScreen {
         let screen = DynamicScreen(tracker: tracker)
         screen.screenId = String(screenId)
         screen.update = update
@@ -365,7 +364,7 @@ public class DynamicScreens {
         return screen
     }
     
-    public func add(screenId: String, update: NSDate,name: String, chapter1: String, chapter2: String, chapter3: String) -> DynamicScreen {
+    public func add(_ screenId: String, update: Date,name: String, chapter1: String, chapter2: String, chapter3: String) -> DynamicScreen {
         let screen = DynamicScreen(tracker: tracker)
         screen.screenId = screenId
         screen.update = update

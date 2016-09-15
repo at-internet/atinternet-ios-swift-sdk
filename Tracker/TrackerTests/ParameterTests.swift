@@ -49,8 +49,8 @@ class ParameterTests: XCTestCase {
 
     // On vérifie que qu'il est possible d'instancier plusieurs fois un Paramètre
     func testMultiInstance() {
-        let page = Param(key: "p", value: {"home"}, type: .String)
-        let xtCustom = Param(key: "stc", value: {"{\"crash\":1}"}, type: .JSON)
+        let page = Param(key: "p", value: {"home"}, type: .string)
+        let xtCustom = Param(key: "stc", value: {"{\"crash\":1}"}, type: .json)
         XCTAssert(page !== xtCustom, "page et xtCustom ne doivent pas pointer vers la même référence")
     }
     
@@ -65,7 +65,7 @@ class ParameterTests: XCTestCase {
     
     // On vérifie que les paramètres key et value ont bien été affectés
     func testParameterValuesAfterInitWithKeyAndValue() {
-        let param = Param(key: "p", value: {"Home"}, type: .String)
+        let param = Param(key: "p", value: {"Home"}, type: .string)
         
         XCTAssertEqual(param.key, "p", "le paramètre key doit être égal à p")
         XCTAssert(param.value() == "Home", "le paramètre value doit être égal à Home")
@@ -76,7 +76,7 @@ class ParameterTests: XCTestCase {
         let paramOptions = ParamOption()
         paramOptions.relativePosition = ParamOption.RelativePosition.first
         
-        let param = Param(key: "p", value: {"Home"}, type: .String, options: paramOptions)
+        let param = Param(key: "p", value: {"Home"}, type: .string, options: paramOptions)
         
         XCTAssertEqual(param.key, "p", "le paramètre key doit être égal à p")
         XCTAssert(param.value() == "Home", "le paramètre value doit être égale à Home")
@@ -90,7 +90,7 @@ class ParameterTests: XCTestCase {
         let paramOptions = ParamOption()
         paramOptions.relativePosition = ParamOption.RelativePosition.last
         
-        let param = Param(key: "p", value: {"Home"}, type: .String, options: paramOptions)
+        let param = Param(key: "p", value: {"Home"}, type: .string, options: paramOptions)
         
         XCTAssertEqual(param.key, "p", "le paramètre key doit être égal à p")
         XCTAssert(param.value() == "Home", "le paramètre value doit être égale à Home")
@@ -105,7 +105,7 @@ class ParameterTests: XCTestCase {
         paramOptions.relativePosition = ParamOption.RelativePosition.before
         paramOptions.relativeParameterKey = "ref"
         
-        let param = Param(key: "p", value: {"Home"}, type: .String, options: paramOptions)
+        let param = Param(key: "p", value: {"Home"}, type: .string, options: paramOptions)
         
         XCTAssertEqual(param.key, "p", "le paramètre key doit être égal à p")
         XCTAssert(param.value() == "Home", "le paramètre value doit être égale à Home")
@@ -119,7 +119,7 @@ class ParameterTests: XCTestCase {
         paramOptions.relativePosition = ParamOption.RelativePosition.after
         paramOptions.relativeParameterKey = "stc"
         
-        let param = Param(key: "p", value: {"Home"}, type: .String, options: paramOptions)
+        let param = Param(key: "p", value: {"Home"}, type: .string, options: paramOptions)
         
         XCTAssertEqual(param.key, "p", "le paramètre key doit être égal à p")
         XCTAssert(param.value() == "Home", "le paramètre value doit être égale à Home")

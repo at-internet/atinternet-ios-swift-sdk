@@ -42,7 +42,7 @@ public class CustomObject: BusinessObject {
         option.append = true
         option.encode = true
         
-        self.tracker.setParam(HitParam.JSON.rawValue, value: json, options: option)
+        _ = self.tracker.setParam(HitParam.JSON.rawValue, value: json, options: option)
     }
 }
 
@@ -64,7 +64,7 @@ public class CustomObjects {
     - parameter customObject: serialized custom object
     @- returns: the CustomObjects instance
     */
-    public func add(customObject: String) -> CustomObject {
+    public func add(_ customObject: String) -> CustomObject {
         let customObj = CustomObject(tracker: self.tracker)
         customObj.json = customObject
         
@@ -78,7 +78,7 @@ public class CustomObjects {
     - parameter customObject: not serialized custom object
     - returns: the CustomObjects instance
     */
-    public func add(customObject: [String: AnyObject]) -> CustomObject {
+    public func add(_ customObject: [String: Any]) -> CustomObject {
         let customObj = CustomObject(tracker: self.tracker)
         customObj.json = Tool.JSONStringify(customObject)
         

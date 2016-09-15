@@ -42,7 +42,7 @@ public class CustomTreeStructure: ScreenInfo {
     
     /// Set parameters in buffer
     override func setEvent() {
-        tracker.setParam("ptype", value: String(format: "%d-%d-%d", category1, category2, category3))
+        _ = tracker.setParam("ptype", value: String(format: "%d-%d-%d", category1, category2, category3))
     }
 }
 
@@ -64,7 +64,7 @@ public class CustomTreeStructures {
     - parameter category1: category1 label
     - returns: CustomTreeStructure instance
     */
-    public func add(category1: Int) -> CustomTreeStructure {
+    public func add(_ category1: Int) -> CustomTreeStructure {
         let cts = CustomTreeStructure(tracker: tracker)
         cts.category1 = category1
         tracker.businessObjects[cts.id] = cts
@@ -78,7 +78,7 @@ public class CustomTreeStructures {
     - parameter category2: category2 label
     - returns: CustomTreeStructure instance
     */
-    public func add(category1: Int, category2: Int) -> CustomTreeStructure {
+    public func add(_ category1: Int, category2: Int) -> CustomTreeStructure {
         let cts = add(category1)
         cts.category2 = category2
         
@@ -92,7 +92,7 @@ public class CustomTreeStructures {
     - parameter category3: category3 label
     - returns: CustomTreeStructure instance
     */
-    public func add(category1: Int, category2: Int, category3: Int) -> CustomTreeStructure {
+    public func add(_ category1: Int, category2: Int, category3: Int) -> CustomTreeStructure {
         let cts = add(category1, category2: category2)
         cts.category3 = category3
         

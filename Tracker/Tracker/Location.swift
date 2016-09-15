@@ -40,8 +40,8 @@ public class Location: ScreenInfo {
     
     /// Set parameters in buffer
     override func setEvent() {
-        tracker.setParam(HitParam.GPSLatitude.rawValue, value: String(format: "%.2f", latitude))
-        tracker.setParam(HitParam.GPSLongitude.rawValue, value: String(format: "%.2f", longitude))
+        _ = tracker.setParam(HitParam.GPSLatitude.rawValue, value: String(format: "%.2f", latitude))
+            .setParam(HitParam.GPSLongitude.rawValue, value: String(format: "%.2f", longitude))
     }
 }
 
@@ -64,7 +64,7 @@ public class Locations {
     - parameter longitude: longitude y
     - returns: Location instance
     */
-    public func add(latitude: Double, longitude: Double) -> Location {
+    public func add(_ latitude: Double, longitude: Double) -> Location {
         let location = Location(tracker: tracker)
         location.latitude = latitude
         location.longitude = longitude

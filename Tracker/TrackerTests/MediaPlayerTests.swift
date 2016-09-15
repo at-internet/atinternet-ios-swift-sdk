@@ -51,23 +51,23 @@ class MediaPlayerTests: XCTestCase {
     }
     
     func testAddMediaPlayer() {
-        mediaPlayers.add()
-        mediaPlayers.add(42)
+        _ = mediaPlayers.add()
+        _ = mediaPlayers.add(42)
         
         XCTAssert(mediaPlayers.playerIds.count == 2, "Le nombre d'objet doit être égale à 2")
         XCTAssert(mediaPlayers.playerIds[42] != nil, "Le player devrait exister pour cet identifiant")
     }
     
     func testRemoveAllMediaPlayers() {
-        mediaPlayers.add()
-        mediaPlayers.add()
+        _ = mediaPlayers.add()
+        _ = mediaPlayers.add()
         mediaPlayers.removeAll()
         
         XCTAssert(mediaPlayers.playerIds.count == 0, "Le nombre d'objet doit être égale à 2")
     }
     
     func testRemoveMediaPlayer() {
-        mediaPlayers.add(72)
+        _ = mediaPlayers.add(72)
         mediaPlayers.remove(72)
         
         XCTAssert(mediaPlayers.playerIds.count == 0, "Le nombre d'objet doit être égale à 2")

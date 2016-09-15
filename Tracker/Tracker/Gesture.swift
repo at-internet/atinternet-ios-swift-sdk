@@ -61,19 +61,19 @@ public class Gesture: BusinessObject {
         if(TechnicalContext.screenName != "") {
             let encodingOption = ParamOption()
             encodingOption.encode = true
-            tracker.setParam(HitParam.TouchScreen.rawValue, value: TechnicalContext.screenName, options: encodingOption)
+            tracker = tracker.setParam(HitParam.TouchScreen.rawValue, value: TechnicalContext.screenName, options: encodingOption)
         }
         
         if(TechnicalContext.level2 > 0) {
-            tracker.setParam(HitParam.TouchLevel2.rawValue, value: TechnicalContext.level2)
+            tracker = tracker.setParam(HitParam.TouchLevel2.rawValue, value: TechnicalContext.level2)
         }
         
         if let optLevel2 = level2 {
-            self.tracker.setParam("s2", value: optLevel2)
+            self.tracker = self.tracker.setParam("s2", value: optLevel2)
         }
         
-        tracker.setParam("click", value: action.rawValue)
-        tracker.event.set("click", action: action.rawValue, label: buildGestureName())
+        tracker = tracker.setParam("click", value: action.rawValue)
+            .event.set("click", action: action.rawValue, label: buildGestureName())
     }
     
     /**
@@ -158,7 +158,7 @@ public class Gestures {
     - parameter touch: name
     - returns: gesture instance
     */
-    public func add(name:String) -> Gesture {
+    public func add(_ name:String) -> Gesture {
         let gesture = Gesture(tracker: tracker)
         gesture.name = name
         tracker.businessObjects[gesture.id] = gesture
@@ -172,7 +172,7 @@ public class Gestures {
     - parameter first: chapter
     - returns: gesture instance
     */
-    public func add(name: String, chapter1: String) -> Gesture {
+    public func add(_ name: String, chapter1: String) -> Gesture {
         let gesture = Gesture(tracker: tracker)
         gesture.name = name
         gesture.chapter1 = chapter1
@@ -188,7 +188,7 @@ public class Gestures {
     - parameter second: chapter
     - returns: gesture instance
     */
-    public func add(name: String, chapter1: String, chapter2: String) -> Gesture {
+    public func add(_ name: String, chapter1: String, chapter2: String) -> Gesture {
         let gesture = Gesture(tracker: tracker)
         gesture.name = name
         gesture.chapter1 = chapter1
@@ -206,7 +206,7 @@ public class Gestures {
     - parameter third: chapter
     - returns: gesture instance
     */
-    public func add(name: String, chapter1: String, chapter2: String, chapter3: String) -> Gesture {
+    public func add(_ name: String, chapter1: String, chapter2: String, chapter3: String) -> Gesture {
         let gesture = Gesture(tracker: tracker)
         gesture.name = name
         gesture.chapter1 = chapter1

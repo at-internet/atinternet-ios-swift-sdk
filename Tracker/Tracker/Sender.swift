@@ -35,7 +35,7 @@ import CoreData
 import UIKit
 
 /// Hit sender
-class Sender: NSOperation {
+class Sender: Operation {
     /// Tracker instance
     let tracker: Tracker
     /// Hit to send
@@ -78,7 +78,7 @@ class Sender: NSOperation {
     /**
     Sends hit
     */
-    func send(includeOfflineHit: Bool = true) {
+    func send(_ includeOfflineHit: Bool = true) {
         if(includeOfflineHit) {
             Sender.sendOfflineHits(self.tracker, forceSendOfflineHits: false, async: false)
         }
@@ -91,7 +91,7 @@ class Sender: NSOperation {
     
     - parameter a: callback to indicate whether hit was sent successfully or not
     */
-    func sendWithCompletionHandler(completionHandler: ((success: Bool) -> Void)!) {
+    func sendWithCompletionHandler(_ completionHandler: ((_ success: Bool) -> Void)?) {
         let db = Storage.sharedInstance
         
         // Si pas de connexion ou que le mode offline est à "always"
@@ -118,25 +118,25 @@ class Sender: NSOperation {
                     }
                 }
         } else {
-            let URL = NSURL(string: hit.url)
+            let URL = Foundation.URL(string: hit.url)
             
             if let optURL = URL {
                 // Si l'opération n'a pas été annulée on envoi sinon on sauvegarde le hit
-                if(!cancelled) {
-                    let semaphore = dispatch_semaphore_create(0)
+                if(!isCancelled) {
+                    let semaphore = DispatchSemaphore(value: 0)
                     
-                    let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration()
-                    sessionConfig.requestCachePolicy = NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData
-                    let session = NSURLSession(configuration: sessionConfig)
-                    let request = NSMutableURLRequest(URL: optURL, cachePolicy: NSURLRequestCachePolicy.ReloadIgnoringLocalCacheData, timeoutInterval: 30)
+                    let sessionConfig = URLSessionConfiguration.default
+                    sessionConfig.requestCachePolicy = NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData
+                    let session = URLSession(configuration: sessionConfig)
+                    var request = URLRequest(url: optURL, cachePolicy: NSURLRequest.CachePolicy.reloadIgnoringLocalCacheData, timeoutInterval: 30)
                     
-                    request.networkServiceType = NSURLRequestNetworkServiceType.NetworkServiceTypeBackground
+                    request.networkServiceType = NSURLRequest.NetworkServiceType.background
                     
-                    let task = session.dataTaskWithRequest(request, completionHandler: {(data, response, error) in
+                    let task = session.dataTask(with: request, completionHandler: {(data, response, error) in
                         var statusCode: Int?
                         
-                        if (response is NSHTTPURLResponse) {
-                            let res = response as! NSHTTPURLResponse
+                        if (response is HTTPURLResponse) {
+                            let res = response as! HTTPURLResponse
                             statusCode = res.statusCode;
                         }
                         
@@ -163,53 +163,49 @@ class Sender: NSOperation {
                                     if(retryCount < self.retryCount) {
                                         db.setRetryCount(retryCount+1, hit: self.hit.url)
                                     } else {
-                                        db.delete(self.hit.url)
+                                        _ = db.delete(self.hit.url)
                                     }
                                 }
                                 
                                 var errorMessage = ""
                                 
                                 if let optError = error {
-                                    errorMessage = optError.description
+                                    errorMessage = optError.localizedDescription
                                 }
                                 
                                 // On lève une erreur indiquant qu'une réponse autre que 200 a été reçue
-                                self.tracker.delegate?.sendDidEnd(HitStatus.Failed, message: errorMessage)
+                                self.tracker.delegate?.sendDidEnd(HitStatus.failed, message: errorMessage)
                                 
                                 if(Debugger.sharedInstance.viewController != nil) {
                                     Debugger.sharedInstance.addEvent(errorMessage, icon: "error48")
                                 }
                                 
-                                if((completionHandler) != nil) {
-                                    completionHandler(success: false)
-                                }
+                                completionHandler?(false)
                             }
                         } else {
                             // Si le hit provient du stockage et que l'envoi a réussi, on le supprime de la base
                             if(self.hit.isOffline) {
                                 OfflineHit.sentWithSuccess = true
-                                db.delete(self.hit.url)
+                                _ = db.delete(self.hit.url)
                             }
                             
-                            self.tracker.delegate?.sendDidEnd(HitStatus.Success, message: self.hit.url)
+                            self.tracker.delegate?.sendDidEnd(HitStatus.success, message: self.hit.url)
                             
                             if(Debugger.sharedInstance.viewController != nil) {
                                 Debugger.sharedInstance.addEvent(self.hit.url, icon: "sent48")
                             }
                             
-                            if((completionHandler) != nil) {
-                                completionHandler(success: true)
-                            }
+                            completionHandler?(true)
                         }
                         
                         session.finishTasksAndInvalidate()
                         
-                        dispatch_semaphore_signal(semaphore)
+                        semaphore.signal()
                     })
                     
                     task.resume()
                     
-                    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+                    _ = semaphore.wait(timeout: DispatchTime.distantFuture)
                 } else {
                     if(!hit.isOffline) {
                         if(db.insert(&hit.url, mhOlt: self.mhOlt)) {
@@ -230,20 +226,18 @@ class Sender: NSOperation {
                 
             } else  {
                 //On lève une erreur indiquant que le hit n'a pas été correctement construit et n'a pas pu être envoyé
-                self.tracker.delegate?.sendDidEnd(HitStatus.Failed, message: "Hit could not be parsed and sent")
+                self.tracker.delegate?.sendDidEnd(HitStatus.failed, message: "Hit could not be parsed and sent")
                 
                 if(Debugger.sharedInstance.viewController != nil) {
                     Debugger.sharedInstance.addEvent("Hit could not be parsed and sent : " + hit.url, icon: "error48")
                 }
                 
-                if((completionHandler) != nil) {
-                    completionHandler(success: false)
-                }
+                completionHandler?(false)
             }
         }
     }
     
-    class func sendOfflineHits(tracker: Tracker, forceSendOfflineHits: Bool, async: Bool = true) {
+    class func sendOfflineHits(_ tracker: Tracker, forceSendOfflineHits: Bool, async: Bool = true) {
         if((tracker.configuration.parameters["storage"] != "always" || forceSendOfflineHits)
             && TechnicalContext.connectionType != TechnicalContext.ConnexionType.offline) {
                 
@@ -271,8 +265,8 @@ class Sender: NSOperation {
                             
 #if !AT_EXTENSION
                             // Creates background task for offline hits
-                            if(UIDevice.currentDevice().multitaskingSupported && tracker.configuration.parameters["enableBackgroundTask"]?.lowercaseString == "true") {
-                                BackgroundTask.sharedInstance.begin()
+                            if(UIDevice.current.isMultitaskingSupported && tracker.configuration.parameters["enableBackgroundTask"]?.lowercased() == "true") {
+                                _ = BackgroundTask.sharedInstance.begin()
                             }
 #endif
                             

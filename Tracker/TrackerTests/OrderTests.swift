@@ -47,16 +47,16 @@ class OrderTests: XCTestCase {
     
     func testSetOrder() {
         order.orderId = "cmd1"
-        order.amount.set(50, amountTaxIncluded: 60, taxAmount: 10)
-        order.discount.set(5, discountTaxIncluded: 10, promotionalCode: "1234")
-        order.delivery.set(2, shippingFeesTaxIncluded: 6, deliveryMethod: "1[UPS]")
+        _ = order.amount.set(50, amountTaxIncluded: 60, taxAmount: 10)
+        _ = order.discount.set(5, discountTaxIncluded: 10, promotionalCode: "1234")
+        _ = order.delivery.set(2, shippingFeesTaxIncluded: 6, deliveryMethod: "1[UPS]")
         order.isConfirmationRequired = true
         order.isNewCustomer = true
         order.paymentMethod = 1
         order.status = 1
         order.turnover = 10.123
-        order.customVariables.add(1, value: "test")
-        order.customVariables.add(2, value: "test2")
+        _ = order.customVariables.add(1, value: "test")
+        _ = order.customVariables.add(2, value: "test2")
         
         order.setEvent()
         

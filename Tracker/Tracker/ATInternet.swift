@@ -53,29 +53,21 @@ public class ATInternet {
     }
     
     /// Singleton
-    public class var sharedInstance: ATInternet {
-        struct Static {
-            static var instance: ATInternet?
-            static var token: dispatch_once_t = 0
-        }
-        
-        dispatch_once(&Static.token) {
-            Static.instance = ATInternet()
-        }
-        
-        return Static.instance!
-    }
+    public static let sharedInstance: ATInternet = {
+        let instance = ATInternet()
+        return instance
+    }()
     
     /**
     Method to access or create an instance of a tracker
     - parameter name: name of the tracker
     */
-    public func tracker(name: String) -> Tracker {
+    public func tracker(_ name: String) -> Tracker {
         if(self.trackers == nil) {
             self.trackers = [String: Tracker]()
         }
         
-        if(self.trackers.indexForKey(name) != nil) {
+        if(self.trackers.index(forKey: name) != nil) {
             return self.trackers[name]!
         } else {
             let tracker = Tracker()
@@ -90,12 +82,12 @@ public class ATInternet {
     - parameter name: name of the tracker
     - parameter configuration: configuration to use for the tracker
     */
-    public func tracker(name: String, configuration: [String: String]) -> Tracker {
+    public func tracker(_ name: String, configuration: [String: String]) -> Tracker {
         if(self.trackers == nil) {
             self.trackers = [String: Tracker]()
         }
         
-        if(self.trackers.indexForKey(name) != nil) {
+        if(self.trackers.index(forKey: name) != nil) {
             return self.trackers[name]!
         } else {
             let tracker = Tracker(configuration: configuration)

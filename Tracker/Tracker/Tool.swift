@@ -44,10 +44,10 @@ class Tool {
     
     - returns: a json string
     */
-    class func JSONStringify(value: AnyObject, prettyPrinted: Bool = false) -> String {
-        if NSJSONSerialization.isValidJSONObject(value) {
-            if let data = try? NSJSONSerialization.dataWithJSONObject(value, options: (prettyPrinted ? NSJSONWritingOptions.PrettyPrinted : [])) {
-                if let string = NSString(data: data, encoding: NSUTF8StringEncoding) {
+    class func JSONStringify(_ value: Any, prettyPrinted: Bool = false) -> String {
+        if JSONSerialization.isValidJSONObject(value) {
+            if let data = try? JSONSerialization.data(withJSONObject: value, options: (prettyPrinted ? JSONSerialization.WritingOptions.prettyPrinted : [])) {
+                if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
                     return string as String
                 }
             }
@@ -63,10 +63,10 @@ class Tool {
     
     - returns: The position of the parameter and the index of the array where the parameter was found. (-1,-1)if not found
     */
-    class func findParameterPosition(parameterKey: String, arrays: [Param]...) -> [(index: Int, arrayIndex: Int)] {
+    class func findParameterPosition(_ parameterKey: String, arrays: [Param]...) -> [(index: Int, arrayIndex: Int)] {
         var indexes: [(index: Int, arrayIndex: Int)] = []
-        for(arrayIndex, array) in arrays.enumerate() {
-            for (parameterIndex, parameter) in array.enumerate() {
+        for(arrayIndex, array) in arrays.enumerated() {
+            for (parameterIndex, parameter) in array.enumerated() {
                 if parameter.key == parameterKey {
                     indexes.append((index: parameterIndex, arrayIndex: arrayIndex))
                 }
@@ -83,13 +83,13 @@ class Tool {
     
     - returns: a string value and a boolean which indicates whether the conversion was successful or not
     */
-    class func convertToString(value: AnyObject, separator: String = ",") -> (value: String, success: Bool) {
+    class func convertToString(_ value: Any, separator: String = ",") -> (value: String, success: Bool) {
         switch(value) {
-        case let optArray as [AnyObject]:
+        case let optArray as [Any]:
             var stringFromArray = ""
             var convertSuccess = true
             
-            for(index, val) in optArray.enumerate() {
+            for(index, val) in optArray.enumerated() {
                 if (index > 0) {
                     (stringFromArray += separator)
                 }
@@ -102,7 +102,7 @@ class Tool {
                 }
             }
             return (stringFromArray, convertSuccess)
-        case let optDictionnary as [String: AnyObject]:
+        case let optDictionnary as [String: Any]:
             let json = Tool.JSONStringify(optDictionnary)            
             return json == "" ? ("", false) : (json, true)
         case let optString as String:
@@ -126,16 +126,10 @@ class Tool {
     
     - returns: the number of days between fromDate and toDate
     */
-    class func daysBetweenDates(fromDate: NSDate, toDate: NSDate) -> Int {
-        let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
-        let unitFlags = NSCalendarUnit.Day
-        let dateComponents = calendar?.components(unitFlags, fromDate: fromDate, toDate: toDate, options: NSCalendarOptions(rawValue: 0))
+    class func daysBetweenDates(_ fromDate: Date, toDate: Date) -> Int {
+        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         
-        if let optDate = dateComponents {
-            return optDate.day
-        }
-        
-        return 0
+        return calendar.dateComponents([.day], from: fromDate, to: toDate).day ?? 0
     }
     
     /**
@@ -146,16 +140,10 @@ class Tool {
     
     - returns: the number of minutes between fromDate and toDate
     */
-    class func minutesBetweenDates(fromDate: NSDate, toDate: NSDate) -> Int {
-        let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
-        let unitFlags = NSCalendarUnit.Minute
-        let dateComponents = calendar?.components(unitFlags, fromDate: fromDate, toDate: toDate, options: NSCalendarOptions(rawValue: 0))
+    class func minutesBetweenDates(_ fromDate: Date, toDate: Date) -> Int {
+        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         
-        if let optDate = dateComponents {
-            return optDate.minute
-        }
-        
-        return 0
+        return calendar.dateComponents([.minute], from: fromDate, to: toDate).minute ?? 0
     }
     
     /**
@@ -166,16 +154,10 @@ class Tool {
      
      - returns: the number of seconds between fromDate and toDate
      */
-    class func secondsBetweenDates(fromDate: NSDate, toDate: NSDate) -> Int {
-        let calendar = NSCalendar(calendarIdentifier: NSCalendarIdentifierGregorian)
-        let unitFlags = NSCalendarUnit.Second
-        let dateComponents = calendar?.components(unitFlags, fromDate: fromDate, toDate: toDate, options: NSCalendarOptions(rawValue: 0))
+    class func secondsBetweenDates(_ fromDate: Date, toDate: Date) -> Int {
+        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
         
-        if let optDate = dateComponents {
-            return optDate.second
-        }
-        
-        return 0
+        return calendar.dateComponents([.second], from: fromDate, to: toDate).second ?? 0
     }
     
     /**
@@ -187,15 +169,15 @@ class Tool {
     
     - returns: parameter value
     */
-    class func appendParameterValues(parameterKey: String, volatileParameters: [Param], persistentParameters: [Param]) -> String {
+    class func appendParameterValues(_ parameterKey: String, volatileParameters: [Param], persistentParameters: [Param]) -> String {
         let paramPositions = Tool.findParameterPosition(parameterKey, arrays: volatileParameters, persistentParameters)
         var value = ""
         
         if(paramPositions.count > 0) {
-            for(tuple) in paramPositions.enumerate() {
-                let param = tuple.element.arrayIndex == 0 ? volatileParameters[tuple.element.index] : persistentParameters[tuple.element.index]
+            for(index, tuple) in paramPositions.enumerated() {
+                let param = tuple.arrayIndex == 0 ? volatileParameters[tuple.index] : persistentParameters[tuple.index]
                 
-                if(tuple.index > 0) {
+                if(index > 0) {
                     if let optOption = param.options {
                         value += optOption.separator
                     } else {
@@ -216,10 +198,10 @@ class Tool {
     - parameter array: to copy
     :returned: copy of array
     */
-    class func copyParamArray(array: [Param]) -> [Param] {
+    class func copyParamArray(_ array: [Param]) -> [Param] {
         var newArray: [Param] = []
         
-        for(_, param) in array.enumerate() {
+        for(_, param) in array.enumerated() {
             let copyParam = Param(key: param.key, value: param.value, type: param.type, options: param.options)
             newArray.append(copyParam)
         }

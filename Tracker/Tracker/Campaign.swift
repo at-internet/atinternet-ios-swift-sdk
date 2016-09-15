@@ -38,31 +38,31 @@ public class Campaign: ScreenInfo {
     
     /// Set parameters in buffer
     override func setEvent() {
-        let userDefaults = NSUserDefaults.standardUserDefaults()
+        let userDefaults = UserDefaults.standard
         let encodeOption = ParamOption()
         encodeOption.encode = true
         
-        if let remanentCampaign = userDefaults.valueForKey("ATCampaign") as? String, campaignDate = userDefaults.objectForKey("ATCampaignDate") as? NSDate {
-            let nbDays: Int = Tool.daysBetweenDates(campaignDate, toDate: NSDate())
+        if let remanentCampaign = userDefaults.value(forKey: "ATCampaign") as? String, let campaignDate = userDefaults.object(forKey: "ATCampaignDate") as? Date {
+            let nbDays: Int = Tool.daysBetweenDates(campaignDate, toDate: Date())
             
-            if(nbDays > Int(tracker.configuration.parameters["campaignLifetime"]!)) {
-                userDefaults.removeObjectForKey("ATCampaign")
+            if(nbDays > Int(tracker.configuration.parameters["campaignLifetime"] ?? "") ?? -1) {
+                userDefaults.removeObject(forKey: "ATCampaign")
                 userDefaults.synchronize()
             } else {
                 let remanent = remanentCampaign
                 
-                tracker.setParam("xtor", value: remanent, options: encodeOption)
+                tracker = tracker.setParam("xtor", value: remanent, options: encodeOption)
             }
         } else {
-            userDefaults.setObject(NSDate(), forKey: "ATCampaignDate")
+            userDefaults.set(Date(), forKey: "ATCampaignDate")
             userDefaults.setValue(campaignId, forKey: "ATCampaign")
             userDefaults.synchronize()
         }
         
-        tracker.setParam("xto", value: campaignId, options: encodeOption)
+        _ = tracker.setParam("xto", value: campaignId, options: encodeOption)
         
-        if(tracker.configuration.parameters["campaignLastPersistence"]?.lowercaseString == "true") {
-            userDefaults.setObject(NSDate(), forKey: "ATCampaignDate")
+        if(tracker.configuration.parameters["campaignLastPersistence"]?.lowercased() == "true") {
+            userDefaults.set(Date(), forKey: "ATCampaignDate")
             userDefaults.setValue(campaignId, forKey: "ATCampaign")
             userDefaults.synchronize()
         }
@@ -87,7 +87,7 @@ public class Campaigns {
     - parameter campaignId: campaign identifier
     - returns: the Campaign instance
     */
-    public func add(campaignId: String) -> Campaign {
+    public func add(_ campaignId: String) -> Campaign {
         let campaign = Campaign(tracker: tracker)
         campaign.campaignId = campaignId
         tracker.businessObjects[campaign.id] = campaign

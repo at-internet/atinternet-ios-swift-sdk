@@ -96,8 +96,8 @@ class Configuration {
     - returns: a configuration
     */
     init() {
-        let bundle = NSBundle(forClass: object_getClass(self))
-        let path = bundle.pathForResource("DefaultConfiguration", ofType: "plist")
+        let bundle = Bundle(for: object_getClass(self))
+        let path = bundle.path(forResource: "DefaultConfiguration", ofType: "plist")
         if let optPath = path {
             let defaultConf = NSDictionary(contentsOfFile: optPath)
             if let optDefaultConf = defaultConf as? [String: String] {

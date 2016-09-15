@@ -83,13 +83,13 @@ public class Product : BusinessObject {
     
     /// Set parameters in buffer
     override func setEvent() {
-        tracker.setParam("type", value: "pdt")
+        tracker = tracker.setParam("type", value: "pdt")
         
         let option = ParamOption()
         option.append = true
         option.encode = true
         option.separator = "|"
-        tracker.setParam("pdtl", value: buildProductName(), options: option)
+        _ = tracker.setParam("pdtl", value: buildProductName(), options: option)
     }
     
     //MARK: Screen name building
@@ -145,7 +145,7 @@ public class Products {
     - parameter product: a product instance
     - returns: the product
     */
-    public func add(product: Product) -> Product {
+    public func add(_ product: Product) -> Product {
         if(cart != nil) {
             cart.productList[product.productId] = product
         } else {
@@ -160,7 +160,7 @@ public class Products {
     - parameter productId: the product identifier
     - returns: the product
     */
-    public func add(productId: String) -> Product {
+    public func add(_ productId: String) -> Product {
         let product = Product(tracker: cart != nil ? cart.tracker : tracker)
         product.productId = productId
         
@@ -179,7 +179,7 @@ public class Products {
     - parameter productId: the product identifier
     - returns: the product
     */
-    public func add(productId: String, category1: String) -> Product {
+    public func add(_ productId: String, category1: String) -> Product {
         let pdt = add(productId)
         pdt.category1 = category1
         return pdt
@@ -192,7 +192,7 @@ public class Products {
     - parameter productId: the product identifier
     - returns: the product
     */
-    public func add(productId: String, category1: String, category2: String) -> Product {
+    public func add(_ productId: String, category1: String, category2: String) -> Product {
         let pdt = add(productId)
         pdt.category1 = category1
         pdt.category2 = category2
@@ -207,7 +207,7 @@ public class Products {
     - parameter productId: the product identifier
     - returns: the product
     */
-    public func add(productId: String, category1: String, category2: String, category3: String) -> Product {
+    public func add(_ productId: String, category1: String, category2: String, category3: String) -> Product {
         let pdt = add(productId)
         pdt.category1 = category1
         pdt.category2 = category2
@@ -224,7 +224,7 @@ public class Products {
     - parameter productId: the product identifier
     - returns: the product
     */
-    public func add(productId: String, category1: String, category2: String, category3: String, category4: String) -> Product {
+    public func add(_ productId: String, category1: String, category2: String, category3: String, category4: String) -> Product {
         let pdt = add(productId)
         pdt.category1 = category1
         pdt.category2 = category2
@@ -243,7 +243,7 @@ public class Products {
     - parameter productId: the product identifier
     - returns: the product
     */
-    public func add(productId: String, category1: String, category2: String, category3: String, category4: String, category5: String) -> Product {
+    public func add(_ productId: String, category1: String, category2: String, category3: String, category4: String, category5: String) -> Product {
         let pdt = add(productId)
         pdt.category1 = category1
         pdt.category2 = category2
@@ -264,7 +264,7 @@ public class Products {
     - parameter productId: the product identifier
     - returns: the product
     */
-    public func add(productId: String, category1: String, category2: String, category3: String, category4: String, category5: String, category6: String) -> Product {
+    public func add(_ productId: String, category1: String, category2: String, category3: String, category4: String, category5: String, category6: String) -> Product {
         let pdt = add(productId)
         pdt.category1 = category1
         pdt.category2 = category2
@@ -279,13 +279,13 @@ public class Products {
     Remove a product
     - parameter productId: the product identifier
     */
-    public func remove(productId: String) {
+    public func remove(_ productId: String) {
         if(cart != nil) {
-            cart.productList.removeValueForKey(productId)
+            cart.productList.removeValue(forKey: productId)
         } else {
             for(_,value) in self.tracker.businessObjects {
                 if (value is Product && (value as! Product).productId == productId) {
-                    self.tracker.businessObjects.removeValueForKey(value.id)
+                    self.tracker.businessObjects.removeValue(forKey: value.id)
                     break
                 }
             }
@@ -297,11 +297,11 @@ public class Products {
     */
     public func removeAll() {
         if(cart != nil) {
-            cart.productList.removeAll(keepCapacity: false)
+            cart.productList.removeAll(keepingCapacity: false)
         } else {
             for(_,value) in self.tracker.businessObjects {
                 if (value is Product) {
-                    self.tracker.businessObjects.removeValueForKey(value.id)
+                    self.tracker.businessObjects.removeValue(forKey: value.id)
                 }
             }
         }

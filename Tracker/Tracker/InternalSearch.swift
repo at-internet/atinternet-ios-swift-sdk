@@ -42,11 +42,11 @@ public class InternalSearch: BusinessObject {
     
     /// Set parameters in buffer
     override func setEvent() {
-        tracker.setParam("mc", value: keyword)
-        tracker.setParam("np", value: resultScreenNumber)
+        tracker = tracker.setParam("mc", value: keyword)
+        tracker = tracker.setParam("np", value: resultScreenNumber)
         
         if(resultPosition != nil) {
-            tracker.setParam("mcrg", value: resultPosition!)
+            tracker = tracker.setParam("mcrg", value: resultPosition!)
         }
     }
 }
@@ -70,7 +70,7 @@ public class InternalSearches {
     - parameter resultPageNumber: page number result
     - returns: InternalSearch instance
     */
-    public func add(keyword: String, resultScreenNumber: Int) -> InternalSearch {
+    public func add(_ keyword: String, resultScreenNumber: Int) -> InternalSearch {
         let search = InternalSearch(tracker: tracker)
         search.keyword = keyword
         search.resultScreenNumber = resultScreenNumber
@@ -86,7 +86,7 @@ public class InternalSearches {
     - parameter resultPosition: result position
     - returns: InternalSearch instance
     */
-    public func add(keyword: String, resultScreenNumber: Int, resultPosition: Int) -> InternalSearch {
+    public func add(_ keyword: String, resultScreenNumber: Int, resultPosition: Int) -> InternalSearch {
         let search = add(keyword, resultScreenNumber: resultScreenNumber)
         search.resultPosition = resultPosition
         

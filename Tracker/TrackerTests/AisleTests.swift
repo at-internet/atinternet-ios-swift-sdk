@@ -51,7 +51,7 @@ class AisleTests: XCTestCase {
     
     func testAddAisle() {
         aisles.tracker = aisle.tracker
-        aisle = aisles.add("chaussure")
+        aisle = aisles.add(level1: "chaussure")
         
         XCTAssert(aisles.tracker.businessObjects.count == 1, "Le nombre d'objet en attente doit être égale à 1")
         XCTAssert(aisle.level1 == "chaussure", "le niveau 1 du rayon doit être égal à chaussure")

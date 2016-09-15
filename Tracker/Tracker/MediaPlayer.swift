@@ -85,7 +85,7 @@ public class MediaPlayers {
         let player = MediaPlayer(tracker: tracker)
         
         if playerIds.count > 0 {
-            player.playerId = playerIds.keys.maxElement()! + 1
+            player.playerId = playerIds.keys.max()! + 1
         } else {
             player.playerId = 1
         }
@@ -100,9 +100,9 @@ public class MediaPlayers {
     - parameter playerId: the player identifier
     - returns: ATMediaPlayer instance
     */
-    public func add(playerId: Int) -> MediaPlayer {
+    public func add(_ playerId: Int) -> MediaPlayer {
         
-        if (playerIds.indexForKey(playerId) != nil) {
+        if (playerIds.index(forKey: playerId) != nil) {
             self.tracker.delegate?.warningDidOccur("A player with the same id already exists.")
             return playerIds[playerId]!
         } else {
@@ -119,14 +119,14 @@ public class MediaPlayers {
     Remove an ATMediaPlayer
     - parameter playerId: the player identifier
     */
-    public func remove(playerId: Int) {
+    public func remove(_ playerId: Int) {
         let player = playerIds[playerId]
         
         if let player = player {
            self.sendStops(player)
         }
         
-        playerIds.removeValueForKey(playerId)
+        playerIds.removeValue(forKey: playerId)
     }
     
     /**
@@ -137,13 +137,13 @@ public class MediaPlayers {
             self.sendStops(player)
         }
         
-        playerIds.removeAll(keepCapacity: false)
+        playerIds.removeAll(keepingCapacity: false)
     }
     
-    func sendStops(player: MediaPlayer) {
+    func sendStops(_ player: MediaPlayer) {
         for (video) in (player.videos.list.values) {
             if let timer = video.timer {
-                if (timer.valid) {
+                if (timer.isValid) {
                     video.sendStop()
                 }
             }
@@ -151,7 +151,7 @@ public class MediaPlayers {
         
         for (audio) in (player.audios.list.values) {
             if let timer = audio.timer {
-                if (timer.valid) {
+                if (timer.isValid) {
                     audio.sendStop()
                 }
             }
@@ -159,7 +159,7 @@ public class MediaPlayers {
         
         for (liveVideo) in (player.liveVideos.list.values) {
             if let timer = liveVideo.timer {
-                if (timer.valid) {
+                if (timer.isValid) {
                     liveVideo.sendStop()
                 }
             }
@@ -167,7 +167,7 @@ public class MediaPlayers {
         
         for (liveAudio) in (player.liveAudios.list.values) {
             if let timer = liveAudio.timer {
-                if (timer.valid) {
+                if (timer.isValid) {
                     liveAudio.sendStop()
                 }
             }

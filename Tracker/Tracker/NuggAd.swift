@@ -34,16 +34,16 @@ import UIKit
 
 public class NuggAd: BusinessObject {
     let key = "nuggad"
-    lazy public var data: [String: AnyObject] = [String: AnyObject]()
+    lazy public var data: [String: Any] = [String: Any]()
     
     /// Set parameters in buffer
     override func setEvent() {
         if let optPlugin = self.tracker.configuration.parameters["plugins"] {
-            if (optPlugin.rangeOfString("nuggad") != nil) {
+            if (optPlugin.range(of: "nuggad") != nil) {
                 let option = ParamOption()
                 option.append = true
                 option.encode = true
-                self.tracker.setParam("stc", value: [self.key: self.data], options:option)
+                _ = self.tracker.setParam("stc", value: [self.key: self.data], options:option)
             }
             else {
                 self.tracker.delegate?.warningDidOccur("NuggAd not enabled")
@@ -72,7 +72,7 @@ public class NuggAds {
     - parameter data: NuggAd response data
     - returns: NuggAd instance
     */
-    public func add(data: [String: AnyObject]) -> NuggAd {        
+    public func add(_ data: [String: Any]) -> NuggAd {        
         let ad = NuggAd(tracker: tracker)
         ad.data = data
         tracker.businessObjects[ad.id] = ad

@@ -45,7 +45,7 @@ public class IdentifiedVisitor {
     var tracker: Tracker
     
     let option = ParamOption()
-    let userDefaults = NSUserDefaults.standardUserDefaults()
+    let userDefaults = UserDefaults.standard
     
     /**
     IdentifiedVisitor initializer
@@ -53,8 +53,8 @@ public class IdentifiedVisitor {
     - returns: IdentifiedVisitor instance
     */
     init(tracker: Tracker) {
-        self.tracker = tracker;
-        option.persistent = true;
+        self.tracker = tracker
+        option.persistent = true
     }
     
     /**
@@ -62,8 +62,8 @@ public class IdentifiedVisitor {
     - parameter visitorID: numeric visitor identifier
     - returns: tracker instance
     */
-    public func set(visitorId: Int) -> Tracker {
-        unset()
+    public func set(_ visitorId: Int) -> Tracker {
+        _ = unset()
         save(HitParam.VisitorIdentifierNumeric.rawValue, keyPersistent: IdentifiedVisitorHelperKey.Numeric.rawValue, value: visitorId)
         
         return self.tracker
@@ -75,8 +75,8 @@ public class IdentifiedVisitor {
     - parameter visitorCategory: visitor category identifier
     - returns: tracker instance
     */
-    public func set(visitorId: Int, visitorCategory: Int) -> Tracker {
-        set(visitorId)
+    public func set(_ visitorId: Int, visitorCategory: Int) -> Tracker {
+        _ = set(visitorId)
         save(HitParam.VisitorCategory.rawValue, keyPersistent: IdentifiedVisitorHelperKey.Category.rawValue, value: visitorCategory)
         
         return self.tracker
@@ -87,8 +87,8 @@ public class IdentifiedVisitor {
     - parameter visitorID: text visitor identifier
     - returns: tracker instance
     */
-    public func set(visitorId: String) -> Tracker {
-        unset()
+    public func set(_ visitorId: String) -> Tracker {
+        _ = unset()
         save(HitParam.VisitorIdentifierText.rawValue, keyPersistent: IdentifiedVisitorHelperKey.Text.rawValue, value: visitorId)
         
         return self.tracker
@@ -100,8 +100,8 @@ public class IdentifiedVisitor {
     - parameter visitorCategory: visitor category identifier
     - returns: tracker instance
     */
-    public func set(visitorId: String, visitorCategory: Int) -> Tracker {
-        set(visitorId)
+    public func set(_ visitorId: String, visitorCategory: Int) -> Tracker {
+        _ = set(visitorId)
         save(HitParam.VisitorCategory.rawValue, keyPersistent: IdentifiedVisitorHelperKey.Category.rawValue, value: visitorCategory)
         
         return self.tracker
@@ -115,9 +115,9 @@ public class IdentifiedVisitor {
         tracker.unsetParam(HitParam.VisitorIdentifierNumeric.rawValue)
         tracker.unsetParam(HitParam.VisitorIdentifierText.rawValue)
         tracker.unsetParam(HitParam.VisitorCategory.rawValue)
-        userDefaults.removeObjectForKey(IdentifiedVisitorHelperKey.Numeric.rawValue)
-        userDefaults.removeObjectForKey(IdentifiedVisitorHelperKey.Text.rawValue)
-        userDefaults.removeObjectForKey(IdentifiedVisitorHelperKey.Category.rawValue)
+        userDefaults.removeObject(forKey: IdentifiedVisitorHelperKey.Numeric.rawValue)
+        userDefaults.removeObject(forKey: IdentifiedVisitorHelperKey.Text.rawValue)
+        userDefaults.removeObject(forKey: IdentifiedVisitorHelperKey.Category.rawValue)
         userDefaults.synchronize()
         
         return self.tracker
@@ -128,7 +128,7 @@ public class IdentifiedVisitor {
     - parameter key: parameter name
     - parameter value: integer parameter value
     */
-    private func save(keyParameter: String, keyPersistent: String, value: Int) {
+    private func save(_ keyParameter: String, keyPersistent: String, value: Int) {
         save(keyParameter, keyPersistent: keyPersistent, value: String(value))
     }
     
@@ -137,16 +137,16 @@ public class IdentifiedVisitor {
     - parameter key: parameter name
     - parameter value: string parameter value
     */
-    private func save(keyParameter: String, keyPersistent: String, value: String) {
+    private func save(_ keyParameter: String, keyPersistent: String, value: String) {
         if let conf = tracker.configuration.parameters[IdentifiedVisitorHelperKey.Configuration.rawValue] {
-            if conf.lowercaseString == "true" {
-                userDefaults.setObject(value, forKey: keyPersistent)
+            if conf.lowercased() == "true" {
+                userDefaults.set(value, forKey: keyPersistent)
                 userDefaults.synchronize()
             } else {
-                tracker.setParam(keyParameter, value: value, options: option)
+                self.tracker = tracker.setParam(keyParameter, value: value, options: option)
             }
         } else {
-            tracker.setParam(keyParameter, value: value, options: option)
+            self.tracker = tracker.setParam(keyParameter, value: value, options: option)
         }
     }
 }

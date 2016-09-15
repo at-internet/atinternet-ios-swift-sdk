@@ -59,63 +59,63 @@ public class Order: BusinessObject {
         let encodingOption = ParamOption()
         encodingOption.encode = true
         
-        tracker.setParam("cmd", value: orderId)
-        tracker.setParam("roimt", value: turnover)
+        tracker = tracker.setParam("cmd", value: orderId)
+        tracker = tracker.setParam("roimt", value: turnover)
         
         if let optStatus = status {
-            tracker.setParam("st", value: optStatus)
+            tracker = tracker.setParam("st", value: optStatus)
         }
         
         if let optIsNewCustomer = isNewCustomer {
-            tracker.setParam("newcus", value: optIsNewCustomer ? 1 : 0)
+            tracker = tracker.setParam("newcus", value: optIsNewCustomer ? 1 : 0)
         }        
 
         if let optDiscountTaxFree = discount.discountTaxFree {
-            tracker.setParam("dscht", value: optDiscountTaxFree)
+            tracker = tracker.setParam("dscht", value: optDiscountTaxFree)
         }
         
         if let optDiscountTaxIncluded = discount.discountTaxIncluded {
-            tracker.setParam("dsc", value: optDiscountTaxIncluded)
+            tracker = tracker.setParam("dsc", value: optDiscountTaxIncluded)
         }
         
         if let optPromotionalCode = discount.promotionalCode {
-            tracker.setParam("pcd", value: optPromotionalCode, options:encodingOption)
+            tracker = tracker.setParam("pcd", value: optPromotionalCode, options:encodingOption)
         }
         
         if let optAmountTaxFree = amount.amountTaxFree {
-            tracker.setParam("mtht", value: optAmountTaxFree)
+            tracker = tracker.setParam("mtht", value: optAmountTaxFree)
         }
         
         if let optAmountTaxIncluded = amount.amountTaxIncluded {
-            tracker.setParam("mtttc", value: optAmountTaxIncluded)
+            tracker = tracker.setParam("mtttc", value: optAmountTaxIncluded)
         }
         
         if let optTaxAmount = amount.taxAmount {
-            tracker.setParam("tax", value: optTaxAmount)
+            tracker = tracker.setParam("tax", value: optTaxAmount)
         }
     
         if let optShippingFeesTaxFree = delivery.shippingFeesTaxFree {
-            tracker.setParam("fpht", value: optShippingFeesTaxFree)
+            tracker = tracker.setParam("fpht", value: optShippingFeesTaxFree)
         }
         
         if let optShippingFeesTaxIncluded = delivery.shippingFeesTaxIncluded {
-            tracker.setParam("fp", value: optShippingFeesTaxIncluded)
+            tracker = tracker.setParam("fp", value: optShippingFeesTaxIncluded)
         }
         
         if let optDeliveryMethod = delivery.deliveryMethod {
-            tracker.setParam("dl", value: optDeliveryMethod, options:encodingOption)
+            tracker = tracker.setParam("dl", value: optDeliveryMethod, options:encodingOption)
         }
         
-        for(_, customVar) in customVariables.list.enumerate() {
-            tracker.setParam("O" + String(customVar.varId), value: customVar.value)
+        for(_, customVar) in customVariables.list.enumerated() {
+            tracker = tracker.setParam("O" + String(customVar.varId), value: customVar.value)
         }
         
         if let optPaymentMethod = paymentMethod {
-            tracker.setParam("mp", value: optPaymentMethod)
+            tracker = tracker.setParam("mp", value: optPaymentMethod)
         }
         
         if let _ = isConfirmationRequired {
-            tracker.setParam("tp", value: "pre1")
+            _ = tracker.setParam("tp", value: "pre1")
         }
     }
 }
@@ -139,7 +139,7 @@ public class Orders {
     - parameter turnover: order turnover
     - returns: Order instance
     */
-    public func add(orderId: String, turnover: Double) -> Order {
+    public func add(_ orderId: String, turnover: Double) -> Order {
         let order = Order(tracker: tracker)
         order.orderId = orderId
         order.turnover = turnover
@@ -155,7 +155,7 @@ public class Orders {
     - parameter status: order status
     - returns: Order instance
     */
-    public func add(orderId: String, turnover: Double, status: Int) -> Order {
+    public func add(_ orderId: String, turnover: Double, status: Int) -> Order {
         let order = add(orderId, turnover: turnover)
         order.status = status
         
@@ -191,7 +191,7 @@ public class OrderDiscount {
     - parameter promotionalCode: promotional code
     - returns: the Order instance
     */
-    public func set(discountTaxFree: Double, discountTaxIncluded: Double, promotionalCode: String) -> Order {
+    public func set(_ discountTaxFree: Double, discountTaxIncluded: Double, promotionalCode: String) -> Order {
         self.discountTaxIncluded = discountTaxIncluded
         self.discountTaxFree = discountTaxFree
         self.promotionalCode = promotionalCode
@@ -230,7 +230,7 @@ public class OrderAmount {
     - parameter taxAmount: tax amount
     - returns: the Order instance
     */
-    public func set(amountTaxFree: Double, amountTaxIncluded: Double, taxAmount: Double) -> Order {
+    public func set(_ amountTaxFree: Double, amountTaxIncluded: Double, taxAmount: Double) -> Order {
         self.amountTaxFree = amountTaxFree
         self.amountTaxIncluded = amountTaxIncluded
         self.taxAmount = taxAmount
@@ -267,7 +267,7 @@ public class OrderDelivery {
     - parameter deliveryMethod: delivery method
     - returns: the Order instance
     */
-    public func set(shippingFeesTaxFree: Double, shippingFeesTaxIncluded: Double, deliveryMethod: String) -> Order {
+    public func set(_ shippingFeesTaxFree: Double, shippingFeesTaxIncluded: Double, deliveryMethod: String) -> Order {
         self.shippingFeesTaxFree = shippingFeesTaxFree
         self.shippingFeesTaxIncluded = shippingFeesTaxIncluded
         self.deliveryMethod = deliveryMethod
@@ -318,7 +318,7 @@ public class OrderCustomVars {
     - parameter value: custom var value
     - returns: the OrderCustomVar instance
     */
-    public func add(varId: Int, value: String) ->  OrderCustomVar {
+    public func add(_ varId: Int, value: String) ->  OrderCustomVar {
         let customVar = OrderCustomVar(varId: varId, value: value)
         
         list.append(customVar)

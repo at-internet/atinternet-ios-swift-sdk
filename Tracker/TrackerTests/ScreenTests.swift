@@ -41,8 +41,8 @@ class ScreenTests: XCTestCase {
     lazy var dynamicScreen: DynamicScreen = DynamicScreen(tracker: Tracker())
     lazy var dynamicScreens: DynamicScreens = DynamicScreens(tracker: Tracker())
     
-    let curDate = NSDate()
-    let dateFormatter: NSDateFormatter = NSDateFormatter()
+    let curDate = Date()
+    let dateFormatter: DateFormatter = DateFormatter()
     
     func testInitScreen() {
         XCTAssertTrue(screen.name == "", "Le nom de l'écran doit être vide")
@@ -117,7 +117,7 @@ class ScreenTests: XCTestCase {
         XCTAssert(dynamicScreen.tracker.buffer.volatileParameters[1].value() == "123", "La valeur doit être 123")
         
         XCTAssert(dynamicScreen.tracker.buffer.volatileParameters[2].key == "pidt", "Le paramètre doit être pidt")
-        XCTAssert(dynamicScreen.tracker.buffer.volatileParameters[2].value() == dateFormatter.stringFromDate(curDate), "La valeur doit être curDate")
+        XCTAssert(dynamicScreen.tracker.buffer.volatileParameters[2].value() == dateFormatter.string(from: curDate), "La valeur doit être curDate")
         
         XCTAssert(dynamicScreen.tracker.buffer.volatileParameters[3].key == "type", "Le premier paramètre doit être type")
         XCTAssert(dynamicScreen.tracker.buffer.volatileParameters[3].value() == "screen", "La valeur du premier paramètre doit être screen")
@@ -155,7 +155,7 @@ class ScreenTests: XCTestCase {
         XCTAssert(dynamicScreen.tracker.buffer.volatileParameters[1].value() == "", "La valeur doit être vide")
         
         XCTAssert(dynamicScreen.tracker.buffer.volatileParameters[2].key == "pidt", "Le paramètre doit être pidt")
-        XCTAssert(dynamicScreen.tracker.buffer.volatileParameters[2].value() == dateFormatter.stringFromDate(curDate), "La valeur doit être curDate")
+        XCTAssert(dynamicScreen.tracker.buffer.volatileParameters[2].value() == dateFormatter.string(from: curDate), "La valeur doit être curDate")
         
         XCTAssert(dynamicScreen.tracker.buffer.volatileParameters[3].key == "type", "Le premier paramètre doit être type")
         XCTAssert(dynamicScreen.tracker.buffer.volatileParameters[3].value() == "screen", "La valeur du premier paramètre doit être screen")

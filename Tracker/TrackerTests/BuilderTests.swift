@@ -35,31 +35,31 @@ import XCTest
 
 class BuilderTests: XCTestCase, TrackerDelegate {
     
-    func trackerNeedsFirstLaunchApproval(message: String) {
+    func trackerNeedsFirstLaunchApproval(_ message: String) {
         print(message)
     }
     
-    func buildDidEnd(status: HitStatus, message: String) {
+    func buildDidEnd(_ status: HitStatus, message: String) {
         print(message)
     }
     
-    func sendDidEnd(status: HitStatus, message: String) {
+    func sendDidEnd(_ status: HitStatus, message: String) {
         print(message)
     }
     
-    func saveDidEnd(message: String) {
+    func saveDidEnd(_ message: String) {
 
     }
     
-    func didCallPartner(response: String) {
+    func didCallPartner(_ response: String) {
         print(response)
     }
     
-    func warningDidOccur(message: String) {
+    func warningDidOccur(_ message: String) {
         print(message)
     }
     
-    func errorDidOccur(message: String) {
+    func errorDidOccur(_ message: String) {
         print(message)
     }
     
@@ -78,10 +78,10 @@ class BuilderTests: XCTestCase, TrackerDelegate {
     }
     
     func getDate() -> String {
-        let date = NSDate()
-        let formatter = NSDateFormatter()
-        formatter.dateStyle = .ShortStyle
-        return formatter.stringFromDate(date)
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateStyle = .short
+        return formatter.string(from: date)
     }
     
     // Teste que le hit construit avec une paramètre dont la valeur est une closure contient bien le résultat attendu
@@ -89,8 +89,8 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         
         let today = getDate()
         
-        let pageParam = Param(key: "p", value: {"home"}, type: .String)
-        let hlParam = Param(key: "date", value: {self.getDate()}, type: .String)
+        let pageParam = Param(key: "p", value: {"home"}, type: .string)
+        let hlParam = Param(key: "date", value: {self.getDate()}, type: .string)
         
         tracker.buffer.volatileParameters.append(pageParam)
         tracker.buffer.volatileParameters.append(hlParam)
@@ -98,11 +98,11 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         let builder = Builder(tracker: self.tracker, volatileParameters: tracker.buffer.volatileParameters, persistentParameters: tracker.buffer.persistentParameters)
         
         let hits = builder.build()
-        let url = NSURL(string: hits[0])
-                let urlComponents = url?.query!.componentsSeparatedByString("&")
+        let url = URL(string: hits[0])
+                let urlComponents = url?.query!.components(separatedBy: "&")
         
         for component in urlComponents! as [String] {
-            let pairComponents = component.componentsSeparatedByString("=")
+            let pairComponents = component.components(separatedBy: "=")
             
             if(pairComponents[0] == "p") {
                 XCTAssert(pairComponents[1] == "home", "le paramètre p doit être égal à home")
@@ -115,19 +115,19 @@ class BuilderTests: XCTestCase, TrackerDelegate {
     // Teste que le hit construit avec une paramètre dont la valeur est un float contient bien le résultat attendu
     func testBuildHitWithFloatParam() {
         
-        let floatParam = Param(key: "float", value: {Tool.convertToString(3.1415).value}, type: .Float)
+        let floatParam = Param(key: "float", value: {Tool.convertToString(3.1415).value}, type: .float)
 
         tracker.buffer.volatileParameters.append(floatParam)
         
         let builder = Builder(tracker: self.tracker, volatileParameters: tracker.buffer.volatileParameters, persistentParameters: tracker.buffer.persistentParameters)
         
         let hits = builder.build()
-        let url = NSURL(string: hits[0])
+        let url = URL(string: hits[0])
         
-        let urlComponents = url?.query!.componentsSeparatedByString("&")
+        let urlComponents = url?.query!.components(separatedBy: "&")
         
         for component in urlComponents! as [String] {
-            let pairComponents = component.componentsSeparatedByString("=")
+            let pairComponents = component.components(separatedBy: "=")
             
             if(pairComponents[0] == "float"){
                 XCTAssert(pairComponents[1] == "3.1415", "le paramètre float doit être égal à 3.1415")
@@ -140,20 +140,20 @@ class BuilderTests: XCTestCase, TrackerDelegate {
     // Teste que le hit construit avec une paramètre dont la valeur est un int contient bien le résultat attendu
     func testBuildHitWithIntParam() {
         
-        let intParam = Param(key: "int", value: {Tool.convertToString(3).value}, type: .Integer)
+        let intParam = Param(key: "int", value: {Tool.convertToString(3).value}, type: .integer)
         
         tracker.buffer.volatileParameters.append(intParam)
         
         let builder = Builder(tracker: self.tracker, volatileParameters: tracker.buffer.volatileParameters, persistentParameters: tracker.buffer.persistentParameters)
         
         let hits = builder.build()
-        let url = NSURL(string: hits[0])
+        let url = URL(string: hits[0])
         
 
-        let urlComponents = url?.query!.componentsSeparatedByString("&")
+        let urlComponents = url?.query!.components(separatedBy: "&")
         
         for component in urlComponents! as [String] {
-            let pairComponents = component.componentsSeparatedByString("=")
+            let pairComponents = component.components(separatedBy: "=")
             
             if(pairComponents[0] == "int"){
                 XCTAssert(pairComponents[1] == "3".percentEncodedString, "le paramètre int doit être égal à 3")
@@ -166,8 +166,8 @@ class BuilderTests: XCTestCase, TrackerDelegate {
     // Teste que le hit construit avec une paramètre dont la valeur est un bool contient bien le résultat attendu
     func testBuildHitWithBoolParam() {
 
-        let trueBoolParam = Param(key: "trueBool", value: {Tool.convertToString(true).value}, type: .Bool)
-        let falseBoolParam = Param(key: "falseBool", value: {Tool.convertToString(false).value}, type: .Bool)
+        let trueBoolParam = Param(key: "trueBool", value: {Tool.convertToString(true).value}, type: .bool)
+        let falseBoolParam = Param(key: "falseBool", value: {Tool.convertToString(false).value}, type: .bool)
         
         tracker.buffer.volatileParameters.append(trueBoolParam)
         tracker.buffer.volatileParameters.append(falseBoolParam)
@@ -175,13 +175,13 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         let builder = Builder(tracker: self.tracker, volatileParameters: tracker.buffer.volatileParameters, persistentParameters: tracker.buffer.persistentParameters)
         
         let hits = builder.build()
-        let url = NSURL(string: hits[0])
+        let url = URL(string: hits[0])
         
 
-        let urlComponents = url?.query!.componentsSeparatedByString("&")
+        let urlComponents = url?.query!.components(separatedBy: "&")
         
         for component in urlComponents! as [String] {
-            let pairComponents = component.componentsSeparatedByString("=")
+            let pairComponents = component.components(separatedBy: "=")
             
             if(pairComponents[0] == "trueBool"){
                 XCTAssert(pairComponents[1] == "true".percentEncodedString, "le paramètre trueBool doit être égal à true")
@@ -200,7 +200,7 @@ class BuilderTests: XCTestCase, TrackerDelegate {
     // Teste que le hit construit avec une paramètre dont la valeur est un dictionnaire contient bien le résultat attendu
     func testBuildHitWithDictionnaryParam() {
         
-        let dictParam = Param(key: "json", value: {Tool.convertToString(["légume":["chou","patate","tomate","carotte"], "fruits": ["pomme", "abricot", "poire"]]).value}, type: .JSON)
+        let dictParam = Param(key: "json", value: {Tool.convertToString(["légume":["chou","patate","tomate","carotte"], "fruits": ["pomme", "abricot", "poire"]]).value}, type: .json)
 
         tracker.buffer.volatileParameters.append(dictParam)
         
@@ -208,11 +208,11 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         
         let hits = builder.build()
         
-        let urlComponentsTmp = hits[0].componentsSeparatedByString("?")[1]
-        let urlComponents = urlComponentsTmp.componentsSeparatedByString("&")
+        let urlComponentsTmp = hits[0].components(separatedBy: "?")[1]
+        let urlComponents = urlComponentsTmp.components(separatedBy: "&")
         
         for component in urlComponents as [String] {
-            let pairComponents = component.componentsSeparatedByString("=")
+            let pairComponents = component.components(separatedBy: "=")
             
             if(pairComponents[0] == "json"){
                 XCTAssert(pairComponents[1] == dictParam.value(), "le paramètre json doit être égal à {\"fruits\":[\"pomme\",\"abricot\",\"poire\"],\"légume\":[\"chou\",\"patate\",\"tomate\",\"carotte\"]}")
@@ -225,19 +225,19 @@ class BuilderTests: XCTestCase, TrackerDelegate {
     // Teste que le hit construit avec une paramètre dont la valeur est un tableau contient bien le résultat attendu
     func testBuildHitWithArrayParam() {
         
-        let arrayParam = Param(key: "array", value: {Tool.convertToString(["chou","patate","tomate","carotte"]).value}, type: .String)
+        let arrayParam = Param(key: "array", value: {Tool.convertToString(["chou","patate","tomate","carotte"]).value}, type: .string)
         
         tracker.buffer.volatileParameters.append(arrayParam)
         
         let builder = Builder(tracker: self.tracker, volatileParameters: tracker.buffer.volatileParameters, persistentParameters: tracker.buffer.persistentParameters)
         
         let hits = builder.build()
-        let url = NSURL(string: hits[0])
+        let url = URL(string: hits[0])
         
-        let urlComponents = url?.query!.componentsSeparatedByString("&")
+        let urlComponents = url?.query!.components(separatedBy: "&")
         
         for component in urlComponents! as [String] {
-            let pairComponents = component.componentsSeparatedByString("=")
+            let pairComponents = component.components(separatedBy: "=")
             
             if(pairComponents[0] == "array"){
                 XCTAssert(pairComponents[1] == arrayParam.value(), "le paramètre json doit être égal à chou,patate,tomate,carotte")
@@ -253,19 +253,19 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         let arrayOption = ParamOption()
         arrayOption.separator = "|"
         
-        let arrayParam = Param(key: "array", value: {Tool.convertToString(["chou","patate","tomate","carotte"]).value}, type: .String, options:arrayOption)
+        let arrayParam = Param(key: "array", value: {Tool.convertToString(["chou","patate","tomate","carotte"]).value}, type: .string, options:arrayOption)
         
         tracker.buffer.volatileParameters.append(arrayParam)
         
         let builder = Builder(tracker: self.tracker, volatileParameters: tracker.buffer.volatileParameters, persistentParameters: tracker.buffer.persistentParameters)
         
         let hits = builder.build()
-        let url = NSURL(string: hits[0])
+        let url = URL(string: hits[0])
         
-        let urlComponents = url?.query!.componentsSeparatedByString("&")
+        let urlComponents = url?.query!.components(separatedBy: "&")
         
         for component in urlComponents! as [String] {
-            let pairComponents = component.componentsSeparatedByString("=")
+            let pairComponents = component.components(separatedBy: "=")
             
             if(pairComponents[0] == "array"){
                 XCTAssert(pairComponents[1] == arrayParam.value(), "le paramètre json doit être égal à chou|patate|tomate|carotte")
@@ -277,25 +277,25 @@ class BuilderTests: XCTestCase, TrackerDelegate {
     
     // Teste l'envoi d'un hit
     func testSendHit() {        
-        let pageParam = Param(key: "p", value: {"home"}, type: .String)
+        let pageParam = Param(key: "p", value: {"home"}, type: .string)
         
         let stcParamOption = ParamOption()
         stcParamOption.encode = true
         
-        let stcParam = Param(key: "stc", value: {Tool.convertToString(["légume":["chou","patate","tomate","carotte"], "fruits": ["pomme", "abricot", "poire"]]).value}, type: .JSON, options: stcParamOption)
-        let arrayParam = Param(key: "array", value: {Tool.convertToString(["chou", "choux-fleur"]).value}, type: .String, options: stcParamOption)
+        let stcParam = Param(key: "stc", value: {Tool.convertToString(["légume":["chou","patate","tomate","carotte"], "fruits": ["pomme", "abricot", "poire"]]).value}, type: .json, options: stcParamOption)
+        let arrayParam = Param(key: "array", value: {Tool.convertToString(["chou", "choux-fleur"]).value}, type: .string, options: stcParamOption)
         
         let refParamOptions = ParamOption()
         refParamOptions.relativePosition = ParamOption.RelativePosition.last
         
-        let refParam = Param(key: "ref", value: {"www.atinternet.com"}, type: .String, options: refParamOptions)
-        let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .Integer)
+        let refParam = Param(key: "ref", value: {"www.atinternet.com"}, type: .string, options: refParamOptions)
+        let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .integer)
         
         let crashParamOptions = ParamOption()
         crashParamOptions.relativePosition = ParamOption.RelativePosition.after
         crashParamOptions.relativeParameterKey = "stc"
         
-        let crashParam = Param(key: "crash", value: {Tool.convertToString(false).value}, type: .Bool, options: crashParamOptions)
+        let crashParam = Param(key: "crash", value: {Tool.convertToString(false).value}, type: .bool, options: crashParamOptions)
         
         tracker.buffer.volatileParameters.append(pageParam)
         tracker.buffer.volatileParameters.append(stcParam)
@@ -306,7 +306,7 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         
         let builder = Builder(tracker: self.tracker, volatileParameters: tracker.buffer.volatileParameters, persistentParameters: tracker.buffer.persistentParameters)
         
-        let expectation = self.expectationWithDescription("Hit sent")
+        let expectation = self.expectation(description: "Hit sent")
         
         let hits = builder.build()
         let hit = Hit(url: hits[0])
@@ -318,25 +318,25 @@ class BuilderTests: XCTestCase, TrackerDelegate {
             expectation.fulfill()
         })
         
-        self.waitForExpectationsWithTimeout(5.0, handler: nil)
+        self.waitForExpectations(timeout: 5.0, handler: nil)
     }
 
     // Teste que la méthode findParameterPosition retourne la bonne position du paramètre dans la collection
     func testFindParameterPosition() {
         var parameters = [Param]()
-        let pageParam = Param(key: "p", value: {"home"}, type: .String)
-        let stcParam = Param(key: "stc", value: {Tool.convertToString(["chou", "patate", "carotte"]).value}, type: .String)
+        let pageParam = Param(key: "p", value: {"home"}, type: .string)
+        let stcParam = Param(key: "stc", value: {Tool.convertToString(["chou", "patate", "carotte"]).value}, type: .string)
         let refParamOptions = ParamOption()
         refParamOptions.relativePosition = ParamOption.RelativePosition.last
         
-        let refParam = Param(key: "ref", value: {"www.atinternet.com"}, type: .String, options: refParamOptions)
-        let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .Integer)
+        let refParam = Param(key: "ref", value: {"www.atinternet.com"}, type: .string, options: refParamOptions)
+        let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .integer)
         let crashParamOptions = ParamOption()
         crashParamOptions.relativePosition = ParamOption.RelativePosition.after
         crashParamOptions.relativeParameterKey = "stc"
         
-        let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .Bool, options: crashParamOptions)
-        let hlParam = Param(key: "hl", value: {self.getDate()}, type: .String)
+        let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .bool, options: crashParamOptions)
+        let hlParam = Param(key: "hl", value: {self.getDate()}, type: .string)
         
         parameters.append(pageParam)
         parameters.append(stcParam)
@@ -370,15 +370,15 @@ class BuilderTests: XCTestCase, TrackerDelegate {
     
     // Teste le formattage de paramètres volatiles
     func testPreQueryWithVolatileParameters() {
-        let pageParam = Param(key: "p", value: {"home"}, type: .String)
-        let stcParam = Param(key: "stc", value: {Tool.convertToString(["chou", "patate", "carotte"]).value}, type: .String)
+        let pageParam = Param(key: "p", value: {"home"}, type: .string)
+        let stcParam = Param(key: "stc", value: {Tool.convertToString(["chou", "patate", "carotte"]).value}, type: .string)
         
         let refParamOption = ParamOption()
         refParamOption.relativePosition = ParamOption.RelativePosition.last
         
-        let refParam = Param(key: "ref", value: {"www.atinternet.com?test1=1&test2=2&test3=<script></script>"}, type: .String, options: refParamOption)
-        let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .Integer)
-        let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .Bool)
+        let refParam = Param(key: "ref", value: {"www.atinternet.com?test1=1&test2=2&test3=<script></script>"}, type: .string, options: refParamOption)
+        let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .integer)
+        let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .bool)
         
         tracker.buffer.volatileParameters.append(pageParam)
         tracker.buffer.volatileParameters.append(stcParam)
@@ -399,15 +399,15 @@ class BuilderTests: XCTestCase, TrackerDelegate {
     
     // Teste le formattage de paramètres permanents
     func testPreQueryWithPersistentParameters() {
-        let pageParam = Param(key: "p", value: {"home"}, type: .String)
-        let stcParam = Param(key: "stc", value: {Tool.convertToString(["chou", "patate", "carotte"]).value}, type: .String)
+        let pageParam = Param(key: "p", value: {"home"}, type: .string)
+        let stcParam = Param(key: "stc", value: {Tool.convertToString(["chou", "patate", "carotte"]).value}, type: .string)
         
         let refParamOption = ParamOption()
         refParamOption.relativePosition = ParamOption.RelativePosition.last
         
-        let refParam = Param(key: "ref", value: {"www.atinternet.com?test1=1&test2=2&test3=<script></script>"}, type: .String, options: refParamOption)
-        let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .Integer)
-        let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .Bool)
+        let refParam = Param(key: "ref", value: {"www.atinternet.com?test1=1&test2=2&test3=<script></script>"}, type: .string, options: refParamOption)
+        let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .integer)
+        let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .bool)
         
         tracker.buffer.persistentParameters.append(pageParam)
         tracker.buffer.persistentParameters.append(stcParam)
@@ -428,15 +428,15 @@ class BuilderTests: XCTestCase, TrackerDelegate {
     
     // Teste le formattage de paramètres volatiles et persistents
     func testPreQueryWithPersistentAndVolatileParameters() {
-        let pageParam = Param(key: "p", value: {"home"}, type: .String)
-        let stcParam = Param(key: "stc", value: {Tool.convertToString(["chou", "patate", "carotte"]).value}, type: .String)
+        let pageParam = Param(key: "p", value: {"home"}, type: .string)
+        let stcParam = Param(key: "stc", value: {Tool.convertToString(["chou", "patate", "carotte"]).value}, type: .string)
         
         let refParamOption = ParamOption()
         refParamOption.relativePosition = ParamOption.RelativePosition.last
         
-        let refParam = Param(key: "ref", value: {"www.atinternet.com?test1=1&test2=2&test3=<script></script>"}, type: .String, options: refParamOption)
-        let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .Integer)
-        let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .Bool)
+        let refParam = Param(key: "ref", value: {"www.atinternet.com?test1=1&test2=2&test3=<script></script>"}, type: .string, options: refParamOption)
+        let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .integer)
+        let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .bool)
         
         tracker.buffer.persistentParameters.append(pageParam)
         tracker.buffer.persistentParameters.append(stcParam)
@@ -456,26 +456,26 @@ class BuilderTests: XCTestCase, TrackerDelegate {
     }
     
     func testOrganizeParameters() {
-        let pageParam = Param(key: "p", value: {"home"}, type: .String)
+        let pageParam = Param(key: "p", value: {"home"}, type: .string)
         
-        let stcParam = Param(key: "stc", value: {Tool.convertToString(["légume":["chou","patate","tomate","carotte"], "fruits": ["pomme", "abricot", "poire"]]).value}, type: .JSON)
-        let arrayParam = Param(key: "array", value: {Tool.convertToString(["chou", "choux-fleur"]).value}, type: .String)
+        let stcParam = Param(key: "stc", value: {Tool.convertToString(["légume":["chou","patate","tomate","carotte"], "fruits": ["pomme", "abricot", "poire"]]).value}, type: .json)
+        let arrayParam = Param(key: "array", value: {Tool.convertToString(["chou", "choux-fleur"]).value}, type: .string)
         
         let refParamOptions = ParamOption()
         refParamOptions.relativePosition = ParamOption.RelativePosition.last
         
-        let refParam = Param(key: "ref", value: {"www.atinternet.com"}, type: .String, options: refParamOptions)
-        let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .Integer)
+        let refParam = Param(key: "ref", value: {"www.atinternet.com"}, type: .string, options: refParamOptions)
+        let dsluParam = Param(key:"dslu", value: {Tool.convertToString(10).value}, type: .integer)
         
         let crashParamOptions = ParamOption()
         crashParamOptions.relativePosition = ParamOption.RelativePosition.after
         crashParamOptions.relativeParameterKey = "stc"
         
-        let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .Bool, options: crashParamOptions)
+        let crashParam = Param(key:"crash", value: {Tool.convertToString(false).value}, type: .bool, options: crashParamOptions)
         
         let hlParamOptions = ParamOption()
         hlParamOptions.persistent = true
-        let hlParam = Param(key: "hl", value: {self.getDate()}, type: .String, options: hlParamOptions)
+        let hlParam = Param(key: "hl", value: {self.getDate()}, type: .string, options: hlParamOptions)
         
         tracker.buffer.volatileParameters.append(pageParam)
         tracker.buffer.volatileParameters.append(stcParam)
@@ -500,7 +500,7 @@ class BuilderTests: XCTestCase, TrackerDelegate {
 
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measureBlock() {
+        self.measure() {
             // Put the code you want to measure the time of here.
         }
     }
@@ -510,7 +510,7 @@ class BuilderTests: XCTestCase, TrackerDelegate {
     
     func testMultihitsSplitOnParameterWithoutError() {
         for i in 1...60 {
-            let param = Param(key:"bigparameter\(i)", value: {Tool.convertToString("bigvalue\(i)").value}, type: .String)
+            let param = Param(key:"bigparameter\(i)", value: {Tool.convertToString("bigvalue\(i)").value}, type: .string)
             tracker.buffer.volatileParameters.append(param)
         }
         
@@ -519,7 +519,7 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         
         var isErr = false
         for hit in hits {
-            let rangeErr = hit.rangeOfString("mherr=1")
+            let rangeErr = hit.range(of: "mherr=1")
             if let _ = rangeErr {
                 isErr = true
                 break
@@ -537,14 +537,14 @@ class BuilderTests: XCTestCase, TrackerDelegate {
             array.append("abigtestvalue\(i)")
         }
         
-        let param = Param(key:"ati", value: {Tool.convertToString(array).value}, type: .String)
+        let param = Param(key:"ati", value: {Tool.convertToString(array).value}, type: .string)
         tracker.buffer.volatileParameters.append(param)
         let builder = Builder(tracker: self.tracker, volatileParameters: tracker.buffer.volatileParameters, persistentParameters: tracker.buffer.persistentParameters)
         let hits = builder.build()
         
         var isErr = false
         for hit in hits {
-            let rangeErr = hit.rangeOfString("mherr=1")
+            let rangeErr = hit.range(of: "mherr=1")
             if let _ = rangeErr {
                 isErr = true
                 break
@@ -569,14 +569,14 @@ class BuilderTests: XCTestCase, TrackerDelegate {
         }
         json["key30"] = val
         
-        let param = Param(key:"ati", value: {Tool.convertToString(json).value}, type: .JSON)
+        let param = Param(key:"ati", value: {Tool.convertToString(json).value}, type: .json)
         tracker.buffer.volatileParameters.append(param)
         let builder = Builder(tracker: self.tracker, volatileParameters: tracker.buffer.volatileParameters, persistentParameters: tracker.buffer.persistentParameters)
         let hits = builder.build()
         
         var isErr = false
         for hit in hits {
-            let rangeErr = hit.rangeOfString("mherr=1")
+            let rangeErr = hit.range(of: "mherr=1")
             if let _ = rangeErr {
                 isErr = true
                 break
@@ -594,14 +594,14 @@ class BuilderTests: XCTestCase, TrackerDelegate {
             array.append("abigtestvalue\(i)")
         }
         
-        let param = Param(key:"var", value: {Tool.convertToString(array).value}, type: .String)
+        let param = Param(key:"var", value: {Tool.convertToString(array).value}, type: .string)
         tracker.buffer.volatileParameters.append(param)
         let builder = Builder(tracker: self.tracker, volatileParameters: tracker.buffer.volatileParameters, persistentParameters: tracker.buffer.persistentParameters)
         let hits = builder.build()
         
         var isErr = false
         for hit in hits {
-            let rangeErr = hit.rangeOfString("mherr=1")
+            let rangeErr = hit.range(of: "mherr=1")
             if let _ = rangeErr {
                 isErr = true
                 break

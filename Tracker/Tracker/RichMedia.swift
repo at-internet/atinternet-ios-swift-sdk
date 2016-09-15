@@ -53,7 +53,7 @@ public class RichMedia : BusinessObject {
     var player: MediaPlayer
     
     /// Refresh timer
-    var timer: NSTimer?
+    var timer: Timer?
     
     /// Media is buffering
     public var isBuffering: Bool?
@@ -99,39 +99,36 @@ public class RichMedia : BusinessObject {
         let encodingOption = ParamOption()
         encodingOption.encode = true
         
-        self.tracker.setParam("p", value: buildMediaName(), options: encodingOption)
-        
-        self.tracker.setParam("plyr", value: player.playerId)
-        
-        self.tracker.setParam("m6", value: broadcastMode.rawValue)
-        
-        self.tracker.setParam("a", value: action.rawValue)
+        self.tracker = self.tracker.setParam("p", value: buildMediaName(), options: encodingOption)
+            .setParam("plyr", value: player.playerId)
+            .setParam("m6", value: broadcastMode.rawValue)
+            .setParam("a", value: action.rawValue)
         
         if let optIsEmbedded = self.isEmbedded {
-            self.tracker.setParam("m5", value: optIsEmbedded ? "ext" : "int")
+            _ = self.tracker.setParam("m5", value: optIsEmbedded ? "ext" : "int")
         }
         
         if let optLevel2 = self.level2 {
-            self.tracker.setParam("s2", value: optLevel2)
+            _ = self.tracker.setParam("s2", value: optLevel2)
         }
         
         if(action == Action.Play) {
             if let optIsBuffering = self.isBuffering {
-                self.tracker.setParam("buf", value: optIsBuffering ? 1 : 0)
+                _ = self.tracker.setParam("buf", value: optIsBuffering ? 1 : 0)
             }
             
             if let optIsEmbedded = self.isEmbedded {
                 if (optIsEmbedded) {
                     if let optWebDomain = self.webdomain {
-                        self.tracker.setParam("m9", value: optWebDomain)
+                        _ = self.tracker.setParam("m9", value: optWebDomain)
                     }
                 } else {
                     if TechnicalContext.screenName != "" {
-                        self.tracker.setParam("prich", value: TechnicalContext.screenName, options: encodingOption)
+                        _ = self.tracker.setParam("prich", value: TechnicalContext.screenName, options: encodingOption)
                     }
                     
                     if TechnicalContext.level2 > 0 {
-                        self.tracker.setParam("s2rich", value: TechnicalContext.level2)
+                        _ = self.tracker.setParam("s2rich", value: TechnicalContext.level2)
                     }
                 }
             }
@@ -166,7 +163,7 @@ public class RichMedia : BusinessObject {
     Refresh is enabled if resfreshDuration is not equal to 0
     - parameter resfreshDuration: duration between refresh hits
     */
-    public func sendPlay(refreshDuration: Int) {
+    public func sendPlay(_ refreshDuration: Int) {
         
         self.action = Action.Play
         
@@ -187,7 +184,7 @@ public class RichMedia : BusinessObject {
     public func sendPause(){
         
         if let timer = self.timer {
-            if timer.valid {
+            if timer.isValid {
                 timer.invalidate()
                 self.timer = nil
             }
@@ -204,7 +201,7 @@ public class RichMedia : BusinessObject {
     public func sendStop() {
         
         if let timer = self.timer {
-            if timer.valid {
+            if timer.isValid {
                 timer.invalidate()
                 self.timer = nil
             }
@@ -227,8 +224,8 @@ public class RichMedia : BusinessObject {
     /// Start the refresh timer
     func initRefresh() {
         if self.timer == nil {
-            self.timer = NSTimer.scheduledTimerWithTimeInterval(
-                NSTimeInterval(self.refreshDuration), target: self, selector: #selector(RichMedia.sendRefresh), userInfo: nil, repeats: true)
+            self.timer = Timer.scheduledTimer(
+                timeInterval: TimeInterval(self.refreshDuration), target: self, selector: #selector(RichMedia.sendRefresh), userInfo: nil, repeats: true)
         }
         
     }

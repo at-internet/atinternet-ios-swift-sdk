@@ -38,7 +38,7 @@ class EventTests: XCTestCase {
     let tracker = Tracker()
     
     func testSetEvent() {
-        tracker.event.set("cat", action: "act", label: "lab")
+        _ = tracker.event.set("cat", action: "act", label: "lab")
         
         let p0 = tracker.buffer.volatileParameters[0]
         let p1 = tracker.buffer.volatileParameters[1]
@@ -60,7 +60,7 @@ class EventTests: XCTestCase {
     
     func testSetEventJSON() {
         let json = "{ \"key0\": \"value0\", \"key1\": \"value1\" }"
-        tracker.event.set("cat", action: "act", label: "lab", value:json)
+        _ = tracker.event.set("cat", action: "act", label: "lab", value:json)
         
         let p0 = tracker.buffer.volatileParameters[0]
         let p1 = tracker.buffer.volatileParameters[1]

@@ -38,174 +38,174 @@ class IdentifiedVisitorTests: XCTestCase {
     let tracker = Tracker()
 
     func testSetAndUnsetNumericNotPersistent() {
-        let expectation = self.expectationWithDescription("Config Set")
+        let expectation = self.expectation(description: "Config Set")
         
         tracker.setConfig(IdentifiedVisitorHelperKey.Configuration.rawValue, value: "false", completionHandler: {(isSet) in
             let refCount = self.tracker.buffer.persistentParameters.count
-            self.tracker.identifiedVisitor.set(123)
+            _ = self.tracker.identifiedVisitor.set(123)
             XCTAssertTrue(self.tracker.buffer.persistentParameters.count == refCount + 1, "Il doit y avoir un paramètre supplémentaire")
             var p = self.tracker.buffer.persistentParameters.last as Param!
-            XCTAssertTrue(p.key == HitParam.VisitorIdentifierNumeric.rawValue, "Le dernier paramètre doit être l'id numérique")
-            XCTAssertTrue(p.value() == "123", "Le dernier paramètre doit avoir la valeur 123")
-            self.tracker.identifiedVisitor.unset()
+            XCTAssertTrue(p?.key == HitParam.VisitorIdentifierNumeric.rawValue, "Le dernier paramètre doit être l'id numérique")
+            XCTAssertTrue(p?.value() == "123", "Le dernier paramètre doit avoir la valeur 123")
+            _ = self.tracker.identifiedVisitor.unset()
             p = self.tracker.buffer.persistentParameters.last as Param!
             XCTAssertTrue(self.tracker.buffer.persistentParameters.count == refCount, "Il ne doit pas y avoir un paramètre supplémentaire")
-            XCTAssertTrue(p.key != HitParam.VisitorIdentifierNumeric.rawValue, "Le dernier paramètre ne doit pas être l'id numérique")
+            XCTAssertTrue(p?.key != HitParam.VisitorIdentifierNumeric.rawValue, "Le dernier paramètre ne doit pas être l'id numérique")
             
             expectation.fulfill()
         })
         
-        self.waitForExpectationsWithTimeout(5.0, handler: nil)
+        self.waitForExpectations(timeout: 5.0, handler: nil)
     }
     
     func testSetAndUnsetNumericPersistent() {
-        let expectation = self.expectationWithDescription("test")
+        let expectation = self.expectation(description: "test")
         
         tracker.setConfig(IdentifiedVisitorHelperKey.Configuration.rawValue, value: "true", completionHandler:nil)
         
-        let configurationOperation = NSBlockOperation(block: {
+        let configurationOperation = BlockOperation(block: {
         let refCount = self.tracker.buffer.persistentParameters.count
-        self.tracker.identifiedVisitor.set(123)
+        _ = self.tracker.identifiedVisitor.set(123)
         XCTAssertTrue(self.tracker.buffer.persistentParameters.count == refCount, "Il ne doit pas y avoir de paramètre supplémentaire")
-        let test = NSUserDefaults.standardUserDefaults().objectForKey(IdentifiedVisitorHelperKey.Numeric.rawValue) as! String
+        let test = UserDefaults.standard.object(forKey: IdentifiedVisitorHelperKey.Numeric.rawValue) as! String
         XCTAssertTrue(test == "123", "La valeur doit être 123")
-        self.tracker.identifiedVisitor.unset()
-            XCTAssertNil(NSUserDefaults.standardUserDefaults().objectForKey(IdentifiedVisitorHelperKey.Numeric.rawValue), "Il ne doit pas y avoir de donnée")
+        _ = self.tracker.identifiedVisitor.unset()
+            XCTAssertNil(UserDefaults.standard.object(forKey: IdentifiedVisitorHelperKey.Numeric.rawValue), "Il ne doit pas y avoir de donnée")
             expectation.fulfill()
         })
         
         TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
         
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testSetAndUnsetNumericWithCategoryNotPersistent() {
-        let expectation = self.expectationWithDescription("test")
+        let expectation = self.expectation(description: "test")
         
         tracker.setConfig(IdentifiedVisitorHelperKey.Configuration.rawValue, value: "false", completionHandler:nil)
         
-        let configurationOperation = NSBlockOperation(block: {
+        let configurationOperation = BlockOperation(block: {
             let refCount = self.tracker.buffer.persistentParameters.count
-            self.tracker.identifiedVisitor.set(123, visitorCategory: 456)
+            _ = self.tracker.identifiedVisitor.set(123, visitorCategory: 456)
             XCTAssertTrue(self.tracker.buffer.persistentParameters.count == refCount + 2, "Il doit y avoir deux paramètres supplémentaires")
             var p = self.tracker.buffer.persistentParameters.last as Param!
-            XCTAssertTrue(p.key == HitParam.VisitorCategory.rawValue, "Le dernier paramètre doit être la catégorie")
-            XCTAssertTrue(p.value() == "456", "Le dernier paramètre doit avoir la valeur 456")
-            self.tracker.identifiedVisitor.unset()
+            XCTAssertTrue(p?.key == HitParam.VisitorCategory.rawValue, "Le dernier paramètre doit être la catégorie")
+            XCTAssertTrue(p?.value() == "456", "Le dernier paramètre doit avoir la valeur 456")
+            _ = self.tracker.identifiedVisitor.unset()
             p = self.tracker.buffer.persistentParameters.last as Param!
             XCTAssertTrue(self.tracker.buffer.persistentParameters.count == refCount, "Il ne doit pas y avoir un paramètre supplémentaire")
-            XCTAssertTrue(p.key != HitParam.VisitorCategory.rawValue, "Le dernier paramètre ne doit pas être la catégorie")
+            XCTAssertTrue(p?.key != HitParam.VisitorCategory.rawValue, "Le dernier paramètre ne doit pas être la catégorie")
             expectation.fulfill()
         })
         
         TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
         
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testSetAndUnsetNumericWithCategoryPersistent() {
-        let expectation = self.expectationWithDescription("test")
+        let expectation = self.expectation(description: "test")
         
         tracker.setConfig(IdentifiedVisitorHelperKey.Configuration.rawValue, value: "true", completionHandler:nil)
-        let configurationOperation = NSBlockOperation(block: {
+        let configurationOperation = BlockOperation(block: {
             let refCount = self.tracker.buffer.persistentParameters.count
-            self.tracker.identifiedVisitor.set(123, visitorCategory: 456)
+            _ = self.tracker.identifiedVisitor.set(123, visitorCategory: 456)
             XCTAssertTrue(self.tracker.buffer.persistentParameters.count == refCount, "Il ne doit pas y avoir de paramètre supplémentaire")
-            var test = NSUserDefaults.standardUserDefaults().objectForKey(IdentifiedVisitorHelperKey.Numeric.rawValue) as! String
+            var test = UserDefaults.standard.object(forKey: IdentifiedVisitorHelperKey.Numeric.rawValue) as! String
             XCTAssertTrue(test == "123", "La valeur doit être 123")
-            test = NSUserDefaults.standardUserDefaults().objectForKey(IdentifiedVisitorHelperKey.Category.rawValue) as! String
+            test = UserDefaults.standard.object(forKey: IdentifiedVisitorHelperKey.Category.rawValue) as! String
             XCTAssertTrue(test == "456", "La valeur doit être 456")
-            self.tracker.identifiedVisitor.unset()
-            XCTAssertNil(NSUserDefaults.standardUserDefaults().objectForKey(IdentifiedVisitorHelperKey.Numeric.rawValue), "Il ne doit pas y avoir de donnée")
-            XCTAssertNil(NSUserDefaults.standardUserDefaults().objectForKey(IdentifiedVisitorHelperKey.Category.rawValue), "Il ne doit pas y avoir de donnée")
+            _ = self.tracker.identifiedVisitor.unset()
+            XCTAssertNil(UserDefaults.standard.object(forKey: IdentifiedVisitorHelperKey.Numeric.rawValue), "Il ne doit pas y avoir de donnée")
+            XCTAssertNil(UserDefaults.standard.object(forKey: IdentifiedVisitorHelperKey.Category.rawValue), "Il ne doit pas y avoir de donnée")
             expectation.fulfill()
         })
         
         TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
         
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testSetAndUnsetTextNotPersistent() {
-        let expectation = self.expectationWithDescription("test")
+        let expectation = self.expectation(description: "test")
         
         tracker.setConfig(IdentifiedVisitorHelperKey.Configuration.rawValue, value: "false", completionHandler:nil)
-        let configurationOperation = NSBlockOperation(block: {
+        let configurationOperation = BlockOperation(block: {
             let refCount = self.tracker.buffer.persistentParameters.count
-            self.tracker.identifiedVisitor.set("aze")
+            _ = self.tracker.identifiedVisitor.set("aze")
             XCTAssertTrue(self.tracker.buffer.persistentParameters.count == refCount + 1, "Il doit y avoir un paramètre supplémentaire")
             var p = self.tracker.buffer.persistentParameters.last as Param!
-            XCTAssertTrue(p.key == HitParam.VisitorIdentifierText.rawValue, "Le dernier paramètre doit être l'id textuel")
-            XCTAssertTrue(p.value() == "aze", "Le dernier paramètre doit avoir la valeur aze")
-            self.tracker.identifiedVisitor.unset()
+            XCTAssertTrue(p?.key == HitParam.VisitorIdentifierText.rawValue, "Le dernier paramètre doit être l'id textuel")
+            XCTAssertTrue(p?.value() == "aze", "Le dernier paramètre doit avoir la valeur aze")
+            _ = self.tracker.identifiedVisitor.unset()
             p = self.tracker.buffer.persistentParameters.last as Param!
             XCTAssertTrue(self.tracker.buffer.persistentParameters.count == refCount, "Il ne doit pas y avoir un paramètre supplémentaire")
-            XCTAssertTrue(p.key != HitParam.VisitorIdentifierNumeric.rawValue, "Le dernier paramètre ne doit pas être l'id textuel")
+            XCTAssertTrue(p?.key != HitParam.VisitorIdentifierNumeric.rawValue, "Le dernier paramètre ne doit pas être l'id textuel")
             expectation.fulfill()
         })
         
         TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testSetAndUnsetTextPersistent() {
-        let expectation = self.expectationWithDescription("test")
+        let expectation = self.expectation(description: "test")
         
         tracker.setConfig(IdentifiedVisitorHelperKey.Configuration.rawValue, value: "true", completionHandler:nil)
-        let configurationOperation = NSBlockOperation(block: {
+        let configurationOperation = BlockOperation(block: {
             let refCount = self.tracker.buffer.persistentParameters.count
-            self.tracker.identifiedVisitor.set("123")
+            _ = self.tracker.identifiedVisitor.set("123")
             XCTAssertTrue(self.tracker.buffer.persistentParameters.count == refCount, "Il ne doit pas y avoir de paramètre supplémentaire")
-            let test = NSUserDefaults.standardUserDefaults().objectForKey(IdentifiedVisitorHelperKey.Text.rawValue) as! String
+            let test = UserDefaults.standard.object(forKey: IdentifiedVisitorHelperKey.Text.rawValue) as! String
             XCTAssertTrue(test == "123", "La valeur doit être 123")
-            self.tracker.identifiedVisitor.unset()
-            XCTAssertNil(NSUserDefaults.standardUserDefaults().objectForKey(IdentifiedVisitorHelperKey.Text.rawValue), "Il ne doit pas y avoir de donnée")
+            _ = self.tracker.identifiedVisitor.unset()
+            XCTAssertNil(UserDefaults.standard.object(forKey: IdentifiedVisitorHelperKey.Text.rawValue), "Il ne doit pas y avoir de donnée")
             expectation.fulfill()
         })
         
         TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testSetAndUnsetTextWithCategoryNotPersistent() {
         tracker.setConfig(IdentifiedVisitorHelperKey.Configuration.rawValue, value: "false", completionHandler:nil)
-            let configurationOperation = NSBlockOperation(block: {
+            let configurationOperation = BlockOperation(block: {
             let refCount = self.tracker.buffer.persistentParameters.count
-            self.tracker.identifiedVisitor.set("aze", visitorCategory: 456)
+            _ = self.tracker.identifiedVisitor.set("aze", visitorCategory: 456)
             XCTAssertTrue(self.tracker.buffer.persistentParameters.count == refCount + 2, "Il doit y avoir deux paramètres supplémentaires")
             var p = self.tracker.buffer.persistentParameters.last as Param!
-            XCTAssertTrue(p.key == HitParam.VisitorCategory.rawValue, "Le dernier paramètre doit être la catégorie")
-            XCTAssertTrue(p.value() == "456", "Le dernier paramètre doit avoir la valeur 456")
-            self.tracker.identifiedVisitor.unset()
+            XCTAssertTrue(p?.key == HitParam.VisitorCategory.rawValue, "Le dernier paramètre doit être la catégorie")
+            XCTAssertTrue(p?.value() == "456", "Le dernier paramètre doit avoir la valeur 456")
+            _ = self.tracker.identifiedVisitor.unset()
             p = self.tracker.buffer.persistentParameters.last as Param!
             XCTAssertTrue(self.tracker.buffer.persistentParameters.count == refCount, "Il ne doit pas y avoir un paramètre supplémentaire")
-            XCTAssertTrue(p.key != HitParam.VisitorCategory.rawValue, "Le dernier paramètre ne doit pas être la catégorie")
+            XCTAssertTrue(p?.key != HitParam.VisitorCategory.rawValue, "Le dernier paramètre ne doit pas être la catégorie")
         })
         
         TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
     }
     
     func testSetAndUnsetTextWithCategoryPersistent() {
-        let expectation = self.expectationWithDescription("test")
+        let expectation = self.expectation(description: "test")
         
         tracker.setConfig(IdentifiedVisitorHelperKey.Configuration.rawValue, value: "true", completionHandler:nil)
-            let configurationOperation = NSBlockOperation(block: {
+            let configurationOperation = BlockOperation(block: {
             let refCount = self.tracker.buffer.persistentParameters.count
-            self.tracker.identifiedVisitor.set("123", visitorCategory: 456)
+            _ = self.tracker.identifiedVisitor.set("123", visitorCategory: 456)
             XCTAssertTrue(self.tracker.buffer.persistentParameters.count == refCount, "Il ne doit pas y avoir de paramètre supplémentaire")
-            var test = NSUserDefaults.standardUserDefaults().objectForKey(IdentifiedVisitorHelperKey.Text.rawValue) as! String
+            var test = UserDefaults.standard.object(forKey: IdentifiedVisitorHelperKey.Text.rawValue) as! String
             XCTAssertTrue(test == "123", "La valeur doit être 123")
-            test = NSUserDefaults.standardUserDefaults().objectForKey(IdentifiedVisitorHelperKey.Category.rawValue) as! String
+            test = UserDefaults.standard.object(forKey: IdentifiedVisitorHelperKey.Category.rawValue) as! String
             XCTAssertTrue(test == "456", "La valeur doit être 456")
-            self.tracker.identifiedVisitor.unset()
-            XCTAssertNil(NSUserDefaults.standardUserDefaults().objectForKey(IdentifiedVisitorHelperKey.Text.rawValue), "Il ne doit pas y avoir de donnée")
-            XCTAssertNil(NSUserDefaults.standardUserDefaults().objectForKey(IdentifiedVisitorHelperKey.Category.rawValue), "Il ne doit pas y avoir de donnée")
+            _ = self.tracker.identifiedVisitor.unset()
+            XCTAssertNil(UserDefaults.standard.object(forKey: IdentifiedVisitorHelperKey.Text.rawValue), "Il ne doit pas y avoir de donnée")
+            XCTAssertNil(UserDefaults.standard.object(forKey: IdentifiedVisitorHelperKey.Category.rawValue), "Il ne doit pas y avoir de donnée")
                 expectation.fulfill()
         })
         
         TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
         
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
 }

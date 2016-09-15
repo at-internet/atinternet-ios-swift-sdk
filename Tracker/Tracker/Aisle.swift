@@ -103,7 +103,7 @@ public class Aisle: ScreenInfo {
         if(value != nil) {
             let encodeOption = ParamOption()
             encodeOption.encode = true
-            tracker.setParam("aisl", value: value!, options: encodeOption)
+            _ = tracker.setParam("aisl", value: value!, options: encodeOption)
         }
     }
 }
@@ -127,7 +127,7 @@ public class Aisles {
     - returns: Aisle instance
     */
     public func add(level1: String) -> Aisle {
-        return _add(level1, level2: nil, level3: nil, level4: nil, level5: nil, level6: nil)
+        return _add(level1: level1, level2: nil, level3: nil, level4: nil, level5: nil, level6: nil)
     }
     
     /**
@@ -137,7 +137,7 @@ public class Aisles {
     - returns: Aisle instance
     */
     public func add(level1: String, level2: String) -> Aisle {
-        return _add(level1, level2: level2, level3: nil, level4: nil, level5: nil, level6: nil)
+        return _add(level1: level1, level2: level2, level3: nil, level4: nil, level5: nil, level6: nil)
     }
     
     /**
@@ -148,7 +148,7 @@ public class Aisles {
     - returns: Aisle instance
     */
     public func add(level1: String, level2: String, level3: String) -> Aisle {
-        return _add(level1, level2: level2, level3: level3, level4: nil, level5: nil, level6: nil)
+        return _add(level1: level1, level2: level2, level3: level3, level4: nil, level5: nil, level6: nil)
     }
     
     /**
@@ -160,7 +160,7 @@ public class Aisles {
     - returns: Aisle instance
     */
     public func add(level1: String, level2: String, level3: String, level4: String) -> Aisle {
-        return _add(level1, level2: level2, level3: level3, level4: level4, level5: nil, level6: nil)
+        return _add(level1: level1, level2: level2, level3: level3, level4: level4, level5: nil, level6: nil)
     }
     
     /**
@@ -173,7 +173,7 @@ public class Aisles {
     - returns: Aisle instance
     */
     public func add(level1: String, level2: String, level3: String, level4: String, level5: String) -> Aisle {
-        return _add(level1, level2: level2, level3: level3, level4: level4, level5: level5, level6: nil)
+        return _add(level1: level1, level2: level2, level3: level3, level4: level4, level5: level5, level6: nil)
     }
     
     /**
@@ -187,7 +187,7 @@ public class Aisles {
     - returns: Aisle instance
     */
     public func add(level1: String, level2: String, level3: String, level4: String, level5: String, level6: String) -> Aisle {
-        return _add(level1, level2: level2, level3: level3, level4: level4, level5: level5, level6: level6)
+        return _add(level1: level1, level2: level2, level3: level3, level4: level4, level5: level5, level6: level6)
     }
     
     private func _add(level1: String?, level2: String?, level3: String?, level4: String?, level5: String?, level6: String?) -> Aisle {

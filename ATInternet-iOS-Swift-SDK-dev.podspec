@@ -1,14 +1,14 @@
 Pod::Spec.new do |s|
-	s.name						      = "ATInternet-iOS-Swift-SDK"
-	s.version					      = '2.3.0'
+	s.name						      = "ATInternet-iOS-Swift-SDK-dev"
+	s.version					      = '2.2.8'
 	s.summary					      = "AT Internet mobile analytics solution for iOS"
-	s.homepage				      = "https://github.com/at-internet/atinternet-ios-swift-sdk"
-	s.documentation_url	    = 'http://developers.atinternet-solutions.com/apple-en/getting-started-apple-en/operating-principle-apple-en/'
+	s.homepage						  = "https://github.com/at-internet/atinternet-ios-swift-sdk"
+	s.documentation_url				  = 'http://developers.atinternet-solutions.com/apple-en/getting-started-apple-en/operating-principle-apple-en/'
 	s.license					      = "MIT"
 	s.author					      = "AT Internet"
-	s.platform					    = :ios
-  s.ios.deployment_target	= '8.0'
-	s.source					      = { :git => "https://github.com/at-internet/atinternet-ios-swift-sdk.git", :tag => s.version}
+	s.platform					      = :ios
+    s.ios.deployment_target	          = '8.0'
+	s.source					      = { :git => "http://bdxsvn001:8090/r/Tag/iOS/V2/Swift/Tracker.git", :branch => 'swift3'}
 
 	s.subspec 'Res' do |res|
 		res.resources = "Tracker/Tracker/DefaultConfiguration.plist","Tracker/Tracker/core.manifest.json","Tracker/Tracker/*.{xcdatamodeld,png,json}", "Tracker/Tracker/Images.xcassets"

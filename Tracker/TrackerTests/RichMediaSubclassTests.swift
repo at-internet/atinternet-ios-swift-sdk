@@ -47,7 +47,7 @@ class RichMediaSubclassTests: XCTestCase {
         tracker.mediaPlayers.removeAll()
         TechnicalContext.screenName = ""
         TechnicalContext.level2 = 0
-        tracker.buffer.volatileParameters.removeAll(keepCapacity: false)
+        tracker.buffer.volatileParameters.removeAll(keepingCapacity: false)
     }
     
     func testSetVideo() {

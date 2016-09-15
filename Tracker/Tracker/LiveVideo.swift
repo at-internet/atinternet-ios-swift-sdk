@@ -43,7 +43,7 @@ public class LiveVideo: RichMedia {
         
         super.setEvent()
         
-        self.tracker.setParam("type", value: type)
+        self.tracker = self.tracker.setParam("type", value: type)
     }
     
 }
@@ -70,7 +70,7 @@ public class LiveVideos {
     - parameter first: chapter
     - returns: live video instance
     */
-    public func add(name:String) -> LiveVideo {
+    public func add(_ name:String) -> LiveVideo {
         if let video = self.list[name] {
             self.player.tracker.delegate?.warningDidOccur("A LiveVideo with the same name already exists.")
             return video
@@ -90,7 +90,7 @@ public class LiveVideos {
     - parameter first: chapter
     - returns: live video instance
     */
-    public func add(name: String, chapter1: String) -> LiveVideo {
+    public func add(_ name: String, chapter1: String) -> LiveVideo {
         if let video = self.list[name] {
             self.player.tracker.delegate?.warningDidOccur("A LiveVideo with the same name already exists.")
             return video
@@ -112,7 +112,7 @@ public class LiveVideos {
     - parameter second: chapter
     - returns: live video instance
     */
-    public func add(name: String, chapter1: String, chapter2: String) -> LiveVideo {
+    public func add(_ name: String, chapter1: String, chapter2: String) -> LiveVideo {
         if let video = self.list[name] {
             self.player.tracker.delegate?.warningDidOccur("A LiveVideo with the same name already exists.")
             return video
@@ -136,7 +136,7 @@ public class LiveVideos {
     - parameter third: chapter
     - returns: live video instance
     */
-    public func add(name: String, chapter1: String, chapter2: String, chapter3: String) -> LiveVideo {
+    public func add(_ name: String, chapter1: String, chapter2: String, chapter3: String) -> LiveVideo {
         if let video = self.list[name] {
             self.player.tracker.delegate?.warningDidOccur("A LiveVideo with the same name already exists.")
             return video
@@ -157,13 +157,13 @@ public class LiveVideos {
     Remove a live video
     - parameter video: name
     */
-    public func remove(name: String) {
+    public func remove(_ name: String) {
         if let timer = list[name]?.timer {
-            if timer.valid {
+            if timer.isValid {
                 list[name]!.sendStop()
             }
         }
-        self.list.removeValueForKey(name)
+        self.list.removeValue(forKey: name)
     }
     
     /**
@@ -172,12 +172,12 @@ public class LiveVideos {
     public func removeAll() {
         for (_, value) in self.list {
             if let timer = value.timer {
-                if timer.valid {
+                if timer.isValid {
                     value.sendStop()
                 }
             }
         }
-        self.list.removeAll(keepCapacity: false)
+        self.list.removeAll(keepingCapacity: false)
     }
     
 }

@@ -44,7 +44,7 @@ class CartTests: XCTestCase {
     }
     
     func testSetCart() {
-        cart.set("1")
+        _ = cart.set("1")
         cart.setEvent()
 
         XCTAssert(cart.tracker.buffer.volatileParameters.count == 1, "Le nombre de paramètres volatiles doit être égal à 1")
@@ -54,9 +54,9 @@ class CartTests: XCTestCase {
     }
     
     func testUnsetCart() {
-        cart.set("1")
-        cart.products.add("1")
-        cart.products.add("2")
+        _ = cart.set("1")
+        _ = cart.products.add("1")
+        _ = cart.products.add("2")
         
         XCTAssert(cart.productList.count == 2, "Le nombre de produits doit être égal à 2")
         XCTAssert(cart.cartId == "1", "l'id du panier doit être égal à 1")
@@ -68,7 +68,7 @@ class CartTests: XCTestCase {
     }
     
     func testAddProduct2Cart() {
-        cart.set("1")
+        _ = cart.set("1")
         let product1 = cart.products.add("Nike Air Jordan")
         product1.category1 = "Chaussures"
         product1.quantity = 1

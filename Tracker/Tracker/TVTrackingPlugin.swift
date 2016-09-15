@@ -54,11 +54,11 @@ class TVTrackingPlugin: Plugin {
     private var timeData = ""
     
     /// User Defaults
-    let userDefaults = NSUserDefaults.standardUserDefaults()
+    let userDefaults = UserDefaults.standard
 
     /// Spot
-    private var _spot = [String: AnyObject]()
-    var spot: [String: AnyObject] {
+    private var _spot = [String: Any]()
+    var spot: [String: Any] {
         
         get {
             if (self._spot["priority"] == nil) {
@@ -85,15 +85,15 @@ class TVTrackingPlugin: Plugin {
                 if (value != "undefined") {
                     if let optPartnerTime = spot["time"] as? String{
                         timeData = optPartnerTime;
-                        let dateFormatter = NSDateFormatter()
+                        let dateFormatter = DateFormatter()
                         dateFormatter.locale = LifeCycle.locale
                         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-                        dateFormatter.timeZone = NSTimeZone(abbreviation: "UTC")
+                        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
                         
-                        if let optDate = dateFormatter.dateFromString(optPartnerTime){
-                            let tvtSpotValidityTime = Int(tracker.configuration.parameters["tvtSpotValidityTime"]!)
+                        if let optDate = dateFormatter.date(from: optPartnerTime){
+                            let tvtSpotValidityTime = Int(tracker.configuration.parameters["tvtSpotValidityTime"] ?? "") ?? 5
                             
-                            if(Tool.minutesBetweenDates(optDate, toDate: NSDate()) > tvtSpotValidityTime){
+                            if(Tool.minutesBetweenDates(optDate, toDate: Date()) > tvtSpotValidityTime){
                                 statusCase = TVTrackingStatusCase.timeError
                                 return false
                             } else {
@@ -122,7 +122,7 @@ class TVTrackingPlugin: Plugin {
     /// Indique si un spot a déjà été sauvegardé ou non
     var isSpotFirstTimeSaved: Bool {
         get {
-            return (userDefaults.objectForKey(TVTrackingConstant.tvtParam.rawValue) == nil)
+            return (userDefaults.object(forKey: TVTrackingConstant.tvtParam.rawValue) == nil)
         }
     }
     
@@ -131,17 +131,17 @@ class TVTrackingPlugin: Plugin {
         get {
             var isOver = false
             
-            let lastSession = userDefaults.objectForKey(TVTrackingConstant.lastSessionStart.rawValue) as? NSDate
+            let lastSession = userDefaults.object(forKey: TVTrackingConstant.lastSessionStart.rawValue) as? Date
             
-            let diffTimeSession = NSDate().timeIntervalSinceDate(lastSession!)
+            let diffTimeSession = Date().timeIntervalSince(lastSession!)
             
             if ((diffTimeSession / 60 > Double(tracker.tvTracking.visitDuration)) || isSpotFirstTimeSaved) {
-                userDefaults.setObject(NSDate(), forKey: TVTrackingConstant.lastSessionStart.rawValue)
+                userDefaults.set(Date(), forKey: TVTrackingConstant.lastSessionStart.rawValue)
                 userDefaults.synchronize()
                 
                 isOver = true
             } else if (diffTimeSession / 60 < Double(tracker.tvTracking.visitDuration)) {
-                userDefaults.setObject(NSDate(), forKey: TVTrackingConstant.lastSessionStart.rawValue)
+                userDefaults.set(Date(), forKey: TVTrackingConstant.lastSessionStart.rawValue)
                 userDefaults.synchronize()
             }
             
@@ -152,66 +152,66 @@ class TVTrackingPlugin: Plugin {
     override func execute() {
         
         if (isSpotFirstTimeSaved) {
-            userDefaults.setObject(NSDate(), forKey: TVTrackingConstant.lastSessionStart.rawValue)
+            userDefaults.set(Date(), forKey: TVTrackingConstant.lastSessionStart.rawValue)
             userDefaults.synchronize()
         }
  
         if (isVisitOver) {
             
-            userDefaults.setObject(NSDate(), forKey: TVTrackingConstant.lastSessionStart.rawValue)
+            userDefaults.set(Date(), forKey: TVTrackingConstant.lastSessionStart.rawValue)
             userDefaults.synchronize()
             
-            let semaphore = dispatch_semaphore_create(0)
+            let semaphore = DispatchSemaphore(value: 0)
             
-            let sessionConfig = NSURLSessionConfiguration.defaultSessionConfiguration();
-            sessionConfig.requestCachePolicy = .ReloadIgnoringLocalCacheData;
+            let sessionConfig = URLSessionConfiguration.default;
+            sessionConfig.requestCachePolicy = .reloadIgnoringLocalCacheData;
             sessionConfig.timeoutIntervalForRequest = 5.0
             
             if let url = tracker.tvTracking.campaignURL {
-                let request = NSURLRequest(URL: url)
-                let session = NSURLSession(configuration: sessionConfig)
+                let request = URLRequest(url: url as URL)
+                let session = URLSession(configuration: sessionConfig)
                 
-                let task = session.dataTaskWithRequest(request, completionHandler: {(data, response, error) in
+                let task = session.dataTask(with: request, completionHandler: {(data, response, error) in
 
                     self.response = Tool.JSONStringify(self.buildTVTParam(data, urlResponse: response, error: error), prettyPrinted: false)
                     self.tracker.delegate?.didCallPartner("TV Tracking: " + self.response)
                     
                     session.finishTasksAndInvalidate()
                     
-                    dispatch_semaphore_signal(semaphore)
+                    semaphore.signal()
                 })
                 
                 task.resume()
             }
             
-            dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+            _ = semaphore.wait(timeout: DispatchTime.distantFuture)
             
         } else {
             
-            let param = userDefaults.objectForKey(TVTrackingConstant.tvtParam.rawValue) as! [String: AnyObject]
+            let param = userDefaults.object(forKey: TVTrackingConstant.tvtParam.rawValue) as! [String: Any]
             response = Tool.JSONStringify(param, prettyPrinted: false)
         }
     }
     
-    func buildTVTParam(data: NSData!, urlResponse: NSURLResponse!, error: NSError!) -> [String: AnyObject] {
+    func buildTVTParam(_ data: Data!, urlResponse: URLResponse!, error: Error?) -> [String: Any] {
         
-        var tvtParam = [String: [String: AnyObject]]()
+        var tvtParam = [String: [String: Any]]()
         
         var spotSet = false
         
         if data != nil && error == nil {
             
-            if let serializedData = (try? NSJSONSerialization.JSONObjectWithData(data, options: [])) as? [String: AnyObject] {
+            if let serializedData = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String: Any] {
                 spot = serializedData
                 spotSet = true
                 
-                var directSpot = [String: AnyObject]()
+                var directSpot = [String: Any]()
                 directSpot["direct"] = spot
                 
                 if (isValidSpot) {
                     tvtParam["tvtracking"] = directSpot
                 } else {
-                    tvtParam["tvtracking"] = [String: AnyObject]()
+                    tvtParam["tvtracking"] = [String: Any]()
                 }
                 
             } else {
@@ -226,27 +226,27 @@ class TVTrackingPlugin: Plugin {
             
         }
         
-        let remanentSpot = userDefaults.objectForKey(TVTrackingConstant.remanentSpot.rawValue) as? [String: AnyObject]
+        let remanentSpot = userDefaults.object(forKey: TVTrackingConstant.remanentSpot.rawValue) as? [String: Any]
         
         if let remanentSpot = remanentSpot {
             
-            let date = remanentSpot["date"] as! NSDate
-            let diffTime = Int(round(NSDate().timeIntervalSinceDate(date)))
+            let date = remanentSpot["date"] as! Date
+            let diffTime = Int(round(Date().timeIntervalSince(date)))
             
-            var remanentSpotContent = [String: AnyObject]()
+            var remanentSpotContent = [String: Any]()
             remanentSpotContent["remanent"] = remanentSpot["spot"]
             
-            let r = remanentSpotContent["remanent"] as! [String: AnyObject]
-            let lifetime = r["lifetime"] as! String
+            let r = remanentSpotContent["remanent"] as! [String: Any]
+            let lifetime = r["lifetime"] as? String ?? "30"
             
-            if ( (diffTime / (60*60*24)) < Int(lifetime) ) {
+            if ( (diffTime / (60*60*24)) < Int(lifetime) ?? 30) {
                 if !spotSet {
                     tvtParam["tvtracking"] = ["remanent": remanentSpot["spot"]!]
                 } else {
                     tvtParam["tvtracking"]!["remanent"] = remanentSpot["spot"]
                 }
             } else {
-                userDefaults.removeObjectForKey(TVTrackingConstant.remanentSpot.rawValue)
+                userDefaults.removeObject(forKey: TVTrackingConstant.remanentSpot.rawValue)
                 userDefaults.synchronize()
             }
             
@@ -266,19 +266,19 @@ class TVTrackingPlugin: Plugin {
             && isValidSpot
             && (isSpotFirstTimeSaved || spot["priority"] as? String == "1")) {
                 
-            userDefaults.setObject(["spot": spot, "date": NSDate()], forKey: TVTrackingConstant.remanentSpot.rawValue)
+            userDefaults.set(["spot": spot, "date": Date()], forKey: TVTrackingConstant.remanentSpot.rawValue)
             userDefaults.synchronize()
                 
         }
         
-        userDefaults.setObject(tvtParam, forKey: TVTrackingConstant.tvtParam.rawValue)
+        userDefaults.set(tvtParam, forKey: TVTrackingConstant.tvtParam.rawValue)
         userDefaults.synchronize()
         
         return tvtParam
         
     }
     
-    func buildTVTInfo(response: NSURLResponse!) -> [String: String] {
+    func buildTVTInfo(_ response: URLResponse!) -> [String: String] {
         
         var dic = [String: [String: String]]()
         dic["info"] = [String: String]()
@@ -286,7 +286,7 @@ class TVTrackingPlugin: Plugin {
         var code = "Unknown"
         
         if response != nil {
-            if let response = response as? NSHTTPURLResponse {
+            if let response = response as? HTTPURLResponse {
                 code = String(response.statusCode)
             }
         }

@@ -47,9 +47,8 @@ public class Audio: RichMedia {
         if (self.duration > 86400) {
             self.duration = 86400
         }
-        self.tracker.setParam("m1", value: duration)
-        
-        self.tracker.setParam("type", value: type)
+        _ = self.tracker.setParam("m1", value: duration)
+            .setParam("type", value: type)
     }
 
 }
@@ -76,7 +75,7 @@ public class Audios {
     - parameter audio: duration in seconds
     - returns: audio instance
     */
-    public func add(name:String, duration: Int) -> Audio {
+    public func add(_ name:String, duration: Int) -> Audio {
         if let audio = self.list[name] {
             self.player.tracker.delegate?.warningDidOccur("An Audio with the same name already exists.")
             return audio
@@ -98,7 +97,7 @@ public class Audios {
     - parameter audio: duration in seconds
     - returns: audio instance
     */
-    public func add(name: String, chapter1: String, duration: Int) -> Audio {
+    public func add(_ name: String, chapter1: String, duration: Int) -> Audio {
         if let audio = self.list[name] {
             self.player.tracker.delegate?.warningDidOccur("An Audio with the same name already exists.")
             return audio
@@ -122,7 +121,7 @@ public class Audios {
     - parameter audio: duration in seconds
     - returns: audio instance
     */
-    public func add(name: String, chapter1: String, chapter2: String, duration: Int) -> Audio {
+    public func add(_ name: String, chapter1: String, chapter2: String, duration: Int) -> Audio {
         if let audio = self.list[name] {
             self.player.tracker.delegate?.warningDidOccur("An Audio with the same name already exists.")
             return audio
@@ -148,7 +147,7 @@ public class Audios {
     - parameter audio: duration in seconds
     - returns: audio instance
     */
-    public func add(name: String, chapter1: String, chapter2: String, chapter3: String, duration: Int) -> Audio {
+    public func add(_ name: String, chapter1: String, chapter2: String, chapter3: String, duration: Int) -> Audio {
         if let audio = self.list[name] {
             self.player.tracker.delegate?.warningDidOccur("An Audio with the same name already exists.")
             return audio
@@ -170,13 +169,13 @@ public class Audios {
     Remove an audio
     - parameter audio: name
     */
-    public func remove(name: String) {
+    public func remove(_ name: String) {
         if let timer = list[name]?.timer {
-            if timer.valid {
+            if timer.isValid {
                 list[name]!.sendStop()
             }
         }
-        self.list.removeValueForKey(name)
+        self.list.removeValue(forKey: name)
     }
     
     /**
@@ -185,12 +184,12 @@ public class Audios {
     public func removeAll() {
         for (_, value) in self.list {
             if let timer = value.timer {
-                if timer.valid {
+                if timer.isValid {
                     value.sendStop()
                 }
             }
         }
-        self.list.removeAll(keepCapacity: false)
+        self.list.removeAll(keepingCapacity: false)
     }
     
 }

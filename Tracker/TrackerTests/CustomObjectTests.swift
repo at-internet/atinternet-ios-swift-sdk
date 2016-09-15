@@ -66,12 +66,12 @@ class CustomObjectTests: XCTestCase {
     }
     
     func testAppendStringCustomObject() {
-        stc.tracker.setParam("stc", value: "{\"legumes\":[\"tomate\",\"choux\",\"carotte\"]}")
+        _ = stc.tracker.setParam("stc", value: "{\"legumes\":[\"tomate\",\"choux\",\"carotte\"]}")
         
         let option = ParamOption()
         option.append = true
         
-        stc.tracker.setParam("stc", value: "{\"fruits\":[\"pomme\",\"poire\",\"cerise\"]}", options: option)
+        _ = stc.tracker.setParam("stc", value: "{\"fruits\":[\"pomme\",\"poire\",\"cerise\"]}", options: option)
         
         let builder = Builder(tracker: stc.tracker, volatileParameters: stc.tracker.buffer.volatileParameters, persistentParameters: stc.tracker.buffer.persistentParameters)
         let param: [(param: Param, str: String)] = builder.prepareQuery()
@@ -85,12 +85,12 @@ class CustomObjectTests: XCTestCase {
     }
     
     func testAppendDisctionaryCustomObject() {
-        stc.tracker.setParam("stc", value: ["legumes" : ["tomate", "choux", "carotte"]])
+        _ = stc.tracker.setParam("stc", value: ["legumes" : ["tomate", "choux", "carotte"]])
         
         let option = ParamOption()
         option.append = true
         
-        stc.tracker.setParam("stc", value: ["fruits" : ["pomme", "poire", "cerise"]], options: option)
+        _ = stc.tracker.setParam("stc", value: ["fruits" : ["pomme", "poire", "cerise"]], options: option)
 
             
         let builder = Builder(tracker: stc.tracker, volatileParameters: stc.tracker.buffer.volatileParameters, persistentParameters: stc.tracker.buffer.persistentParameters)

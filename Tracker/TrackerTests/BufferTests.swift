@@ -38,12 +38,12 @@ import Tracker
 class BufferTests: XCTestCase {
     
     // On instancie deux objets de type Parameter
-    let paramPer = Param(key:"model", value:{"[apple]-[ipad4,4]"}, type: .String)
-    let paramVol = Param(key:"p", value: {"home"}, type: .String)
+    let paramPer = Param(key:"model", value:{"[apple]-[ipad4,4]"}, type: .string)
+    let paramVol = Param(key:"p", value: {"home"}, type: .string)
     
     // On instancie deux tableaux contenant des objets de type Parameter
-    let arrayPer = [Param(key:"key0p", value: {"value0p"}, type: .String), Param(key:"key1p", value: {"value1p"}, type: .String)]
-    let arrayVol = [Param(key:"key0v", value: {"value0v"}, type: .String), Param(key:"key1v", value: {"value1v"}, type: .String)]
+    let arrayPer = [Param(key:"key0p", value: {"value0p"}, type: .string), Param(key:"key1p", value: {"value1p"}, type: .string)]
+    let arrayVol = [Param(key:"key0v", value: {"value0v"}, type: .string), Param(key:"key1v", value: {"value1v"}, type: .string)]
     
     // Instance de buffer utilisée pour les tests
     let buffer = Buffer(tracker: Tracker(configuration: ["log":"logp", "logSSL":"logs", "domain":"xiti.com", "pixelPath":"/hit.xiti", "site":"549808", "secure":"false", "identifier":"uuid", "sessionBackgroundDuration":"60" ]))

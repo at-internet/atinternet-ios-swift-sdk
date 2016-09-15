@@ -80,7 +80,7 @@ public class SelfPromotion : OnAppAd {
         let positions = Tool.findParameterPosition(HitParam.HitType.rawValue, arrays: tracker.buffer.persistentParameters, tracker.buffer.volatileParameters)
         
         if(positions.count > 0) {
-            for(_, position) in positions.enumerate() {
+            for(_, position) in positions.enumerated() {
                 if(position.arrayIndex == 0) {
                     currentType = (tracker.buffer.persistentParameters[position.index] as Param).value()
                 } else {
@@ -90,23 +90,23 @@ public class SelfPromotion : OnAppAd {
         }
         
         if (currentType != "screen" && currentType != defaultType) {
-            tracker.setParam(HitParam.HitType.rawValue, value: defaultType)
+            _ = tracker.setParam(HitParam.HitType.rawValue, value: defaultType)
         }
         
         let option = ParamOption()
         option.append = true
         option.encode = true
-        self.tracker.setParam(self.action.rawValue, value: spot, options: option)
+        _ = self.tracker.setParam(self.action.rawValue, value: spot, options: option)
         
         if(action == Action.Touch) {
             if(TechnicalContext.screenName != "") {
                 let encodingOption = ParamOption()
                 encodingOption.encode = true
-                tracker.setParam("patc", value: TechnicalContext.screenName, options: encodingOption)
+                _ = tracker.setParam("patc", value: TechnicalContext.screenName, options: encodingOption)
             }
             
             if(TechnicalContext.level2 > 0) {
-                tracker.setParam("s2atc", value: TechnicalContext.level2)
+                _ = tracker.setParam("s2atc", value: TechnicalContext.level2)
             }
         }
     }
@@ -130,7 +130,7 @@ public class SelfPromotions {
     - parameter adId: ad identifier
     :returnd: the SelfPromotion instance
     */
-    public func add(adId: Int) -> SelfPromotion {
+    public func add(_ adId: Int) -> SelfPromotion {
         let selfPromotion = SelfPromotion(tracker: self.tracker)
         selfPromotion.adId = adId
         

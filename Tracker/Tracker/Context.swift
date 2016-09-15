@@ -56,7 +56,7 @@ public class Context {
                 let option = ParamOption()
                 option.persistent = true;
                 
-                tracker.setParam(HitParam.Level2.rawValue, value: _level2, options: option)
+                _ = tracker.setParam(HitParam.Level2.rawValue, value: _level2, options: option)
             } else {
                 tracker.unsetParam(HitParam.Level2.rawValue)
             }
@@ -80,10 +80,10 @@ public class Context {
             
             if let _backgroundMode = _backgroundMode {
                 switch _backgroundMode {
-                case .Fetch:
-                    tracker.setParam(HitParam.BackgroundMode.rawValue, value: "fetch", options: option)
-                case .Task:
-                    tracker.setParam(HitParam.BackgroundMode.rawValue, value: "task", options: option)
+                case .fetch:
+                    _ = tracker.setParam(HitParam.BackgroundMode.rawValue, value: "fetch", options: option)
+                case .task:
+                    _ = tracker.setParam(HitParam.BackgroundMode.rawValue, value: "task", options: option)
                 default:
                     tracker.unsetParam(HitParam.BackgroundMode.rawValue)
                 }

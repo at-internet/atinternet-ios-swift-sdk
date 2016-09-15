@@ -41,18 +41,18 @@ class ContextTests: XCTestCase {
         if (tracker.context.backgroundMode != nil) {
             XCTAssertTrue(false, "Par défaut le mode background doit être à nil")
         }
-        tracker.context.backgroundMode = .Fetch
-        XCTAssertTrue(tracker.context.backgroundMode == .Fetch, "Le mode background doit être fetch")
+        tracker.context.backgroundMode = .fetch
+        XCTAssertTrue(tracker.context.backgroundMode == .fetch, "Le mode background doit être fetch")
         var p = tracker.buffer.persistentParameters.last as Param!
-        XCTAssertTrue(p.key == HitParam.BackgroundMode.rawValue, "Le dernier paramètre persistent doit être le mode background")
-        XCTAssertTrue(p.value() == "fetch", "Le dernier paramètre persistent doit avoir la valeur fetch")
-        tracker.context.backgroundMode = .Task
+        XCTAssertTrue(p?.key == HitParam.BackgroundMode.rawValue, "Le dernier paramètre persistent doit être le mode background")
+        XCTAssertTrue(p?.value() == "fetch", "Le dernier paramètre persistent doit avoir la valeur fetch")
+        tracker.context.backgroundMode = .task
         p = tracker.buffer.persistentParameters.last as Param!
-        XCTAssertTrue(p.key == HitParam.BackgroundMode.rawValue, "Le dernier paramètre persistent doit être le mode background")
-        XCTAssertTrue(p.value() == "task", "Le dernier paramètre persistent doit avoir la valeur task")
-        tracker.context.backgroundMode = .Normal
+        XCTAssertTrue(p?.key == HitParam.BackgroundMode.rawValue, "Le dernier paramètre persistent doit être le mode background")
+        XCTAssertTrue(p?.value() == "task", "Le dernier paramètre persistent doit avoir la valeur task")
+        tracker.context.backgroundMode = .normal
         p = tracker.buffer.persistentParameters.last as Param!
-        XCTAssertTrue(p.key != HitParam.BackgroundMode.rawValue, "Le dernier paramètre persistent ne doit pas être le mode background")
+        XCTAssertTrue(p?.key != HitParam.BackgroundMode.rawValue, "Le dernier paramètre persistent ne doit pas être le mode background")
     }
     
     func testLevel2() {
@@ -61,11 +61,11 @@ class ContextTests: XCTestCase {
         }
         tracker.context.level2 = 123
         var p = tracker.buffer.persistentParameters.last as Param!
-        XCTAssertTrue(p.key == HitParam.Level2.rawValue, "Le dernier paramètre persistent doit être le level 2")
-        XCTAssertTrue(p.value() == "123", "Le dernier paramètre persistent doit avoir la valeur 123")
+        XCTAssertTrue(p?.key == HitParam.Level2.rawValue, "Le dernier paramètre persistent doit être le level 2")
+        XCTAssertTrue(p?.value() == "123", "Le dernier paramètre persistent doit avoir la valeur 123")
         tracker.context.level2 = nil
         p = tracker.buffer.persistentParameters.last as Param!
-        XCTAssertTrue(p.key != HitParam.Level2.rawValue, "Le dernier paramètre persistent ne doit pas être le level 2")
+        XCTAssertTrue(p?.key != HitParam.Level2.rawValue, "Le dernier paramètre persistent ne doit pas être le level 2")
     }
 
 }

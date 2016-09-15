@@ -38,24 +38,24 @@ class ProcessedHitType {
     class var list: [String: Hit.HitType] {
         get {
             return [
-                "audio": .Audio,
-                "video": .Video,
-                "vpre": .Video,
-                "vmid": .Video,
-                "vpost": .Video,
-                "animation": .Animation,
-                "anim": .Animation,
-                "podcast": .PodCast,
-                "rss": .RSS,
-                "email": .Email,
-                "pub": .Advertising,
-                "ad": .Advertising,
-                "click": .Touch,
-                "AT": .AdTracking,
-                "pdt": .ProductDisplay,
-                "wbo": .Weborama,
-                "mvt": .MVTesting,
-                "screen": .Screen
+                "audio": .audio,
+                "video": .video,
+                "vpre": .video,
+                "vmid": .video,
+                "vpost": .video,
+                "animation": .animation,
+                "anim": .animation,
+                "podcast": .podCast,
+                "rss": .rss,
+                "email": .email,
+                "pub": .advertising,
+                "ad": .advertising,
+                "click": .touch,
+                "AT": .adTracking,
+                "pdt": .productDisplay,
+                "wbo": .weborama,
+                "mvt": .mvTesting,
+                "screen": .screen
             ]
         }
     }
@@ -64,26 +64,26 @@ class ProcessedHitType {
 public class Hit: CustomStringConvertible {
     /// Standard hit type
     public enum HitType: Int {
-        case Unknown = 0
-        case Screen = 1
-        case Touch = 2
-        case Audio = 3
-        case Video = 4
-        case Animation = 5
-        case PodCast = 6
-        case RSS = 7
-        case Email = 8
-        case Advertising = 9
-        case AdTracking = 10
-        case ProductDisplay = 11
-        case Weborama = 12
-        case MVTesting = 13
+        case unknown = 0
+        case screen = 1
+        case touch = 2
+        case audio = 3
+        case video = 4
+        case animation = 5
+        case podCast = 6
+        case rss = 7
+        case email = 8
+        case advertising = 9
+        case adTracking = 10
+        case productDisplay = 11
+        case weborama = 12
+        case mvTesting = 13
     }
     
     /// Hit
     public var url: String
     /// Date of creation
-    public var creationDate: NSDate
+    public var creationDate: Date
     /// Number of retry that were made to send the hit
     public var retryCount: NSNumber
     /// Indicates wheter the hit comes from storage
@@ -111,7 +111,7 @@ public class Hit: CustomStringConvertible {
     */
     init(url: String) {
         self.url = url
-        creationDate = NSDate()
+        creationDate = Date()
         retryCount = 0
         isOffline = false
     }
@@ -124,16 +124,16 @@ public class Hit: CustomStringConvertible {
     - returns: type of hit
     */
     func getHitType() -> HitType {
-        var hitType = HitType.Screen
+        var hitType = HitType.screen
         
         if(url != "") {
-            let hitUrl = NSURL(string: self.url)
+            let hitUrl = URL(string: self.url)
             
             if let optURL = hitUrl {
-                let urlComponents = optURL.query!.componentsSeparatedByString("&")
+                let urlComponents = optURL.query!.components(separatedBy: "&")
                 
                 for component in urlComponents as [String] {
-                    let pairComponents = component.componentsSeparatedByString("=")
+                    let pairComponents = component.components(separatedBy: "=")
                     
                     if(pairComponents[0] == "type") {
                         hitType = ProcessedHitType.list[pairComponents[1]]!
@@ -141,18 +141,18 @@ public class Hit: CustomStringConvertible {
                     }
                     
                     if(pairComponents[0] == "clic" || pairComponents[0] == "click") {
-                        hitType = HitType.Touch
+                        hitType = HitType.touch
                     }
                 }
                 
                 return hitType
 
             } else {
-                return HitType.Unknown
+                return HitType.unknown
             }
         }
         
-        return HitType.Unknown
+        return HitType.unknown
     }
     
     /**
@@ -162,23 +162,23 @@ public class Hit: CustomStringConvertible {
     
     - returns: type of hit
     */
-    class func getHitType(parameters: [Param]...) -> HitType {
+    class func getHitType(_ parameters: [Param]...) -> HitType {
         var params = [Param]()
-        var hitType = HitType.Screen
+        var hitType = HitType.screen
         
         for p in parameters {
             params += p
         }
         
         for p in params {
-            if(p.key == "clic" || p.key == "click" || (p.key == "type" && ProcessedHitType.list.indexForKey(p.value()) != nil)) {
+            if(p.key == "clic" || p.key == "click" || (p.key == "type" && ProcessedHitType.list.index(forKey: p.value()) != nil)) {
                 if(p.key == "type") {
                     hitType = ProcessedHitType.list[p.value()]!
                     break
                 }
                 
                 if(p.key == "clic" || p.key == "click") {
-                    hitType = HitType.Touch
+                    hitType = HitType.touch
                 }
             }
         }

@@ -46,28 +46,28 @@ class TechnicalContextTests: XCTestCase {
     /* On test les différentes possiblités de récupération d'un id client */
     
     func testIDFV() {
-        let ref = UIDevice.currentDevice().identifierForVendor!.UUIDString
+        let ref = UIDevice.current.identifierForVendor!.uuidString
         XCTAssertNotNil(ref, "IDFV shall not be nil")
         XCTAssertEqual(ref, TechnicalContext.userId("idfv"), "Unique identifier shall be equal to IDFV")
     }
     
     func testExistingUUID() {
-        let ref = NSUUID().UUIDString
-        NSUserDefaults.standardUserDefaults().setObject(ref, forKey: "ATApplicationUniqueIdentifier")
-        NSUserDefaults.standardUserDefaults().synchronize()
+        let ref = UUID().uuidString
+        UserDefaults.standard.set(ref, forKey: "ATApplicationUniqueIdentifier")
+        UserDefaults.standard.synchronize()
         XCTAssertNotNil(ref, "UUID shall not be nil")
         XCTAssertEqual(ref, TechnicalContext.userId("whatever"), "Unique identifier shall be equal to existing UUID")
     }
     
     func testNonExistingUUID() {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("ATApplicationUniqueIdentifier")
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.removeObject(forKey: "ATApplicationUniqueIdentifier")
+        UserDefaults.standard.synchronize()
         XCTAssertEqual(36, TechnicalContext.userId("whatever").characters.count, "Unique identifier shall be a new valid UUID")
     }
     
     func testUserIdWithNilConfiguration() {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey("ATApplicationUniqueIdentifier")
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.removeObject(forKey: "ATApplicationUniqueIdentifier")
+        UserDefaults.standard.synchronize()
         XCTAssertEqual(36, TechnicalContext.userId(nil).characters.count, "Unique identifier shall be a new valid UUID")
     }
     

@@ -58,7 +58,7 @@ public class CustomVar: ScreenInfo {
         encodingOption.encode = true
         
         let key = type.rawValue + String(varId)
-        tracker.setParam(key, value: value, options: encodingOption)
+        _ = tracker.setParam(key, value: value, options: encodingOption)
     }
     
 }
@@ -84,7 +84,7 @@ public class CustomVars {
     - parameter type: of custom variable (site, page)
     - returns: tracker instance
     */
-    public func add(varId: Int, value: String, type: CustomVar.CustomVarType) -> CustomVar {
+    public func add(_ varId: Int, value: String, type: CustomVar.CustomVarType) -> CustomVar {
         let customVar = CustomVar(tracker: tracker)
         customVar.varId = varId
         customVar.value = value

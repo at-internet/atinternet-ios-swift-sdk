@@ -36,39 +36,39 @@ import XCTest
 class TVTrackingTests: XCTestCase {
     
     func testSetTVTNotEnabled() {
-        let expectation = expectationWithDescription("test")
+        let expectation = self.expectation(description: "test")
         
         let tracker = Tracker(configuration: ["log":"logp", "logSSL":"logs", "domain":"xiti.com", "pixelPath":"/hit.xiti", "site":"549808", "secure":"false", "identifier":"uuid", "plugins": "", "storage":"required","enableBackgroundTask":"true", "hashUserId": "false","persistIdentifiedVisitor":"true","tvtUrl":"http://tochange.com/resources/spot4","tvtVisitDuration":"1"])
         
-        tracker.tvTracking.set()
+        _ = tracker.tvTracking.set()
 
-        let configurationOperation = NSBlockOperation(block: {
+        let configurationOperation = BlockOperation(block: {
             XCTAssertTrue(tracker.buffer.volatileParameters.count == 0, "Le paramètre tvtracking ne doit pas être ajouté")
             expectation.fulfill()
         })
         
         TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
         
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testSetTVTEnabled() {
-        let expectation = expectationWithDescription("test")
+        let expectation = self.expectation(description: "test")
         
         let tracker = Tracker(configuration: ["log":"logp", "logSSL":"logs", "domain":"xiti.com", "pixelPath":"/hit.xiti", "site":"549808", "secure":"false", "identifier":"uuid", "plugins": "tvtracking", "storage":"required","enableBackgroundTask":"true", "hashUserId": "false","persistIdentifiedVisitor":"true","tvtUrl":"http://tochange.com/resources/spot4","tvtVisitDuration":"1"])
 
-        tracker.tvTracking.set()
+        _ = tracker.tvTracking.set()
         
-        let configurationOperation = NSBlockOperation(block: {
+        let configurationOperation = BlockOperation(block: {
             let p0 = tracker.buffer.persistentParameters.last as Param!
-            XCTAssertTrue(p0.key == "tvt", "Le paramètre doit être la clé du plugin NuggAd")
-            XCTAssertTrue(p0.value() == "true", "La valeur doit être true")
+            XCTAssertTrue(p0?.key == "tvt", "Le paramètre doit être la clé du plugin NuggAd")
+            XCTAssertTrue(p0?.value() == "true", "La valeur doit être true")
             expectation.fulfill()
         })
         
         TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
         
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
 
 }

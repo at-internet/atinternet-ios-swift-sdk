@@ -36,8 +36,8 @@ import CoreData
 
 /// Build or send status of the hit
 public enum HitStatus {
-    case Failed
-    case Success
+    case failed
+    case success
 }
 
 /// Standard parameters
@@ -63,9 +63,9 @@ public enum HitParam: String {
 
 /// Background modes
 public enum BackgroundMode {
-    case Normal
-    case Task
-    case Fetch
+    case normal
+    case task
+    case fetch
 }
 
 // MARK: - Tracker Delegate
@@ -78,7 +78,7 @@ public protocol TrackerDelegate: class {
     
     - parameter message: approval message for confidentiality
     */
-    func trackerNeedsFirstLaunchApproval(message: String)
+    func trackerNeedsFirstLaunchApproval(_ message: String)
     
     /**
     Building of hit done
@@ -86,7 +86,7 @@ public protocol TrackerDelegate: class {
     - parameter status: result of hit building
     - parameter message: info about hit building
     */
-    func buildDidEnd(status: HitStatus, message: String)
+    func buildDidEnd(_ status: HitStatus, message: String)
     
     /**
     Sending of hit done
@@ -94,35 +94,35 @@ public protocol TrackerDelegate: class {
     - parameter status: sending result
     - parameter message: information about sending result
     */
-    func sendDidEnd(status: HitStatus, message: String)
+    func sendDidEnd(_ status: HitStatus, message: String)
     
     /**
     Saving of hit done (offline)
     
     - parameter message: information about saving result
     */
-    func saveDidEnd(message: String)
+    func saveDidEnd(_ message: String)
     
     /**
     Partner call done
     
     - parameter response: the response received from the partner
     */
-    func didCallPartner(response: String)
+    func didCallPartner(_ response: String)
     
     /**
     Received a warning message (does not stop hit sending)
     
     - parameter message: the warning message
     */
-    func warningDidOccur(message: String)
+    func warningDidOccur(_ message: String)
     
     /**
     Received an error message (stop hit sending)
     
     - parameter message: the error message
     */
-    func errorDidOccur(message: String)
+    func errorDidOccur(_ message: String)
     
 }
 
@@ -277,9 +277,9 @@ public class Tracker {
         self.configuration = Configuration(customConfiguration: configuration)
         
         if(!LifeCycle.isInitialized) {
-            let notificationCenter = NSNotificationCenter.defaultCenter()
-            notificationCenter.addObserver(self, selector: #selector(Tracker.applicationDidEnterBackground), name: UIApplicationDidEnterBackgroundNotification, object: nil)
-            notificationCenter.addObserver(self, selector: #selector(Tracker.applicationActive), name: UIApplicationDidBecomeActiveNotification, object: nil)
+            let notificationCenter = NotificationCenter.default
+            notificationCenter.addObserver(self, selector: #selector(Tracker.applicationDidEnterBackground), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
+            notificationCenter.addObserver(self, selector: #selector(Tracker.applicationActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
             LifeCycle.applicationActive(self.configuration.parameters)
         }
     }
@@ -307,31 +307,31 @@ public class Tracker {
 
     - parameter configuration: new configuration for the tracker
     */
-    public func setConfig(configuration: [String: String], override: Bool, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setConfig(_ configuration: [String: String], override: Bool, completionHandler: ((_ isSet: Bool) -> Void)?) {
         
         var keyCount = 0
         
         if(override) {
-            self.configuration.parameters.removeAll(keepCapacity: false)
+            self.configuration.parameters.removeAll(keepingCapacity: false)
         }
         
         for (key, value) in configuration {
             keyCount = keyCount + 1
             if (!Configuration.ReadOnlyConfiguration.list.contains(key)) {
-                let configurationOperation = NSBlockOperation(block: {
+                let configurationOperation = BlockOperation(block: {
                     self.configuration.parameters[key] = value
                 })
                 
                 if(completionHandler != nil && keyCount == configuration.count) {
                     configurationOperation.completionBlock = {
-                        completionHandler!(isSet: true)
+                        completionHandler!(true)
                     }
                 }
                 
                 TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
             } else {
                 if(completionHandler != nil && keyCount == configuration.count) {
-                    completionHandler!(isSet: false)
+                    completionHandler!(false)
                 }
                 delegate?.warningDidOccur(String(format: "Configuration %@ is read only. Value will not be updated", key))
             }
@@ -344,22 +344,22 @@ public class Tracker {
     - parameter key: configuration parameter key
     - parameter value: configuration parameter value
     */
-    public func setConfig(key: String, value: String, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setConfig(_ key: String, value: String, completionHandler: ((_ isSet: Bool) -> Void)?) {
         if (!Configuration.ReadOnlyConfiguration.list.contains(key)) {
-            let configurationOperation = NSBlockOperation(block: {
+            let configurationOperation = BlockOperation(block: {
                 self.configuration.parameters[key] = value
             })
             
             if(completionHandler != nil) {
                 configurationOperation.completionBlock = {
-                    completionHandler!(isSet: true)
+                    completionHandler!(true)
                 }
             }
             
             TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
         } else {
             if(completionHandler != nil) {
-                completionHandler!(isSet: false)
+                completionHandler!(false)
             }
             delegate?.warningDidOccur(String(format: "Configuration %@ is read only. Value will not be updated", key))
         }
@@ -372,59 +372,59 @@ public class Tracker {
         }
     }
     
-    public func setLog(log: String, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setLog(_ log: String, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.Log, value: log, completionHandler: completionHandler)
     }
-    public func setSecuredLog(securedLog: String, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setSecuredLog(_ securedLog: String, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.LogSSL, value: securedLog, completionHandler: completionHandler)
     }
-    public func setDomain(domain: String, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setDomain(_ domain: String, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.Domain, value: domain, completionHandler: completionHandler)
     }
-    public func setSiteId(siteId: Int, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setSiteId(_ siteId: Int, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.Site, value: String(siteId), completionHandler: completionHandler)
     }
-    public func setOfflineMode(offlineMode: OfflineModeKey, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setOfflineMode(_ offlineMode: OfflineModeKey, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.OfflineMode, value: offlineMode.rawValue, completionHandler: completionHandler)
     }
-    public func setSecureModeEnabled(enabled: Bool, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setSecureModeEnabled(_ enabled: Bool, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.Secure, value: String(enabled), completionHandler: completionHandler)
     }
-    public func setIdentifierType(identifierType: IdentifierTypeKey, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setIdentifierType(_ identifierType: IdentifierTypeKey, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.Identifier, value: identifierType.rawValue, completionHandler: completionHandler)
     }
-    public func setHashUserIdEnabled(enabled: Bool, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setHashUserIdEnabled(_ enabled: Bool, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.HashUserId, value: String(enabled), completionHandler: completionHandler)
     }
-    public func setPlugins(pluginNames: [PluginKey], completionHandler: ((isSet: Bool) -> Void)?) {
-        let newValue = pluginNames.map({$0.rawValue}).joinWithSeparator(",")
+    public func setPlugins(_ pluginNames: [PluginKey], completionHandler: ((_ isSet: Bool) -> Void)?) {
+        let newValue = pluginNames.map({$0.rawValue}).joined(separator: ",")
         setConfig(TrackerConfigurationKeys.Plugins, value: newValue, completionHandler: completionHandler)
     }
-    public func setBackgroundTaskEnabled(enabled: Bool, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setBackgroundTaskEnabled(_ enabled: Bool, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.EnableBackgroundTask, value: String(enabled), completionHandler: completionHandler)
     }
-    public func setPixelPath(pixelPath: String, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setPixelPath(_ pixelPath: String, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.PixelPath, value: pixelPath, completionHandler: completionHandler)
     }
-    public func setPersistentIdentifiedVisitorEnabled(enabled: Bool, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setPersistentIdentifiedVisitorEnabled(_ enabled: Bool, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.PersistIdentifiedVisitor, value: String(enabled), completionHandler: completionHandler)
     }
-    public func setTvTrackingUrl(url: String, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setTvTrackingUrl(_ url: String, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.TvTrackingURL, value: url, completionHandler: completionHandler)
     }
-    public func setTvTrackingVisitDuration(visitDuration: Int, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setTvTrackingVisitDuration(_ visitDuration: Int, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.TvTrackingVisitDuration, value: String(visitDuration), completionHandler: completionHandler)
     }
-    public func setTvTrackingSpotValidityTime(time: Int, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setTvTrackingSpotValidityTime(_ time: Int, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.TvTrackingSpotValidityTime, value: String(time), completionHandler: completionHandler)
     }
-    public func setCampaignLastPersistenceEnabled(enabled: Bool, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setCampaignLastPersistenceEnabled(_ enabled: Bool, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.CampaignLastPersistence, value: String(enabled), completionHandler: completionHandler)
     }
-    public func setCampaignLifetime(lifetime: Int, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setCampaignLifetime(_ lifetime: Int, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.CampaignLifetime, value: String(lifetime), completionHandler: completionHandler)
     }
-    public func setSessionBackgroundDuration(duration: Int, completionHandler: ((isSet: Bool) -> Void)?) {
+    public func setSessionBackgroundDuration(_ duration: Int, completionHandler: ((_ isSet: Bool) -> Void)?) {
         setConfig(TrackerConfigurationKeys.SessionBackgroundDuration, value: String(duration), completionHandler: completionHandler)
     }
     
@@ -436,7 +436,7 @@ public class Tracker {
     - parameter key: parameter key
     - parameter value: parameter value
     */
-    private func setParam(key: String, value: ()->(String), type: Param.ParamType) {
+    private func setParam(_ key: String, value: @escaping ()->(String), type: Param.ParamType) {
         // Check whether the parameter is not in read only mode
         if(!ReadOnlyParam.list.contains(key)) {
             let param = Param(key: key, value: value, type: type)
@@ -445,12 +445,12 @@ public class Tracker {
             // Check if parameter is already set
             if(positions.count > 0) {
                 // If found, replace first parameter with new value and delete others in appropriate buffer array
-                for(index, position) in positions.enumerate() {
+                for(index, position) in positions.enumerated() {
                     if(index == 0) {
                         (position.arrayIndex == 0) ? (buffer.persistentParameters[position.index] = param)
                             : (buffer.volatileParameters[position.index] = param)
                     } else {
-                        (position.arrayIndex == 0) ? buffer.persistentParameters.removeAtIndex(position.index) : buffer.volatileParameters.removeAtIndex(position.index)
+                        _ = (position.arrayIndex == 0) ? buffer.persistentParameters.remove(at: position.index) : buffer.volatileParameters.remove(at: position.index)
                     }
                 }
             } else {
@@ -469,7 +469,7 @@ public class Tracker {
     - parameter value: parameter value
     - parameter options: parameter options
     */
-    private func setParam(key: String, value: ()->(String), type: Param.ParamType, options: ParamOption) {
+    private func setParam(_ key: String, value: @escaping ()->(String), type: Param.ParamType, options: ParamOption) {
         // Check whether the parameter is not in read only mode
         if(!ReadOnlyParam.list.contains(key)) {
             let param = Param(key: key, value: value, type: type, options: options)
@@ -477,19 +477,19 @@ public class Tracker {
             
             if(options.append) {
                 // Check if parameter is already set
-                for(_, position) in positions.enumerate() {
+                for(_, position) in positions.enumerated() {
                     // If new parameter is set to be persistent we move old parameters into the right buffer array
                     if(options.persistent) {
                         // If old parameter was in volatile buffer, we place it into the persistent buffer
                         if(position.arrayIndex > 0) {
                             let existingParam = buffer.volatileParameters[position.index]
-                            buffer.volatileParameters.removeAtIndex(position.index)
+                            buffer.volatileParameters.remove(at: position.index)
                             buffer.persistentParameters.append(existingParam)
                         }
                     } else {
                         if(position.arrayIndex == 0) {
                             let existingParam = buffer.persistentParameters[position.index]
-                            buffer.persistentParameters.removeAtIndex(position.index)
+                            buffer.persistentParameters.remove(at: position.index)
                             buffer.volatileParameters.append(existingParam)
                         }
                     }
@@ -500,26 +500,26 @@ public class Tracker {
                 // Check if parameter is already set
                 if(positions.count > 0) {
                     // If found, replace first parameter with new value and delete others in appropriate buffer array
-                    for(index, position) in positions.enumerate() {
+                    for(index, position) in positions.enumerated() {
                         if(index == 0) {
                             if(position.arrayIndex == 0) {
                                 // If parameter is set to be persistent and is already persistent, we change its value. If not, we place the parameter in the volatile buffer
                                 if(options.persistent) {
                                     buffer.persistentParameters[position.index] = param
                                 } else {
-                                    buffer.persistentParameters.removeAtIndex(position.index)
+                                    buffer.persistentParameters.remove(at: position.index)
                                     buffer.volatileParameters.append(param)
                                 }
                             } else {
                                 if(options.persistent) {
-                                    buffer.volatileParameters.removeAtIndex(position.index)
+                                    buffer.volatileParameters.remove(at: position.index)
                                     buffer.persistentParameters.append(param)
                                 } else {
                                     buffer.volatileParameters[position.index] = param
                                 }
                             }
                         } else {
-                            (position.arrayIndex == 0) ? buffer.persistentParameters.removeAtIndex(position.index) : buffer.volatileParameters.removeAtIndex(position.index)
+                            _ = (position.arrayIndex == 0) ? buffer.persistentParameters.remove(at: position.index) : buffer.volatileParameters.remove(at: position.index)
                         }
                     }
                 } else {
@@ -538,8 +538,8 @@ public class Tracker {
     - parameter key: parameter key
     - parameter value: string parameter value
     */
-    public func setParam(key: String, value: ()->(String)) -> Tracker {
-        setParam(key, value: value, type: .Closure)
+    public func setParam(_ key: String, value: @escaping ()->(String)) -> Tracker {
+        setParam(key, value: value, type: .closure)
         
         return self
     }
@@ -551,8 +551,8 @@ public class Tracker {
     - parameter value: string parameter value
     - parameter options: parameter options
     */
-    public func setParam(key: String, value: ()->(String), options: ParamOption) -> Tracker {
-        setParam(key, value: value, type: .Closure, options: options)
+    public func setParam(_ key: String, value: @escaping ()->(String), options: ParamOption) -> Tracker {
+        setParam(key, value: value, type: .closure, options: options)
         
         return self
     }
@@ -563,12 +563,12 @@ public class Tracker {
     - parameter key: parameter key
     - parameter value: string parameter value
     */
-    public func setParam(key: String, value: String) -> Tracker {
+    public func setParam(_ key: String, value: String) -> Tracker {
         // If string is not JSON
         if (value.parseJSONString == nil) {
-            setParam(key, value: {value}, type: .String)
+            setParam(key, value: {value}, type: .string)
         } else {
-            setParam(key, value: {value}, type: .JSON)
+            setParam(key, value: {value}, type: .json)
         }
         
         return self
@@ -581,12 +581,12 @@ public class Tracker {
     - parameter value: string parameter value
     - parameter options: parameter options
     */
-    public func setParam(key: String, value: String, options: ParamOption) -> Tracker {
+    public func setParam(_ key: String, value: String, options: ParamOption) -> Tracker {
         // If string is not JSON
         if (value.parseJSONString == nil) {
-            setParam(key, value: {value}, type: .String, options: options)
+            setParam(key, value: {value}, type: .string, options: options)
         } else {
-            setParam(key, value: {value}, type: .JSON, options: options)
+            setParam(key, value: {value}, type: .json, options: options)
         }
         
         return self
@@ -598,8 +598,8 @@ public class Tracker {
     - parameter key: parameter key
     - parameter value: int parameter value
     */
-    public func setParam(key: String, value: Int) -> Tracker {
-        self.handleNotStringParameterSetting(key, value: value, type: .Integer)
+    public func setParam(_ key: String, value: Int) -> Tracker {
+        self.handleNotStringParameterSetting(key, value: value, type: .integer)
         
         return self
     }
@@ -611,8 +611,8 @@ public class Tracker {
     - parameter value: int parameter value
     - parameter options: parameter options
     */
-    public func setParam(key: String, value: Int, options: ParamOption) -> Tracker {
-        self.handleNotStringParameterSetting(key, value: value, type: .Integer, options: options)
+    public func setParam(_ key: String, value: Int, options: ParamOption) -> Tracker {
+        self.handleNotStringParameterSetting(key, value: value, type: .integer, options: options)
         
         return self
     }
@@ -623,8 +623,8 @@ public class Tracker {
     - parameter key: parameter key
     - parameter value: float parameter value
     */
-    public func setParam(key: String, value: Float) -> Tracker {
-        self.handleNotStringParameterSetting(key, value: value, type: .Float)
+    public func setParam(_ key: String, value: Float) -> Tracker {
+        self.handleNotStringParameterSetting(key, value: value, type: .float)
         
         return self
     }
@@ -636,8 +636,8 @@ public class Tracker {
     - parameter value: float parameter value
     - parameter options: parameter options
     */
-    public func setParam(key: String, value: Float, options: ParamOption) -> Tracker {
-        self.handleNotStringParameterSetting(key, value: value, type: .Float, options: options)
+    public func setParam(_ key: String, value: Float, options: ParamOption) -> Tracker {
+        self.handleNotStringParameterSetting(key, value: value, type: .float, options: options)
         
         return self
     }
@@ -648,8 +648,8 @@ public class Tracker {
     - parameter key: parameter key
     - parameter value: double parameter value
     */
-    public func setParam(key: String, value: Double) -> Tracker {
-        self.handleNotStringParameterSetting(key, value: value, type: .Double)
+    public func setParam(_ key: String, value: Double) -> Tracker {
+        self.handleNotStringParameterSetting(key, value: value, type: .double)
         
         return self
     }
@@ -661,8 +661,8 @@ public class Tracker {
     - parameter value: double parameter value
     - parameter options: parameter options
     */
-    public func setParam(key: String, value: Double, options: ParamOption) -> Tracker {
-        self.handleNotStringParameterSetting(key, value: value, type: .Double, options: options)
+    public func setParam(_ key: String, value: Double, options: ParamOption) -> Tracker {
+        self.handleNotStringParameterSetting(key, value: value, type: .double, options: options)
         
         return self
     }
@@ -673,8 +673,8 @@ public class Tracker {
     - parameter key: parameter key
     - parameter value: bool parameter value
     */
-    public func setParam(key: String, value: Bool) -> Tracker {
-        self.handleNotStringParameterSetting(key, value: value, type: .Bool)
+    public func setParam(_ key: String, value: Bool) -> Tracker {
+        self.handleNotStringParameterSetting(key, value: value, type: .bool)
         
         return self
     }
@@ -686,8 +686,8 @@ public class Tracker {
     - parameter value: bool parameter value
     - parameter options: parameter options
     */
-    public func setParam(key: String, value: Bool, options: ParamOption) -> Tracker {
-        self.handleNotStringParameterSetting(key, value: value, type: .Bool, options: options)
+    public func setParam(_ key: String, value: Bool, options: ParamOption) -> Tracker {
+        self.handleNotStringParameterSetting(key, value: value, type: .bool, options: options)
         
         return self
     }
@@ -698,8 +698,8 @@ public class Tracker {
     - parameter key: parameter key
     - parameter value: array parameter value
     */
-    public func setParam(key: String, value: [AnyObject]) -> Tracker {
-        self.handleNotStringParameterSetting(key, value: value, type: .Array)
+    public func setParam(_ key: String, value: [Any]) -> Tracker {
+        self.handleNotStringParameterSetting(key, value: value, type: .array)
         
         return self
     }
@@ -711,8 +711,8 @@ public class Tracker {
     - parameter value: array parameter value
     - parameter options: parameter options
     */
-    public func setParam(key: String, value: [AnyObject], options: ParamOption) -> Tracker {
-        self.handleNotStringParameterSetting(key, value: value, type: .Array, options: options)
+    public func setParam(_ key: String, value: [Any], options: ParamOption) -> Tracker {
+        self.handleNotStringParameterSetting(key, value: value, type: .array, options: options)
         
         return self
     }
@@ -723,8 +723,8 @@ public class Tracker {
     - parameter key: parameter key
     - parameter value: dictionary parameter value
     */
-    public func setParam(key: String, value: [String: AnyObject]) -> Tracker {
-        self.handleNotStringParameterSetting(key, value: value, type: .JSON)
+    public func setParam(_ key: String, value: [String: Any]) -> Tracker {
+        self.handleNotStringParameterSetting(key, value: value, type: .json)
         
         return self
     }
@@ -736,8 +736,8 @@ public class Tracker {
     - parameter value: dictionary parameter value
     - parameter options: parameter options
     */
-    public func setParam(key: String, value: [String: AnyObject], options: ParamOption) -> Tracker {
-        self.handleNotStringParameterSetting(key, value: value, type: .JSON, options: options)
+    public func setParam(_ key: String, value: [String: Any], options: ParamOption) -> Tracker {
+        self.handleNotStringParameterSetting(key, value: value, type: .json, options: options)
         
         return self
     }
@@ -749,7 +749,7 @@ public class Tracker {
     - parameter value: parameter value
     - parameter options: parameter options
     */
-    func handleNotStringParameterSetting(key: String, value: AnyObject, type: Param.ParamType, options: ParamOption? = nil) {
+    func handleNotStringParameterSetting(_ key: String, value: Any, type: Param.ParamType, options: ParamOption? = nil) {
         var stringValue: (value: String, success: Bool)
         if let optOptions = options {
             stringValue = Tool.convertToString(value, separator: optOptions.separator)
@@ -773,16 +773,16 @@ public class Tracker {
     
     - parameter parameter: type
     */
-    public func unsetParam(param: String) {
+    public func unsetParam(_ param: String) {
         let positions = Tool.findParameterPosition(param, arrays: buffer.persistentParameters, buffer.volatileParameters)
         
         // Check if parameter is already set in buffer
         if(positions.count > 0) {
-            for(_, position) in positions.enumerate() {
+            for(_, position) in positions.enumerated() {
                 if(position.arrayIndex == 0) {
-                    buffer.persistentParameters.removeAtIndex(position.index);
+                    buffer.persistentParameters.remove(at: position.index);
                 } else {
-                    buffer.volatileParameters.removeAtIndex(position.index);
+                    buffer.volatileParameters.remove(at: position.index);
                 }
             }
         }
@@ -813,7 +813,7 @@ public class Tracker {
             var products = [BusinessObject]()
             
             // Order object by timestamp
-            let sortedObjects = businessObjects.sort {
+            let sortedObjects = businessObjects.sorted {
                 a, b in return a.1.timeStamp  < b.1.timeStamp
             }
             
@@ -838,7 +838,7 @@ public class Tracker {
                         // Send onAppAd touch hit
                         customObjects.append(ad)
                         dispatcher.dispatch(customObjects)
-                        customObjects.removeAll(keepCapacity: false)
+                        customObjects.removeAll(keepingCapacity: false)
                     }
                 } else if object is Product {
                     products.append(object)
@@ -860,7 +860,7 @@ public class Tracker {
                     var cart: Cart?
                     
                     if(salesTrackerObjects.count > 0) {
-                        for(_, value) in salesTrackerObjects.enumerate() {
+                        for(_, value) in salesTrackerObjects.enumerated() {
                             switch(value) {
                             case let crt as Cart:
                                 cart = crt
@@ -882,24 +882,24 @@ public class Tracker {
                     
                     dispatcher.dispatch(onAppAds)
                     
-                    screenObjects.removeAll(keepCapacity: false)
-                    salesTrackerObjects.removeAll(keepCapacity: false)
-                    internalSearchObjects.removeAll(keepCapacity: false)
-                    onAppAds.removeAll(keepCapacity: false)
-                    customObjects.removeAll(keepCapacity: false)
+                    screenObjects.removeAll(keepingCapacity: false)
+                    salesTrackerObjects.removeAll(keepingCapacity: false)
+                    internalSearchObjects.removeAll(keepingCapacity: false)
+                    onAppAds.removeAll(keepingCapacity: false)
+                    customObjects.removeAll(keepingCapacity: false)
                 } else {
 
                     if(object is Gesture && (object as! Gesture).action == Gesture.Action.Search) {
                         onAppAds += internalSearchObjects
-                        internalSearchObjects.removeAll(keepCapacity: false)
+                        internalSearchObjects.removeAll(keepingCapacity: false)
                     }
                     
                     onAppAds += customObjects
                     onAppAds += [object]
                     dispatcher.dispatch(onAppAds)
                     
-                    onAppAds.removeAll(keepCapacity: false)
-                    customObjects.removeAll(keepCapacity: false)
+                    onAppAds.removeAll(keepingCapacity: false)
+                    customObjects.removeAll(keepingCapacity: false)
                 }
             }
             
@@ -915,9 +915,9 @@ public class Tracker {
                 
                 dispatcher.dispatch(customObjects)
                 
-                customObjects.removeAll(keepCapacity: false)
-                internalSearchObjects.removeAll(keepCapacity: false)
-                screenObjects.removeAll(keepCapacity: false)
+                customObjects.removeAll(keepingCapacity: false)
+                internalSearchObjects.removeAll(keepingCapacity: false)
+                screenObjects.removeAll(keepingCapacity: false)
             }
             
         } else {
@@ -928,12 +928,12 @@ public class Tracker {
     /**
     Dispatch objects with their customObjects
     */
-    func dispatchObjects(inout  objects: [BusinessObject], inout customObjects: [BusinessObject]) {
+    func dispatchObjects(_ objects: inout [BusinessObject], customObjects: inout [BusinessObject]) {
         if(objects.count > 0) {
             objects += customObjects
             dispatcher.dispatch(objects)
-            customObjects.removeAll(keepCapacity: false)
-            objects.removeAll(keepCapacity: false)
+            customObjects.removeAll(keepingCapacity: false)
+            objects.removeAll(keepingCapacity: false)
         }
     }
     
@@ -965,7 +965,7 @@ public class Tracker {
         get {
             return TechnicalContext.doNotTrack
         } set {
-            let dotNotTrackOperation = NSBlockOperation(block: {
+            let dotNotTrackOperation = BlockOperation(block: {
                 TechnicalContext.doNotTrack = newValue
             })
             
@@ -1006,25 +1006,17 @@ class TrackerQueue {
     }
     
     /// TrackerQueue singleton
-    class var sharedInstance: TrackerQueue {
-        struct Static {
-            static var instance: TrackerQueue?
-            static var token: dispatch_once_t = 0
-        }
-        
-        dispatch_once(&Static.token) {
-            Static.instance = TrackerQueue()
-        }
-        
-        return Static.instance!
-    }
+    static let sharedInstance: TrackerQueue = {
+        let instance = TrackerQueue()
+        return instance
+    }()
     
     /// Queue
-    lazy var queue: NSOperationQueue = {
-        var queue = NSOperationQueue()
+    lazy var queue: OperationQueue = {
+        var queue = OperationQueue()
         queue.name = "TrackerQueue"
         queue.maxConcurrentOperationCount = 1
-        queue.qualityOfService = NSQualityOfService.Background
+        queue.qualityOfService = QualityOfService.background
         return queue
         }()
 }

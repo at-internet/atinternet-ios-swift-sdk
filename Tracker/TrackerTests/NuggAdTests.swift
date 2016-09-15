@@ -36,39 +36,39 @@ import XCTest
 class NuggAdTests: XCTestCase {
     
     func testSetNuggAdNotEnabled() {
-        let expectation = expectationWithDescription("test")
+        let expectation = self.expectation(description: "test")
         
         let tracker = Tracker(configuration: ["log":"logp", "logSSL":"logs", "domain":"xiti.com", "pixelPath":"/hit.xiti", "site":"549808", "secure":"false", "identifier":"uuid", "plugins": "", "storage":"required","enableBackgroundTask":"true", "hashUserId": "false","persistIdentifiedVisitor":"true","tvtUrl":"http://tochange.com/resources/spot4","tvtVisitDuration":"1"])
 
         let nuggAd = tracker.nuggAds.add(["k0": "v0", "k1": "v1"])
         nuggAd.setEvent()
         
-        let configurationOperation = NSBlockOperation(block: {
+        let configurationOperation = BlockOperation(block: {
             XCTAssertTrue(tracker.buffer.volatileParameters.count == 0, "Le paramètre NuggAd ne doit pas être ajouté")
             expectation.fulfill()
         })
         
         TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
         
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
     
     func testSetNuggAdEnabled() {
-        let expectation = expectationWithDescription("test")
+        let expectation = self.expectation(description: "test")
         
         let tracker = Tracker(configuration: ["log":"logp", "logSSL":"logs", "domain":"xiti.com", "pixelPath":"/hit.xiti", "site":"549808", "secure":"false", "identifier":"uuid", "plugins": "nuggad", "storage":"required","enableBackgroundTask":"true", "hashUserId": "false","persistIdentifiedVisitor":"true","tvtUrl":"http://tochange.com/resources/resources/spot4","tvtVisitDuration":"1", "sessionBackgroundDuration":"60"])
         let nuggAd = tracker.nuggAds.add(["k0": "v0"])
         nuggAd.setEvent()
         
-        let configurationOperation = NSBlockOperation(block: {
+        let configurationOperation = BlockOperation(block: {
             let p0 = tracker.buffer.volatileParameters[0] as Param!
-            XCTAssertTrue(p0.key == "stc", "Le paramètre doit être la clé du plugin NuggAd")
-            XCTAssertTrue(p0.value() == "{\"nuggad\":{\"k0\":\"v0\"}}", "La valeur doit être la data nuggad serialisée")
+            XCTAssertTrue(p0?.key == "stc", "Le paramètre doit être la clé du plugin NuggAd")
+            XCTAssertTrue(p0?.value() == "{\"nuggad\":{\"k0\":\"v0\"}}", "La valeur doit être la data nuggad serialisée")
             expectation.fulfill()
         })
         
         TrackerQueue.sharedInstance.queue.addOperation(configurationOperation)
         
-        waitForExpectationsWithTimeout(10, handler: nil)
+        waitForExpectations(timeout: 10, handler: nil)
     }
 }

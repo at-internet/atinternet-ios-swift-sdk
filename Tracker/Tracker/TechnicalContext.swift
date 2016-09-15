@@ -57,43 +57,43 @@ class TechnicalContext {
     /// Enable or disable tracking
     class var doNotTrack: Bool {
         get {
-            let userDefaults = NSUserDefaults.standardUserDefaults()
+            let userDefaults = UserDefaults.standard
             
-            if (userDefaults.objectForKey("ATDoNotTrack") == nil) {
+            if (userDefaults.object(forKey: "ATDoNotTrack") == nil) {
                 return false
             } else {
-                return userDefaults.boolForKey("ATDoNotTrack")
+                return userDefaults.bool(forKey: "ATDoNotTrack")
             }
         } set {
-            let userDefaults = NSUserDefaults.standardUserDefaults()
-            userDefaults.setBool(newValue, forKey: "ATDoNotTrack")
+            let userDefaults = UserDefaults.standard
+            userDefaults.set(newValue, forKey: "ATDoNotTrack")
             userDefaults.synchronize()
         }
     }
     
     /// Unique user id
-    class func userId(identifier: String?) -> String {
+    class func userId(_ identifier: String?) -> String {
         
         if(!self.doNotTrack) {
             
             let uuid: () -> String = {
-                if NSUserDefaults.standardUserDefaults().objectForKey("ATIdclient") != nil {
-                    return NSUserDefaults.standardUserDefaults().objectForKey("ATIdclient") as! String
-                } else if NSUserDefaults.standardUserDefaults().objectForKey("ATApplicationUniqueIdentifier") == nil {
-                    let UUID = NSUUID().UUIDString
-                    NSUserDefaults.standardUserDefaults().setObject(UUID, forKey: "ATApplicationUniqueIdentifier")
-                    NSUserDefaults.standardUserDefaults().synchronize()
+                if UserDefaults.standard.object(forKey: "ATIdclient") != nil {
+                    return UserDefaults.standard.object(forKey: "ATIdclient") as! String
+                } else if UserDefaults.standard.object(forKey: "ATApplicationUniqueIdentifier") == nil {
+                    let UUID = Foundation.UUID().uuidString
+                    UserDefaults.standard.set(UUID, forKey: "ATApplicationUniqueIdentifier")
+                    UserDefaults.standard.synchronize()
                     return UUID
                 } else {
-                    return NSUserDefaults.standardUserDefaults().objectForKey("ATApplicationUniqueIdentifier") as! String
+                    return UserDefaults.standard.object(forKey: "ATApplicationUniqueIdentifier") as! String
                 }
             }
             
             if let optIdentifier = identifier {
-                switch(optIdentifier.lowercaseString)
+                switch(optIdentifier.lowercased())
                 {
                 case "idfv":
-                    return UIDevice.currentDevice().identifierForVendor!.UUIDString
+                    return UIDevice.current.identifierForVendor!.uuidString
                 default:
                     return uuid()
                 }
@@ -112,7 +112,7 @@ class TechnicalContext {
     /// SDK Version
     class var sdkVersion: String {
         get {
-            if let optInfoDic = NSBundle(forClass: Tracker.self).infoDictionary {
+            if let optInfoDic = Bundle(for: Tracker.self).infoDictionary {
                 return optInfoDic["CFBundleShortVersionString"] as! String
             } else {
                 return ""
@@ -123,13 +123,7 @@ class TechnicalContext {
     /// Device language (eg. en_US)
     class var language: String {
         get {
-            let locale = NSLocale.autoupdatingCurrentLocale().objectForKey(NSLocaleIdentifier) as? String
-            
-            if let optLocale = locale {
-                return optLocale.lowercaseString
-            }
-            
-            return ""
+            return Locale.autoupdatingCurrent.identifier.lowercased()
         }
     }
     
@@ -138,23 +132,23 @@ class TechnicalContext {
         get {
             var size : Int = 0
             sysctlbyname("hw.machine", nil, &size, nil, 0)
-            var machine = [CChar](count: Int(size), repeatedValue: 0)
+            var machine = [CChar](repeating: 0, count: Int(size))
             sysctlbyname("hw.machine", &machine, &size, nil, 0)
-            return String(format: "[%@]-[%@]", "apple", String.fromCString(machine)!.lowercaseString)
+            return String(format: "[%@]-[%@]", "apple", String.init(cString: machine).lowercased())
         }
     }
     
     /// Device OS (name + version)
     class var operatingSystem: String {
         get {
-            return String(format: "[%@]-[%@]", UIDevice.currentDevice().systemName.removeSpaces().lowercaseString, UIDevice.currentDevice().systemVersion)
+            return String(format: "[%@]-[%@]", UIDevice.current.systemName.removeSpaces().lowercased(), UIDevice.current.systemVersion)
         }
     }
     
     /// Application identifier (eg. com.atinternet.testapp)
     class var applicationIdentifier: String {
         get {
-            let identifier = NSBundle.mainBundle().infoDictionary!["CFBundleIdentifier"] as? String
+            let identifier = Bundle.main.infoDictionary!["CFBundleIdentifier"] as? String
             
             if let optIdentifier = identifier {
                 return String(format:"%@", optIdentifier)
@@ -167,7 +161,7 @@ class TechnicalContext {
     /// Application version (eg. [5.0])
     class var applicationVersion: String {
         get {
-            let version = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as? String
+            let version = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String
             
             if let optVersion = version {
                 return String(format:"[%@]", optVersion)
@@ -180,19 +174,19 @@ class TechnicalContext {
     /// Local hour (eg. 23x59x59)
     class var localHour: String {
         get {
-            let hourFormatter = NSDateFormatter()
+            let hourFormatter = DateFormatter()
             hourFormatter.locale = LifeCycle.locale
             hourFormatter.dateFormat = "HH'x'mm'x'ss"
             
-            return hourFormatter.stringFromDate(NSDate())
+            return hourFormatter.string(from: Date())
         }
     }
     
     /// Screen resolution (eg. 1024x768)
     class var screenResolution: String {
         get {
-            let screenBounds = UIScreen.mainScreen().bounds
-            let screenScale = UIScreen.mainScreen().scale
+            let screenBounds = UIScreen.main.bounds
+            let screenScale = UIScreen.main.scale
             
             return String(format:"%ix%i", Int(screenBounds.size.width * screenScale), Int(screenBounds.size.height * screenScale))
         }
@@ -219,7 +213,7 @@ class TechnicalContext {
     }
     
     /// Download Source
-    class func downloadSource(tracker: Tracker) -> String {
+    class func downloadSource(_ tracker: Tracker) -> String {
         if let optDls = tracker.configuration.parameters["downloadSource"] {
             return optDls
         } else {

@@ -34,7 +34,7 @@ import UIKit
 import Foundation
 
 /// Hit builder
-class Builder: NSOperation {
+class Builder: Operation {
     /// Tracker instance
     var tracker: Tracker
     /// Contains persistent parameters
@@ -84,7 +84,7 @@ class Builder: NSOperation {
         var hitConf: String = ""
         var hitConfChunks = 0
         
-        if (self.tracker.configuration.parameters[sslKey]?.lowercaseString == "true") {
+        if (self.tracker.configuration.parameters[sslKey]?.lowercased() == "true") {
             if let optLogs = self.tracker.configuration.parameters[sslLogKey] {
                 hitConf += "https://" + optLogs + "."
                 if (optLogs != "") {
@@ -196,8 +196,8 @@ class Builder: NSOperation {
                     }
                     
                     // We slice the parameter value on the parameter separator
-                    let components = queryString.str.componentsSeparatedByString("=")
-                    let valChunks = components[1].componentsSeparatedByString(separator)
+                    let components = queryString.str.components(separatedBy: "=")
+                    let valChunks = components[1].components(separatedBy: separator)
                     
                     // Parameter key to re-add on each chunks where the value is spread
                     var keyAdded = false
@@ -224,15 +224,15 @@ class Builder: NSOperation {
                                 // Value still too long
                                 self.tracker.delegate?.warningDidOccur("Multihits: value still too long after slicing")
                                 // Truncate the value
-                                let idxMax = hit.startIndex.advancedBy(refMaxSize - errQuery.characters.count)
-                                hit = hit.substringToIndex(idxMax)
+                                let idxMax = hit.index(hit.startIndex, offsetBy: refMaxSize - errQuery.characters.count)
+                                hit = hit.substring(to: idxMax)
                                 // Check if in the last 5 characters there is misencoded character, if so we truncate again
-                                let idxEncode = hit.endIndex.advancedBy(-5)
-                                let lastChars = hit.substringFromIndex(idxEncode)
-                                let rangeMisencodedChar = lastChars.rangeOfString("%")
+                                let idxEncode = hit.index(hit.endIndex, offsetBy: -5)
+                                let lastChars = hit.substring(from: idxEncode)
+                                let rangeMisencodedChar = lastChars.range(of: "%")
                                 if rangeMisencodedChar != nil {
-                                    let idx = hit.startIndex.advancedBy(hit.characters.count - 5)
-                                    hit = hit.substringToIndex(idx)
+                                    let idx = hit.index(hit.startIndex, offsetBy: hit.characters.count - 5)
+                                    hit = hit.substring(to: idx)
                                 }
                                 hit += errQuery
                                 err = true
@@ -300,7 +300,7 @@ class Builder: NSOperation {
             for hit in hits {
                 message += hit + "\n"
             }
-            delegate.buildDidEnd(HitStatus.Success, message: message)
+            delegate.buildDidEnd(HitStatus.success, message: message)
         }
         
         return hits
@@ -318,7 +318,7 @@ class Builder: NSOperation {
             var mhOlt: String?
             
             if (hits.count > 1) {
-                mhOlt = String(format: "%f", NSDate().timeIntervalSince1970)
+                mhOlt = String(format: "%f", Date().timeIntervalSince1970)
             } else {
                 mhOlt = nil
             }
@@ -338,7 +338,7 @@ class Builder: NSOperation {
     
     - returns: An array of sorted parameters
     */
-    func organizeParameters(parameters: [Param]) -> [Param] {
+    func organizeParameters(_ parameters: [Param]) -> [Param] {
         var parameters = parameters;
         
         let refParamPositions = Tool.findParameterPosition(referrerParameterKey, arrays: parameters)
@@ -362,7 +362,7 @@ class Builder: NSOperation {
         // Handle ref= parameter which have to be in last position
         if(refParamIndex > -1) {
             refParameter = parameters[refParamIndex]
-            parameters.removeAtIndex(refParamIndex)
+            parameters.remove(at: refParamIndex)
             
             if let optRefParam = refParameter {
                 if let optOption = optRefParam.options {
@@ -383,7 +383,7 @@ class Builder: NSOperation {
                         self.tracker.delegate?.warningDidOccur("Found more than one parameter with relative position set to first")
                         params.append(parameter)
                     } else {
-                        params.insert(parameter, atIndex: 0)
+                        params.insert(parameter, at: 0)
                         firstParameter = parameter
                     }
                 // A parameter is set in last position
@@ -400,7 +400,7 @@ class Builder: NSOperation {
                     if let optRelativeParamKey = optOption.relativeParameterKey {
                         let relativePosParam = Tool.findParameterPosition(optRelativeParamKey, arrays: parameters)
                         if(relativePosParam.count > 0) {
-                            params.insert(parameter, atIndex:relativePosParam.last!.index)
+                            params.insert(parameter, at:relativePosParam.last!.index)
                         } else {
                             params.append(parameter)
                             // Raise a warning explaining that relative parameter has not been found
@@ -412,7 +412,7 @@ class Builder: NSOperation {
                     if let optRelativeParamKey = optOption.relativeParameterKey {
                         let relativePosParam = Tool.findParameterPosition(optRelativeParamKey, arrays: parameters)
                         if(relativePosParam.count > 0) {
-                            params.insert(parameter, atIndex:relativePosParam.last!.index + 1)
+                            params.insert(parameter, at:relativePosParam.last!.index + 1)
                         } else {
                             params.append(parameter)
                             // Raise a warning explaining that relative parameter has not been found
@@ -465,15 +465,15 @@ class Builder: NSOperation {
                 value = parameter.value()
             }
             
-            if(parameter.type == .Closure && value.parseJSONString != nil) {
-                parameter.type = .JSON
+            if(parameter.type == .closure && value.parseJSONString != nil) {
+                parameter.type = .json
             }
             
             // User id hash management
             if(parameter.key == HitParam.UserID.rawValue) {
                 if(!TechnicalContext.doNotTrack) {
                     if let hash = self.tracker.configuration.parameters["hashUserId"] {
-                        if (hash.lowercaseString == "true") {
+                        if (hash.lowercased() == "true") {
                             value = value.sha256Value
                         }
                     }
@@ -484,9 +484,9 @@ class Builder: NSOperation {
             
             // Referrer processing
             if(parameter.key == "ref"){
-                value = value.stringByReplacingOccurrencesOfString("&", withString: "$")
-                            .stringByReplacingOccurrencesOfString("<", withString: "")
-                            .stringByReplacingOccurrencesOfString(">", withString: "")
+                value = value.replacingOccurrences(of: "&", with: "$")
+                            .replacingOccurrences(of: "<", with: "")
+                            .replacingOccurrences(of: ">", with: "")
             }
             
             if let optOption = parameter.options {
@@ -500,7 +500,7 @@ class Builder: NSOperation {
             // Handle parameter's value to append another
             var duplicateParamIndex = -1
             
-            for(index, param) in params.enumerate() {
+            for(index, param) in params.enumerated() {
                 if(param.param.key == parameter.key)
                 {
                     duplicateParamIndex = index
@@ -512,19 +512,19 @@ class Builder: NSOperation {
                 let duplicateParam = params[duplicateParamIndex]
                 
                 // If parameter's value is JSON
-                if(parameter.type == .JSON) {
+                if(parameter.type == .json) {
                     // parse string to JSON Object
-                    let json: AnyObject? = duplicateParam.str.componentsSeparatedByString("=")[1].percentDecodedString.parseJSONString
-                    let newJson: AnyObject? = value.percentDecodedString.parseJSONString
+                    let json: Any? = duplicateParam.str.components(separatedBy: "=")[1].percentDecodedString.parseJSONString
+                    let newJson: Any? = value.percentDecodedString.parseJSONString
                     
                     switch(json) {
                     case let dictionary as NSMutableDictionary:
                         switch(newJson) {
-                            case let newDictionary as [NSObject : AnyObject]:
-                                dictionary.addEntriesFromDictionary(newDictionary)
+                            case let newDictionary as [NSObject : Any]:
+                                dictionary.addEntries(from: newDictionary)
                             
-                                let jsonData = try? NSJSONSerialization.dataWithJSONObject(dictionary, options: [])
-                                let strJsonData: String = NSString(data: jsonData!, encoding: NSUTF8StringEncoding)! as String
+                                let jsonData = try? JSONSerialization.data(withJSONObject: dictionary, options: [])
+                                let strJsonData: String = NSString(data: jsonData!, encoding: String.Encoding.utf8.rawValue)! as String
                                 
                                 params[duplicateParamIndex] = (param: duplicateParam.param, str: self.makeSubQuery(parameter.key, value: strJsonData.percentEncodedString))
                             default:
@@ -532,9 +532,9 @@ class Builder: NSOperation {
                         }
                     case let array as NSMutableArray:
                         switch(newJson) {
-                        case let newArray as [AnyObject]:
-                            let jsonData = try? NSJSONSerialization.dataWithJSONObject(array.arrayByAddingObjectsFromArray(newArray), options: [])
-                            let strJsonData: String = NSString(data: jsonData!, encoding: NSUTF8StringEncoding)! as String
+                        case let newArray as [Any]:
+                            let jsonData = try? JSONSerialization.data(withJSONObject: array.addingObjects(from: newArray), options: [])
+                            let strJsonData: String = NSString(data: jsonData!, encoding: String.Encoding.utf8.rawValue)! as String
                             
                             params[duplicateParamIndex] = (param: duplicateParam.param, str: self.makeSubQuery(parameter.key, value: strJsonData.percentEncodedString))
                         default:
@@ -544,7 +544,7 @@ class Builder: NSOperation {
                         self.tracker.delegate?.warningDidOccur("Couldn't append a JSON")
                     }
                 } else {
-                    if(duplicateParam.param.type == .JSON) {
+                    if(duplicateParam.param.type == .json) {
                         self.tracker.delegate?.warningDidOccur("Couldn't append value to a JSON Object")
                     } else {
                         let separator: String
@@ -575,7 +575,7 @@ class Builder: NSOperation {
     
     - returns: A string containing a querystring parameter
     */
-    func makeSubQuery(parameter: String, value: String) -> String {
+    func makeSubQuery(_ parameter: String, value: String) -> String {
         return String(format: "&%@=%@", parameter, value)
     }
     
@@ -586,9 +586,9 @@ class Builder: NSOperation {
     */
     func mhidSuffixGenerator() -> String {
         let randId = arc4random_uniform(10000000)
-        let date = NSDate()
-        let calendar = NSCalendar.currentCalendar()
-        let components = calendar.components([.Hour, .Minute, .Second], fromDate: date)
+        let date = Date()
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.hour, .minute, .second], from: date)
         let h = components.hour
         let m = components.minute
         let s = components.second

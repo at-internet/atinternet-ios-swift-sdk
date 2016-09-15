@@ -126,7 +126,7 @@ public class Publisher : OnAppAd {
         let positions = Tool.findParameterPosition(HitParam.HitType.rawValue, arrays: self.tracker.buffer.persistentParameters, self.tracker.buffer.volatileParameters)
         
         if(positions.count > 0) {
-            for(_, position) in positions.enumerate() {
+            for(_, position) in positions.enumerated() {
                 if(position.arrayIndex == 0) {
                     currentType = (self.tracker.buffer.persistentParameters[position.index] as Param).value()
                 } else {
@@ -136,23 +136,23 @@ public class Publisher : OnAppAd {
         }
         
         if (currentType != "screen" && currentType != defaultType) {
-            self.tracker.setParam(HitParam.HitType.rawValue, value: defaultType)
+            self.tracker = self.tracker.setParam(HitParam.HitType.rawValue, value: defaultType)
         }
         
         let option = ParamOption()
         option.append = true
         option.encode = true
-        self.tracker.setParam(self.action.rawValue, value: spot, options: option)
+        self.tracker = self.tracker.setParam(self.action.rawValue, value: spot, options: option)
         
         if(action == Action.Touch) {
             if(TechnicalContext.screenName != "") {
                 let encodingOption = ParamOption()
                 encodingOption.encode = true
-                tracker.setParam("patc", value: TechnicalContext.screenName, options: encodingOption)
+                _ = tracker.setParam("patc", value: TechnicalContext.screenName, options: encodingOption)
             }
             
             if(TechnicalContext.level2 > 0) {
-                tracker.setParam("s2atc", value: TechnicalContext.level2)
+                _ = tracker.setParam("s2atc", value: TechnicalContext.level2)
             }
         }
     }
@@ -176,7 +176,7 @@ public class Publishers {
     @param campaignID campaign identifier
     @return the Publisher instance
     */
-    public func add(campaignId: String) -> Publisher {
+    public func add(_ campaignId: String) -> Publisher {
         let publisherDetail = Publisher(tracker: self.tracker)
         publisherDetail.campaignId = campaignId
         
