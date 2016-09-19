@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>0FAA7B4A-F08A-45DD-BBB8-131D38E0BD57</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ATMobileAnalytics</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>2FE8C417B6970DB0DA154DD024F6166AB4B4E253</key>
+		<string>http://bdxsvn001:8080/AT_Tag_SDK_iOS_v2.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ATMobileAnalytics.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>2FE8C417B6970DB0DA154DD024F6166AB4B4E253</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>http://bdxsvn001:8080/AT_Tag_SDK_iOS_v2.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>2FE8C417B6970DB0DA154DD024F6166AB4B4E253</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>2FE8C417B6970DB0DA154DD024F6166AB4B4E253</string>
+			<key>IDESourceControlWCCName</key>
+			<string>AT_Tag_SDK_iOS_v2</string>
+		</dict>
+	</array>
+</dict>
+</plist>

@@ -1,0 +1,5 @@
+.DS_Store
+*.xcuserstate
+Tracker/docs/
+Tracker/build/
+*/xcuserdata/*
