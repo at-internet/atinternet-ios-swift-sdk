@@ -644,8 +644,8 @@ class Storage {
     func buildHitToStore(_ hit: String, olt: String) -> String {
         let url = URL(string: hit)
 
-        if let optURL = url {
-            let urlComponents = optURL.query!.components(separatedBy: "&")
+        if let optURL = url, let query = optURL.query {
+            let urlComponents = query.components(separatedBy: "&")
 
             var components = URLComponents()
             components.scheme = optURL.scheme

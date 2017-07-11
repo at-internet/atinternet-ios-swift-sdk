@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
 	s.name						      = "ATInternet-iOS-Swift-SDK"
-	s.version					      = '2.3.0'
+	s.version					      = '2.3.1'
 	s.summary					      = "AT Internet mobile analytics solution for iOS"
 	s.homepage				      = "https://github.com/at-internet/atinternet-ios-swift-sdk"
 	s.documentation_url	    = 'http://developers.atinternet-solutions.com/apple-en/getting-started-apple-en/operating-principle-apple-en/'
