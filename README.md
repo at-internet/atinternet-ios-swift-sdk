@@ -1,3 +1,5 @@
+## Repo moved to [at-internet/atinternet-apple-sdk](https://github.com/at-internet/atinternet-apple-sdk)
+
 # AT Internet iOS SDK
 The AT Internet tag allows you to follow your users activity throughout your application’s lifecycle.
 To help you, the tag makes available classes (helpers) enabling the quick implementation of tracking for different application events (screen loads, gestures, video plays…)
@@ -13,11 +15,11 @@ To help you, the tag makes available classes (helpers) enabling the quick implem
 ### Manual integration
 Find the integration information by following [this link]
 
-###Installation with CocoaPods
+### Installation with CocoaPods
 
 CocoaPods is a dependency manager which automates and simplifies the process of using 3rd-party libraries in your projects.
 
-###Podfile
+### Podfile
 
   - Basic iOS application : 
 
@@ -50,11 +52,11 @@ use_frameworks!
 end
 ```
 
-###Installation with Carthage
+### Installation with Carthage
 
 Carthage is an alternative to **Cocoapods**. It’s a simple dependency manager for Mac and iOS, created by a group of developers from Github.
 
-###Cartfile
+### Cartfile
 Simplty add the line below :
 
 ```
